@@ -111,7 +111,7 @@ int main()
 #endif
 
 
-	std::string libPath("/lukasz/Downloads");//("/usr");
+	std::string libPath("/usr");//("/lukasz/Downloads/SFML-2.4.2");
 //compiling
 #if 0
 	for (int i = 0; i < sources.size(); i++)

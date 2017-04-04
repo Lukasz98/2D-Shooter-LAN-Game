@@ -4,13 +4,14 @@
 
 Player::Player()
 {
-	m_position.x = 0.0f;
-	m_position.y = 0.0f;
-	m_speed = 10.0f;
-	m_shape = sf::CircleShape(100.0f);
-	m_shape.setPosition(m_position);
-	m_texture.loadFromFile("texture.png");
-	m_shape.setTexture(&m_texture);
+	m_speed = 300.0f;
+	m_texture.loadFromFile("img/player.png");
+	m_size = sf::Vector2f(200.0f, 200.0f);
+	setSize(m_size);
+	setOrigin(m_size.x /2, m_size.y /2);
+    setTexture(&m_texture);
+    
+    m_position = sf::Vector2f(getPosition());
 }
 
 Player::~Player()
@@ -18,15 +19,23 @@ Player::~Player()
 
 }
 
-void Player::m_Update()
+void Player::m_Update(float _dt, sf::Vector2i _mousePos)
 {
+	m_dt = _dt;
 	
+	float rot = Math_calc::GetSinus(m_position, _mousePos);
+	setRotation(rot);
+	
+	std::cout << "rotation: " << rot <<std::endl;
 }
 	
 void Player::m_Move(int _x, int _y)
 {
-	m_position.x += _x * m_speed;
-	m_position.y += _y * m_speed;
-	m_shape.setPosition(m_position);
+	
+	m_position.x += _x * m_speed * m_dt;
+	m_position.y += _y * m_speed * m_dt;
+	setPosition(m_position); 
+	//std::cout<<m_dt<<std::endl;
+	//m_shape.setPosition(m_position);
 }
 	
