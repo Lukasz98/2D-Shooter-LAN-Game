@@ -1,5 +1,6 @@
 #include "math_calc.h"
 #include <iostream>
+#include "log.h"
 
 
 /*
@@ -17,19 +18,12 @@ alfa/______|
 sf::Vector2f Math_calc::Get_xy_SpeedRatio(sf::Vector2f _pos, sf::Vector2f _dirPos)
 {
 	float b =  _dirPos.x - _pos.x;
-	//b = Math_calc::MakePositive(b);
-	
 	float a = _dirPos.y - _pos.y;
-	//float a = _pos.y -_dirPos.y;
-	//a = Math_calc::MakePositive(a);
-	
 	float c = sqrt( b * b + a * a );
-	//c = Math_calc::MakePositive(c);
 	
 	float xRatio = b / c;
 	float yRatio = a / c;
-//std::cout<<"xRatio: "<<xRatio<<", yRatio: "<<yRatio<<", c: "<<c<<std::endl;	
-//std::cout<<_dirPos.y<<std::endl;
+
 	return sf::Vector2f(xRatio, yRatio);
 }
 
@@ -39,16 +33,56 @@ float Math_calc::MakePositive(float _num)
 	return _num > 0.0f ? _num : _num * -1.0f;
 }
 
+/*      
+     _______
+     |  b  |
+     |    |
+   a |   |
+     |  | c
+     | |
+     ||
+alfa | 
+*/
 
-float Math_calc::GetSinus(sf::Vector2f _pos, sf::Vector2i _dirPos)
+
+float Math_calc::GetAngle(sf::Vector2f _pos, sf::Vector2i _dirPos)
 {
-	float b =  _dirPos.x - _pos.x;
-	float a = _dirPos.y - _pos.y;
-	float c = sqrt( b * b + a * a );
-	b = Math_calc::MakePositive(b);
-	a = Math_calc::MakePositive(a);
-	
-	std::cout << "asin a / c = " << (float) ((asin(a / c) *57.0f)) <<std::endl;
-	
-	return -(180 - (asin(a / c) / 2*3.14f * 360)) ; //sin(a / c);
+    float b = _dirPos.x - _pos.x;
+    float a = _pos.y - _dirPos.y;
+    float c = sqrt(b * b + a * a);
+
+    int part = 0;
+    if (b < 0.0f)
+    {
+        if (a > 0.0f)
+            part = 3;
+        else
+            part = 2;
+    }
+    else
+    {
+        if (a > 0.0f)
+            part = 0;
+        else
+            part = 1;
+    }
+
+    b = Math_calc::MakePositive(b);
+
+    float sin_alfa = b / c;
+    float asin_rad = asin(sin_alfa);
+    float asin_stopnie = asin_rad * 180 / 3.14159265f;
+    
+    if (part == 0)
+        return asin_stopnie;
+    if (part == 2)
+        return asin_stopnie + 90 * 2;
+    else
+        asin_stopnie = 90 * part + (90 - asin_stopnie); 
+
+//std::cout << "!!!!!!!!!!!!!!!!!!!!!! " << asin_stopnie << std::endl;
+
+    return asin_stopnie;
 }
+
+

@@ -47,8 +47,8 @@ int main()
         	fireTime = 0.0f;
             sf::Vector2i vec = sf::Mouse::getPosition(window);
             sf::Vector2f pos;
-            pos.x = player.getPosition().x + player.getSize().x /2;
-            pos.y = player.getPosition().y + player.getSize().y /2;
+            pos.x = player.getPosition().x;// + player.getSize().x /2;
+            pos.y = player.getPosition().y;// + player.getSize().y /2;
             bullets.push_back(new Bullet(pos, vec));
         }
 
@@ -112,7 +112,7 @@ int main()
         
  		if (timeForFps > 1.0f)
  		{
- 			//std::cout << "FPS: " << frames << std::endl;
+ 			//std::cout << "!!!!!!!!!!!!!!!!!!!!!! FPS: " << frames << std::endl;
  			timeForFps = 0.0f;
  			frames = 0;
  		}
