@@ -16,6 +16,7 @@ Bullet::Bullet(sf::Vector2f _pos, sf::Vector2i _direction)
     m_direction = sf::Vector2f((float) _direction.x, (float) _direction.y);
     m_speedRatio = Math_calc::Get_xy_SpeedRatio(m_position, m_direction);
     m_speed = 1000.0f;
+    m_power = 2.0f;
     
     setRadius(15.0f);
     setPosition(m_position);
@@ -28,7 +29,7 @@ Bullet::~Bullet()
 }
 
 
-void Bullet::m_Update(float _dt)
+bool Bullet::m_Update(float _dt)
 {
 	m_dt = _dt;
 	
@@ -36,6 +37,16 @@ void Bullet::m_Update(float _dt)
 	m_position.y += m_speed * m_speedRatio.y * _dt;
 	//std::cout<<m_position.x<<", "<<m_position.y<<std::endl;
 	setPosition(m_position);
+	
+	if (m_power <= 0.0f)
+		return false;
+	return true;
+}
+
+
+void Bullet::m_CollisionReact(float _power)
+{
+	m_power -= _power;
 }
 
 bool Bullet::m_Overlaps(sf::RectangleShape _rectShape)

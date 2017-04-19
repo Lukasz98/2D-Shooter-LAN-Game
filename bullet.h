@@ -13,8 +13,10 @@ public:
     ~Bullet();
 
 
-    void m_Update(float _dt);
+    bool m_Update(float _dt);
+    void m_CollisionReact(float _power);
     bool m_Overlaps(sf::RectangleShape _rectShape);
+    
     
 private:
 	void m_pickDirection();
@@ -24,5 +26,7 @@ private:
 private:
     sf::Texture m_texture;
 	sf::Vector2f m_position, m_direction, m_speedRatio;
-	float m_dt, m_speed;
+	float m_dt;
+	float m_speed;
+	float m_power;
 };

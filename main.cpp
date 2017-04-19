@@ -4,18 +4,21 @@
 #include "player.h"
 #include "bullet.h"
 #include "enemy.h"
+#include "world.h"
 
- int SCREEN_WIDTH = 800;
- int SCREEN_HEIGHT = 600;
+ int SCREEN_WIDTH = 1280;
+ int SCREEN_HEIGHT = 720;
 
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Game");
+
     //window.setFramerateLimit(60);
     window.setKeyRepeatEnabled(false);
     
 	sf::Clock clock = sf::Clock();
 
+	World world;
     Player player = Player();
     std::vector<Bullet*> bullets;
     std::vector<Enemy*> enemies;	
@@ -33,19 +36,23 @@ int main()
                 window.close();            
         }
         
+        int x = 0, y = 0;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		    player.m_Move(-1, 0);   
+		    x = -1; //player.m_Move(-1, 0);   
 	    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-	        player.m_Move(1, 0);
+	        x = 1; //player.m_Move(1, 0);
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-			player.m_Move(0, -1);
+			y = -1; //player.m_Move(0, -1);
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-			player.m_Move(0, 1);   
+			y = 1; //player.m_Move(0, 1);
+			
+		player.m_Move(x, y);   
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && fireTime > 0.5f)
         {    
         	fireTime = 0.0f;
             sf::Vector2i vec = sf::Mouse::getPosition(window);
+            std::cout << "mouse x: " << vec.x << ", y: " << vec.y << std::endl;
             sf::Vector2f pos;
             pos.x = player.getPosition().x;// + player.getSize().x /2;
             pos.y = player.getPosition().y;// + player.getSize().y /2;
@@ -55,6 +62,7 @@ int main()
 
 
         window.clear();
+		world.m_Draw(window);
         window.draw(player);
         for (int i = 0; i < bullets.size(); i++)
             window.draw(*bullets[i]);
@@ -64,13 +72,19 @@ int main()
  		
 
 
-
+		world.m_Update(player, bullets);
  		player.m_Update(dt, sf::Mouse::getPosition(window));
  		
 		for (int i = 0; i < bullets.size(); i++)
  		{
             bool alarm = false;
-        	bullets[i]->m_Update(dt);
+        	bool bulletAlive = bullets[i]->m_Update(dt);
+        	if (!bulletAlive)
+        	{
+        		bullets.erase(bullets.begin() + i);
+        		break;
+        	}
+        	
     		for (int j = 0; j < enemies.size(); j++)        
             {
                 if (bullets[i]->m_Overlaps(*enemies[j]))
@@ -102,13 +116,13 @@ int main()
                 break;
             }
         }
-
+#if 0
         if (timeForEnemies > 8.5f)
         {
             enemies.push_back(new Enemy()); 
             timeForEnemies = 0.0f;
         }
-        
+#endif   
         
  		if (timeForFps > 1.0f)
  		{

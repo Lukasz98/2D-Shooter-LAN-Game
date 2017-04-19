@@ -71,7 +71,7 @@ float Math_calc::GetAngle(sf::Vector2f _pos, sf::Vector2i _dirPos)
 
     float sin_alfa = b / c;
     float asin_rad = asin(sin_alfa);
-    float asin_stopnie = asin_rad * 180 / 3.14159265f;
+    float asin_stopnie = asin_rad * 180 / 3.14159265369f;
     
     if (part == 0)
         return asin_stopnie;
