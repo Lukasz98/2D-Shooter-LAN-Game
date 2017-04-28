@@ -23,8 +23,8 @@ int main()
     std::vector<Bullet*> bullets;
     std::vector<Enemy*> enemies;	
     float dt = 0.0f, timeForEnemies = 0.0f, timeForFps = 0.0f, fullTime = 0.0f;
-	float fireTime = 0.0f;
-	int frames = 0;
+    float fireTime = 0.0f;
+    int frames = 0;
 	
 
     while (window.isOpen())
