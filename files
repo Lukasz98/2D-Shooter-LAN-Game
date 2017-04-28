@@ -1,6 +1,6 @@
 HEADER
 {
-	* Break lines and horizontal tabs are ignored
+	* Break lines and horizontal tabs are ignored, but space not
 	* At the end of the file leave '|'
 	* Dont delete all if you dont need, leave at least name and brackets (in diffrent lines)
 	* Without extends (default.cpp)
@@ -10,10 +10,28 @@ SOURCES
 {
 	main
 	player
-    bullet
-    math_calc
-    enemy
-    world
+	bullet
+	math_calc
+	enemy
+	world
+}
+
+
+INCLUDE PATH
+{
+	/usr/include
+}
+
+LIB PATH
+{
+	/usr/lib
+}
+
+FILE TO LINK
+{
+	-lsfml-graphics
+	-lsfml-window
+	-lsfml-system
 }
 
 EXECUTABLE

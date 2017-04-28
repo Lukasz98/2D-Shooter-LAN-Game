@@ -5,7 +5,84 @@
 #include <vector>
 #include <stdlib.h> // for console writing
 
-#define drawOnScreenFileNames 0
+// 62 row do REPERACJI
+
+char * readFile(const char * _name);
+std::vector<std::string> cutWords(const char *_text);
+int * findElements(const std::vector<std::string> & _array, const char * _elementName);
+
+
+int main()
+{
+    char * data = readFile("files");
+	std::vector<std::string> words = cutWords(data);
+
+	std::vector<std::string> sources;
+	int *srcEl = findElements(words, "SOURCES");
+	for (int i = *srcEl; i <= *(srcEl + 1); i++)
+		sources.push_back(words[i]);
+	delete [] srcEl;
+    
+    std::vector<std::string> includePath;
+    int *incPathEl = findElements(words, "INCLUDE PATH");
+    if (*incPathEl != 69)
+    for (int i = *incPathEl; i <= *(incPathEl + 1); i++)
+        includePath.push_back(words[i]); 
+	delete [] incPathEl;
+    
+    std::vector<std::string> libPath;
+    int *libPathEl = findElements(words, "LIB PATH");
+    if (*libPathEl != 69)
+    for (int i = *libPathEl; i <= *(libPathEl + 1); i++)
+        libPath.push_back(words[i]);
+	delete [] libPathEl;
+    
+    std::vector<std::string> fileToLink;
+    int *fileLinkEl = findElements(words, "FILE TO LINK");
+    if (*fileLinkEl != 69)    
+    for (int i = *fileLinkEl; i <= *(fileLinkEl + 1); i++)
+        fileToLink.push_back(words[i]);
+	delete [] fileLinkEl;
+    
+	std::vector<std::string> exec;
+	int *execEl = findElements(words, "EXECUTABLE");
+	for (int i = *execEl; i <= *(execEl + 1); i++)
+		exec.push_back(words[i]);
+	delete [] execEl;
+
+	std::string obj("obj/");
+	for (int i = 0; i < sources.size(); i++)
+	{
+		std::string compile1("g++ -c -std=c++11 " + sources[i] + ".cpp");
+        if (includePath.size() > 0)
+            compile1 += " -I " + includePath[0];
+        compile1 += " -o " + obj + sources[i] + ".o";
+        std::cout << "LOG: " << compile1 << std::endl;
+		system(compile1.c_str());
+	}
+	
+    std::string compile3("g++ -std=c++11 ");
+	for (int i = 0; i < sources.size(); i++)
+	{
+		compile3 += obj + sources[i] + ".o ";
+	}
+
+	compile3 += " -o " + exec[0];
+    if (libPath.size() > 0)
+        compile3 += " -L " + libPath[0];
+	for (int i = 0; i < fileToLink.size(); i++)
+    {
+        compile3 += " " + fileToLink[i];
+    }
+   
+	std::cout << "\nLOG: " << compile3 << std::endl;   
+    system(compile3.c_str());
+
+	delete [] data;
+    return 0;
+}
+
+
 
 char * readFile(const char * _name)
 {
@@ -69,90 +146,5 @@ int * findElements(const std::vector<std::string> & _array, const char * _elemen
 	}
 	
 	return tab;
-}
-
-int main()
-{
-    char * data = readFile("files");
-	std::vector<std::string> words = cutWords(data);
-
-#if 0
-	for (int i = 0; i < words.size(); i++)
-		std::cout << "w" << i << " " << words[i] << std::endl;
-	std::cout<<"\n\n\n\n------------------\n";
-#endif
-
-//sources    
-	std::vector<std::string> sources;
-	int *srcEl = findElements(words, "SOURCES");
-	for (int i = *srcEl; i <= *(srcEl + 1); i++)
-		sources.push_back(words[i]);
-
-#if drawOnScreenFileNames
-	std::cout << "------------------\n";
-	std::cout << "SOURCES\n";
-	for (int i = 0; i < sources.size(); i++)
-	std::cout << sources[i] << std::endl; 
-#endif
-
-
-//executables
-	std::vector<std::string> exec;
-	int *execEl = findElements(words, "EXECUTABLE");
-	for (int i = *execEl; i <= *(execEl + 1); i++)
-		exec.push_back(words[i]);
-  
-#if drawOnScreenFileNames
-	std::cout << "------------------\n";
-	std::cout << "EXECUTABLE\n";
-	for (int i = 0; i < exec.size(); i++)
-	std::cout << exec[i] << std::endl; 
-	std::cout << "------------------\n";
-#endif
-
-
-	std::string libPath("/usr");//("/lukasz/Downloads/SFML-2.4.2");
-//compiling
-#if 0
-	for (int i = 0; i < sources.size(); i++)
-	{	
-		std::string compile2("g++ -c -std=c++11 " + sources[i] + ".cpp -I " + libPath + "/include");
-		system(compile2.c_str());
-	
-		std::string compile3(
-			"g++ -std=c++11 " + sources[i] + ".o -o " + exec[0] + " -L " + 
-			libPath + "/lib -lsfml-graphics -lsfml-window -lsfml-system"
-		); 
-		
-		system(compile3.c_str());
-	}
-#endif
-
-#if 1
-	for (int i = 0; i < sources.size(); i++)
-	{
-		std::string compile1("g++ -c -std=c++11 " + sources[i] + ".cpp -I" + libPath + "/include");
-		system(compile1.c_str());
-	}
-	
-	//std::string compile2("g++ -std=c++11 -o " + exec[0] + " ");
-	std::string compile3("g++ -std=c++11 ");
-	for (int i = 0; i < sources.size(); i++)
-	{
-		//compile2 += sources[i] + ".o ";
-		compile3 += sources[i] + ".o ";
-	}
-	//compile2 += " -L " + libPath + "/lib -lsfml-graphics -lsfml-window -lsfml-system";
-	compile3 += " -o " + exec[0] + " -L " + libPath + "/lib -lsfml-graphics -lsfml-window -lsfml-system";
-	system(compile3.c_str());
-#endif
-
-#if 0
-	std::string execut("./" + exec[0]);
-	system(execut.c_str());
-#endif
-
-    std::cout << std::endl;
-    return 0;
 }
 
