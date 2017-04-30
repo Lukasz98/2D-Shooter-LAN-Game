@@ -11,7 +11,8 @@ Player::Player()
 	setOrigin(m_size.x /2, m_size.y /2);
     setTexture(&m_texture);
     
-    m_position = sf::Vector2f(getPosition());
+    m_position = sf::Vector2f(100.0f, 100.0f);
+    setPosition(m_position);
 }
 
 Player::~Player()
@@ -23,7 +24,10 @@ void Player::m_Update(float _dt, sf::Vector2i _mousePos)
 {
 	m_dt = _dt;
 	
-	float rot = Math_calc::GetAngle(m_position, _mousePos);
+	sf::Vector2f v(1280.0f /2.0f, 720.0f / 2.0f);
+	float rot = Math_calc::GetAngle(v, _mousePos);
+	
+	//float rot = Math_calc::GetAngle(m_position, _mousePos);
 	setRotation(rot);
 	
 	//std::cout << "rotation: " << rot <<std::endl;

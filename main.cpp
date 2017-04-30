@@ -30,14 +30,15 @@ int main()
 void game(World * world)
 {
     sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Game");
-
+	sf::View view(sf::FloatRect(100.0f, 100.0f, SCREEN_WIDTH, SCREEN_HEIGHT));
+	window.setView(view);
     //window.setFramerateLimit(60);
     window.setKeyRepeatEnabled(false);
     
 	sf::Clock clock = sf::Clock();
 
-	//World world;
 	Player player = Player();
+	//World world;
 	std::vector<Bullet*> bullets;
 	std::vector<Enemy*> enemies;	
 	float dt = 0.0f, timeForEnemies = 0.0f, timeForFps = 0.0f, fullTime = 0.0f;
@@ -63,18 +64,41 @@ void game(World * world)
 			y = -1; //player.m_Move(0, -1);
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 			y = 1; //player.m_Move(0, 1);
-			
-		player.m_Move(x, y);   
-
+		
+		if (x != 0 || y != 0)
+		{
+			player.m_Move(x, y);   
+			sf::Vector2f z = player.getPosition();
+			view.setCenter(z);
+			//std::cout << "\nx: " << z.x << " y: " << z.y;
+			window.setView(view);		
+		}
+		
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && fireTime > 0.5f)
         {    
         	fireTime = 0.0f;
-            sf::Vector2i vec = sf::Mouse::getPosition(window);
+            sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+          	std::cout << "mouse x: " << mousePos.x << ", y: " << mousePos.y << std::endl;
             //std::cout << "mouse x: " << vec.x << ", y: " << vec.y << std::endl;
             sf::Vector2f pos;
-            pos.x = player.getPosition().x;// + player.getSize().x /2;
-            pos.y = player.getPosition().y;// + player.getSize().y /2;
-            bullets.push_back(new Bullet(pos, vec));
+            pos.x = player.getPosition().x;
+            pos.y = player.getPosition().y;
+            
+            // I wymiar pos.x = 640 pos.x = 360
+            // II wymiar pos.x = ? ?
+            
+            sf::Vector2f playerDiff;
+			playerDiff.x = pos.x - SCREEN_WIDTH / 2.0f;     
+            playerDiff.y = pos.y - SCREEN_HEIGHT / 2.0f;     
+            
+            mousePos.x += playerDiff.x;
+            mousePos.y += playerDiff.y;
+          
+            std::cout << "ostatecznie x: " << mousePos.x << ", y: " << mousePos.y << std::endl;
+            
+            //if (mousePos.x > pos.x) pos.x = mousePos.x
+            
+            bullets.push_back(new Bullet(pos, mousePos));
         }
 
 
@@ -91,7 +115,9 @@ void game(World * world)
 
 
 		world->m_Update(player, bullets);
- 		player.m_Update(dt, sf::Mouse::getPosition(window));
+ 		sf::Vector2i mouseP = sf::Mouse::getPosition(window); 
+ 		//std::cout << "mouse x: " << mouseP.x << ", y: " << mouseP.y << std::endl;
+ 		player.m_Update(dt, mouseP);
  		
 		for (int i = 0; i < bullets.size(); i++)
  		{
@@ -115,7 +141,7 @@ void game(World * world)
             }                    
             if (alarm) break;
         }
-     	
+#if 0
         for (int i = 0; i < bullets.size(); i++)
  		{
             sf::Vector2f pos = bullets[i]->getPosition();
@@ -125,7 +151,7 @@ void game(World * world)
                 break;
             }
         }
-
+#endif
 		for (int i = 0; i < enemies.size(); i++)        
         {
             if (enemies[i]->m_Update(dt, player.getPosition()))
@@ -134,7 +160,7 @@ void game(World * world)
                 break;
             }
         }
-#if 1
+#if 0
         if (timeForEnemies > 1.5f)
         {
             enemies.push_back(new Enemy()); 

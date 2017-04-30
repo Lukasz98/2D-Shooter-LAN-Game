@@ -50,6 +50,8 @@ int main()
 		exec.push_back(words[i]);
 	delete [] execEl;
 
+	int correct = 0;
+
 	std::string obj("obj/");
 	for (int i = 0; i < sources.size(); i++)
 	{
@@ -58,26 +60,31 @@ int main()
             compile1 += " -I " + includePath[0];
         compile1 += " -o " + obj + sources[i] + ".o";
         std::cout << "LOG: " << compile1 << std::endl;
-		system(compile1.c_str());
+		correct = system(compile1.c_str());
+		if (correct != 0)
+			break;
+	}
+
+	if (correct == 0)
+	{	
+		std::string compile3("g++ -std=c++11 ");
+		for (int i = 0; i < sources.size(); i++)
+		{
+			compile3 += obj + sources[i] + ".o ";
+		}
+
+		compile3 += " -o " + exec[0];
+		if (libPath.size() > 0)
+		    compile3 += " -L " + libPath[0];
+		for (int i = 0; i < fileToLink.size(); i++)
+		{
+		    compile3 += " " + fileToLink[i];
+		}
+	   
+		std::cout << "\nLOG: " << compile3 << std::endl;   
+		system(compile3.c_str());
 	}
 	
-    std::string compile3("g++ -std=c++11 ");
-	for (int i = 0; i < sources.size(); i++)
-	{
-		compile3 += obj + sources[i] + ".o ";
-	}
-
-	compile3 += " -o " + exec[0];
-    if (libPath.size() > 0)
-        compile3 += " -L " + libPath[0];
-	for (int i = 0; i < fileToLink.size(); i++)
-    {
-        compile3 += " " + fileToLink[i];
-    }
-   
-	std::cout << "\nLOG: " << compile3 << std::endl;   
-    system(compile3.c_str());
-
 	delete [] data;
     return 0;
 }

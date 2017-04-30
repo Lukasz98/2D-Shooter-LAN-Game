@@ -15,10 +15,11 @@ World::World()
 World::~World()
 {
 std::cout << "\nUSUWANIE MAPY\n";
-	//for (int i = 0; i < m_floors.size(); i++)
-	//{
-		//delete m_floors[i];
-	//}
+	for (int i = 0; i < m_floors.size(); i++)
+		delete m_floors[i];
+	
+	for (int i = 0; i < m_walls.size(); i++)
+		delete m_walls[i];
 }
 
 

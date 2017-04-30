@@ -10,7 +10,7 @@ World * WorldLoader::LoadMap(const char *_path)
 	if (file->is_open())
 	{
 		std::string check;
-		while (check != "'")//file->good())
+		while (!file->eof())//check != "END")//file->good())
 		{
 			*file >> check;
 			
@@ -18,12 +18,10 @@ World * WorldLoader::LoadMap(const char *_path)
 			{
 				world->m_AddFloor(loadFloor(file));
 			}
-			std::cout << "CHECK:"<<check<<"CHECK-"<<file->tellg()<<"\n";
+			
 			if (check == "wall")
 			{
-			std::cout<<"Przed WALL ADD"<<file->tellg()<<"ADD"<<std::endl;
 				world->m_AddWall(loadWall(file));
-			std::cout<<"Po WALL ADD"<<file->tellg()<<"ADD"<<std::endl;
 			}
 		
 //			std::cout << check;
@@ -31,7 +29,7 @@ World * WorldLoader::LoadMap(const char *_path)
 		file->close();
 	}
 
-	delete [] file;
+	delete file;
 	return world;
 }
 
@@ -70,6 +68,7 @@ Floor * WorldLoader::loadFloor(std::fstream * _file)
 
 Wall * WorldLoader::loadWall(std::fstream * _file)
 {
+
 	Wall * wall = new Wall();
 	
 	std::string check("");
@@ -95,7 +94,7 @@ Wall * WorldLoader::loadWall(std::fstream * _file)
 	//_file >> check; // going out of braces
 	//std::streampos z = _file->tellg();
 	//_file->seekg(0, _file->end);
-std::cout<<"\nLadowanie wall:"<<_file->tellg()<<"lad\n";
+//std::cout<<"\nLadowanie wall:"<<_file->tellg()<<"lad\n";
 	wall->m_SetPosition(sf::Vector2f(x, y));
 	wall->m_SetSize(sf::Vector2f(width, height));
 	wall->m_SetTexture(texturePath);	
