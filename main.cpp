@@ -5,11 +5,29 @@
 #include "bullet.h"
 #include "enemy.h"
 #include "world.h"
+#include "world_loader.h"
+
+
+void game(World * world);
 
  int SCREEN_WIDTH = 1280;
  int SCREEN_HEIGHT = 720;
 
 int main()
+{
+	World * map1 = WorldLoader::LoadMap("worlds/testWorld");	
+
+	game(map1);
+
+
+	//map1();
+	delete map1;
+	
+    return 0;
+}
+
+
+void game(World * world)
 {
     sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Game");
 
@@ -18,11 +36,11 @@ int main()
     
 	sf::Clock clock = sf::Clock();
 
-	World world;
-    Player player = Player();
-    std::vector<Bullet*> bullets;
-    std::vector<Enemy*> enemies;	
-    float dt = 0.0f, timeForEnemies = 0.0f, timeForFps = 0.0f, fullTime = 0.0f;
+	//World world;
+	Player player = Player();
+	std::vector<Bullet*> bullets;
+	std::vector<Enemy*> enemies;	
+	float dt = 0.0f, timeForEnemies = 0.0f, timeForFps = 0.0f, fullTime = 0.0f;
 	float fireTime = 0.0f;
 	int frames = 0;
 	
@@ -52,7 +70,7 @@ int main()
         {    
         	fireTime = 0.0f;
             sf::Vector2i vec = sf::Mouse::getPosition(window);
-            std::cout << "mouse x: " << vec.x << ", y: " << vec.y << std::endl;
+            //std::cout << "mouse x: " << vec.x << ", y: " << vec.y << std::endl;
             sf::Vector2f pos;
             pos.x = player.getPosition().x;// + player.getSize().x /2;
             pos.y = player.getPosition().y;// + player.getSize().y /2;
@@ -62,7 +80,7 @@ int main()
 
 
         window.clear();
-		world.m_Draw(window);
+		world->m_Draw(window);
         window.draw(player);
         for (int i = 0; i < bullets.size(); i++)
             window.draw(*bullets[i]);
@@ -72,7 +90,7 @@ int main()
  		
 
 
-		world.m_Update(player, bullets);
+		world->m_Update(player, bullets);
  		player.m_Update(dt, sf::Mouse::getPosition(window));
  		
 		for (int i = 0; i < bullets.size(); i++)
@@ -116,8 +134,8 @@ int main()
                 break;
             }
         }
-#if 0
-        if (timeForEnemies > 8.5f)
+#if 1
+        if (timeForEnemies > 1.5f)
         {
             enemies.push_back(new Enemy()); 
             timeForEnemies = 0.0f;
@@ -139,7 +157,4 @@ int main()
         frames ++;
  		clock.restart();
     }
-
-    return 0;
 }
-
