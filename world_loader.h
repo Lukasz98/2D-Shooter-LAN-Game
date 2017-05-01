@@ -8,7 +8,7 @@
 #include "world.h"
 #include "floor.h"
 #include "wall.h"
-
+#include "enemy.h"
 
 class WorldLoader
 {
@@ -19,4 +19,5 @@ public:
 private:
 	static Floor * loadFloor(std::fstream * _file);
 	static Wall * loadWall(std::fstream * _file);
+	static Enemy * loadEnemy(std::fstream * _file);
 };

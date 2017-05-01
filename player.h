@@ -1,12 +1,10 @@
 #pragma once
 #include <iostream>
-#include <SFML/Graphics.hpp>
-#include <SFML/System/Vector2.hpp>
+#include "body.h"
 #include "math_calc.h"
 
 
-
-class Player : public sf::RectangleShape
+class Player : public Body
 {
 public:
 	Player();
@@ -15,17 +13,17 @@ public:
 	void m_Move(int _x, int _y);
 	
 	void m_Update(float _dt, sf::Vector2i _mousePos);
-	void m_ReactOnCollision();
+
 
 	
 private:
 	//sf::CircleShape m_shape;
 	sf::Texture m_texture;
-	sf::Vector2f m_position;
+	//sf::Vector2f m_position;
 	sf::Vector2f m_size;
-	sf::Vector2i m_dir;
-	float m_speed;	
-	float m_dt;
+	//sf::Vector2i m_dir;
+	//float m_speed;	
+	//float m_dt;
 	
 
 };

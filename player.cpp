@@ -11,7 +11,7 @@ Player::Player()
 	setOrigin(m_size.x /2, m_size.y /2);
     setTexture(&m_texture);
     
-    m_position = sf::Vector2f(100.0f, 100.0f);
+    m_position = sf::Vector2f(300.0f, 300.0f);
     setPosition(m_position);
 }
 
@@ -38,13 +38,7 @@ void Player::m_Move(int _x, int _y)
 	m_position.x += _x * m_speed * m_dt;
 	m_position.y += _y * m_speed * m_dt;
 	setPosition(m_position); 
-	m_dir.x = _x;
-	m_dir.y = _y;
+	m_speedRatio.x = (float)_x;
+	m_speedRatio.y = (float)_y;
 }
 
-void Player::m_ReactOnCollision()
-{
-	m_position.x += (m_dir.x * -1) * m_speed * m_dt;
-	m_position.y += (m_dir.y * -1) * m_speed * m_dt;
-	setPosition(m_position);
-}

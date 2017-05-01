@@ -23,6 +23,11 @@ World * WorldLoader::LoadMap(const char *_path)
 			{
 				world->m_AddWall(loadWall(file));
 			}
+			
+			if (check == "enemy")
+			{
+				world->m_AddEnemy(loadEnemy(file));
+			}
 		
 //			std::cout << check;
 		}
@@ -57,7 +62,6 @@ Floor * WorldLoader::loadFloor(std::fstream * _file)
 			*_file >> texturePath;
 		*_file >> check;
 	}
-	//_file >> check; // going out of braces
 
 	floor->m_SetPosition(sf::Vector2f(x, y));
 	floor->m_SetSize(sf::Vector2f(width, height));
@@ -68,7 +72,6 @@ Floor * WorldLoader::loadFloor(std::fstream * _file)
 
 Wall * WorldLoader::loadWall(std::fstream * _file)
 {
-
 	Wall * wall = new Wall();
 	
 	std::string check("");
@@ -91,13 +94,38 @@ Wall * WorldLoader::loadWall(std::fstream * _file)
 			*_file >> texturePath;
 		*_file >> check;
 	}
-	//_file >> check; // going out of braces
-	//std::streampos z = _file->tellg();
-	//_file->seekg(0, _file->end);
-//std::cout<<"\nLadowanie wall:"<<_file->tellg()<<"lad\n";
+	
 	wall->m_SetPosition(sf::Vector2f(x, y));
 	wall->m_SetSize(sf::Vector2f(width, height));
 	wall->m_SetTexture(texturePath);	
 	
 	return wall;
 }
+
+Enemy * WorldLoader::loadEnemy(std::fstream * _file)
+{
+	Enemy * enemy = new Enemy();
+	
+	std::string check("");
+	std::string texturePath;
+	float x = 0, y = 0;
+
+	*_file >> check; // going on braces
+	*_file >> check; // going on x
+	while (check != "}")
+	{
+		if (check == "x:")
+			*_file >> x;
+		if (check == "y:")
+			*_file >> y;
+		if (check == "texture:")
+			*_file >> texturePath;
+		*_file >> check;
+	}
+	
+	enemy->m_SetPosition(sf::Vector2f(x, y));
+	enemy->m_SetTexture(texturePath);	
+	
+	return enemy;
+}
+

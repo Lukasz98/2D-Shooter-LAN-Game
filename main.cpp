@@ -37,13 +37,16 @@ void game(World * world)
     
 	sf::Clock clock = sf::Clock();
 
+
 	Player player = Player();
 	//World world;
 	std::vector<Bullet*> bullets;
-	std::vector<Enemy*> enemies;	
+	
 	float dt = 0.0f, timeForEnemies = 0.0f, timeForFps = 0.0f, fullTime = 0.0f;
 	float fireTime = 0.0f;
 	int frames = 0;
+
+
 	
 
     while (window.isOpen())
@@ -78,7 +81,7 @@ void game(World * world)
         {    
         	fireTime = 0.0f;
             sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-          	std::cout << "mouse x: " << mousePos.x << ", y: " << mousePos.y << std::endl;
+          	//std::cout << "mouse x: " << mousePos.x << ", y: " << mousePos.y << std::endl;
             //std::cout << "mouse x: " << vec.x << ", y: " << vec.y << std::endl;
             sf::Vector2f pos;
             pos.x = player.getPosition().x;
@@ -94,7 +97,7 @@ void game(World * world)
             mousePos.x += playerDiff.x;
             mousePos.y += playerDiff.y;
           
-            std::cout << "ostatecznie x: " << mousePos.x << ", y: " << mousePos.y << std::endl;
+            //std::cout << "ostatecznie x: " << mousePos.x << ", y: " << mousePos.y << std::endl;
             
             //if (mousePos.x > pos.x) pos.x = mousePos.x
             
@@ -107,14 +110,12 @@ void game(World * world)
 		world->m_Draw(window);
         window.draw(player);
         for (int i = 0; i < bullets.size(); i++)
-            window.draw(*bullets[i]);
-		for (int i = 0; i < enemies.size(); i++)                
-            window.draw(*enemies[i]);        
+            window.draw(*bullets[i]);       
         window.display();
  		
 
 
-		world->m_Update(player, bullets);
+		world->m_Update(&player, bullets, dt);
  		sf::Vector2i mouseP = sf::Mouse::getPosition(window); 
  		//std::cout << "mouse x: " << mouseP.x << ", y: " << mouseP.y << std::endl;
  		player.m_Update(dt, mouseP);
@@ -128,38 +129,9 @@ void game(World * world)
         		bullets.erase(bullets.begin() + i);
         		break;
         	}
-        	
-    		for (int j = 0; j < enemies.size(); j++)        
-            {
-                if (bullets[i]->m_Overlaps(*enemies[j]))
-                {
-                    enemies[j]->m_GetDamage(51.0f);
-                    bullets.erase(bullets.begin() + i);
-                    alarm = true;                    
-                    break;                
-                }
-            }                    
-            if (alarm) break;
         }
-#if 0
-        for (int i = 0; i < bullets.size(); i++)
- 		{
-            sf::Vector2f pos = bullets[i]->getPosition();
-            if(pos.x > SCREEN_WIDTH || pos.x < 0.0f || pos.y < 0.0f || pos.y > SCREEN_HEIGHT)
-            {
-                bullets.erase(bullets.begin() + i);
-                break;
-            }
-        }
-#endif
-		for (int i = 0; i < enemies.size(); i++)        
-        {
-            if (enemies[i]->m_Update(dt, player.getPosition()))
-            {
-                enemies.erase(enemies.begin() + i);
-                break;
-            }
-        }
+
+
 #if 0
         if (timeForEnemies > 1.5f)
         {

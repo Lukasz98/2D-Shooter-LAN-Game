@@ -3,18 +3,19 @@
 
 Enemy::Enemy()
 {
-    srand(time(NULL));
+    //srand(time(NULL));
     m_speed = 150.0f;
     m_hp = 100.0f;
     m_framesCount = 0;
     m_speedRatio = sf::Vector2f(1.0f, 1.0f);
-    m_position = sf::Vector2f( rand() % 800, rand() % 600);
+    //m_position = sf::Vector2f( rand() % 800, rand() % 600);
     m_size = sf::Vector2f(80.0f, 80.0f);
-    m_texture.loadFromFile("img/tusk.jpg");    
+    //m_texture.loadFromFile("img/tusk.jpg");    
     
 	setSize(m_size);
-    setPosition(m_position);
-    setTexture(&m_texture);
+	setOrigin(m_size.x /2.0f, m_size.y /2.0f);
+    //setPosition(m_position);
+    //setTexture(&m_texture);
 
     //std::cout<<m_position.x<<", "<<m_position.y<<std::endl;    
 }
@@ -23,7 +24,6 @@ Enemy::~Enemy()
 {
 
 }
-
 
 bool Enemy::m_Update(float _dt, sf::Vector2f _direction)
 {
@@ -43,12 +43,21 @@ bool Enemy::m_Update(float _dt, sf::Vector2f _direction)
     return false;
 }
 
-
-
 void Enemy::m_GetDamage(float _dmg)
 {
     m_hp -= _dmg;
 
 }
 
+void Enemy::m_SetPosition(sf::Vector2f _pos)
+{
+	m_position = _pos;
+	setPosition(m_position);
+}
+
+void Enemy::m_SetTexture(std::string _texturePath)
+{
+	m_texture.loadFromFile(_texturePath);
+	setTexture(&m_texture);
+}
 

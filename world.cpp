@@ -14,7 +14,7 @@ World::World()
 
 World::~World()
 {
-std::cout << "\nUSUWANIE MAPY\n";
+//std::cout << "\nUSUWANIE MAPY\n";
 	for (int i = 0; i < m_floors.size(); i++)
 		delete m_floors[i];
 	
@@ -23,22 +23,57 @@ std::cout << "\nUSUWANIE MAPY\n";
 }
 
 
-void World::m_Update(Player &_player, std::vector<Bullet*> &_bullets)
+void World::m_Update(Player * _player, std::vector<Bullet*> &_bullets, float _dt)
 {
-	m_checkPlayerCollision(_player);	
+	m_dt = _dt;
+	
+	m_checkBodyCollision(_player);	
 	m_checkBulletsCollision(_bullets);
+	
+	for (int i = 0; i < m_enemies.size(); i++)
+	{
+		m_checkBodyCollision(m_enemies[i]);
+	}
+	
+	for (int i = 0; i < m_enemies.size(); i++)        
+	{
+		if (m_enemies[i]->m_Update(m_dt, _player->getPosition()))
+		{
+			m_enemies.erase(m_enemies.begin() + i);
+			break;
+		}
+	}
 }
 
-void World::m_AddFloor(Floor * _floor)
+void World::m_checkBodyCollision(Body * _body)
 {
-	m_floors.push_back(_floor);
-}
+	sf::Vector2f bodyPos = _body->getPosition();	
+	sf::Vector2f bodySize = _body->getSize();
+	bodyPos.x -= bodySize.x /2;
+	bodyPos.y -= bodySize.y /2;
 
-void World::m_AddWall(Wall * _wall)
-{
-	m_walls.push_back(_wall);
+	for (int i = 0; i < m_walls.size(); i++)
+	{
+		sf::Vector2f wallPos = m_walls[i]->getPosition();	
+		sf::Vector2f wallSize = m_walls[i]->getSize();
+		
+		bool collision = true;
+		if (bodyPos.x > wallPos.x + wallSize.x)
+			collision = false;
+		if (bodyPos.x + bodySize.x < wallPos.x)
+			collision = false;
+		if (bodyPos.y > wallPos.y + wallSize.y)
+			collision = false;
+		if (bodyPos.y + bodySize.y < wallPos.y)
+			collision = false;
+		
+		if (collision == true)
+		{
+			//std::cout << "kolizja" << playerPos.x << ", " << playerPos.y << std::endl;
+			_body->m_ReactOnCollision();
+		}
+	}
 }
-
 
 void World::m_checkBulletsCollision(std::vector<Bullet*> &_bullets)
 {
@@ -69,53 +104,51 @@ void World::m_checkBulletsCollision(std::vector<Bullet*> &_bullets)
 			}
 		}
 	}
-}
-
-
-void World::m_checkPlayerCollision(Player &_player)
-{
-	sf::Vector2f playerPos = _player.getPosition();	
-	sf::Vector2f playerSize = _player.getSize();
-	playerPos.x -= playerSize.x /2;
-	playerPos.y -= playerSize.y /2;
-
-	for (int i = 0; i < m_walls.size(); i++)
+	
+	bool alarm = false;
+	for (int i = 0; i < _bullets.size(); i++)
 	{
-		sf::Vector2f wallPos = m_walls[i]->getPosition();	
-		sf::Vector2f wallSize = m_walls[i]->getSize();
-		
-		bool collision = true;
-		if (playerPos.x > wallPos.x + wallSize.x)
-			collision = false;
-		if (playerPos.x + playerSize.x < wallPos.x)
-			collision = false;
-		if (playerPos.y > wallPos.y + wallSize.y)
-			collision = false;
-		if (playerPos.y + playerSize.y < wallPos.y)
-			collision = false;
-		
-		if (collision == true)
+		for (int j = 0; j < m_enemies.size(); j++)        
 		{
-			//std::cout << "kolizja" << playerPos.x << ", " << playerPos.y << std::endl;
-			_player.m_ReactOnCollision();
+			if (_bullets[i]->m_Overlaps(*m_enemies[j]))
+			{
+				m_enemies[j]->m_GetDamage(51.0f);
+				_bullets.erase(_bullets.begin() + i);
+				alarm = true;                    
+				break;                
+			}
 		}
+		if (alarm)
+			break;
 	}
 }
+
+
 
 	
 void World::m_Draw(sf::RenderWindow &_window)
 {	
-	//sf::Texture t;
-	//t.loadFromFile("grass.png");
-	//m_floors[0]->setTexture(&t);
 	for (int i = 0; i < m_floors.size(); i++)
-	{
-	//std::cout << m_floors[i]->m_pos.x << std::endl;
 		_window.draw(*m_floors[i]);
-	}		
 
 	for (int i = 0; i < m_walls.size(); i++)
 		_window.draw(*m_walls[i]);		
+	
+	for (int i = 0; i < m_enemies.size(); i++)                
+		_window.draw(*m_enemies[i]); 
 }
 
+void World::m_AddFloor(Floor * _floor)
+{
+	m_floors.push_back(_floor);
+}
 
+void World::m_AddWall(Wall * _wall)
+{
+	m_walls.push_back(_wall);
+}
+
+void World::m_AddEnemy(Enemy * _enemy)
+{
+	m_enemies.push_back(_enemy);
+}

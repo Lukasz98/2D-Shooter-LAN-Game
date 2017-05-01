@@ -53,6 +53,8 @@ bool Bullet::m_Overlaps(sf::RectangleShape _rectShape)
 {
     sf::Vector2f rectPos = _rectShape.getPosition();
     sf::Vector2f rectSize = _rectShape.getSize();
+    rectPos.x -= rectSize.x /2.0f;
+    rectPos.y -= rectSize.y /2.0f;
     float myWidth = getRadius() *2;  
     
     if (m_position.x + myWidth > rectPos.x && m_position.x < rectPos.x + rectSize.x

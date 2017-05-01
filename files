@@ -18,6 +18,8 @@ SOURCES
 	floor
 	wall
 	mapObject
+	basicAI
+	body
 }
 
 
