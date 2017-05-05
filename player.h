@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include "body.h"
-#include "math_calc.h"
+
 
 
 class Player : public Body

@@ -45,7 +45,7 @@ alfa |
 */
 
 
-float Math_calc::GetAngle(sf::Vector2f _pos, sf::Vector2i _dirPos)
+float Math_calc::GetAngle(sf::Vector2f _pos, sf::Vector2f _dirPos)
 {
     float b = _dirPos.x - _pos.x;
     float a = _pos.y - _dirPos.y;

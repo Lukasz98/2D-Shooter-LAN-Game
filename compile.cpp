@@ -5,15 +5,168 @@
 #include <vector>
 #include <stdlib.h> // for console writing
 
-// 62 row do REPERACJI
+// for modyfication time
+#include <sys/stat.h>
+#include <unistd.h>
+#include <time.h>
+
+/*
+	musze ogarnac zeby kompilowac cpp nawet gdy nie byl zmieniony ale zmieniony byl header tego cpp
+*/
+
+struct str_time
+{
+	std::string fileName;
+	int sec, min, hour, day, mon, year;
+	bool operator== (str_time & _t)
+	{
+		if (this->fileName != _t.fileName) return false;
+		//if (this->sec != _t.sec) return false;
+		if (this->min != _t.min) return false;
+		if (this->hour != _t.hour) return false;
+		if (this->day != _t.day) return false;
+		if (this->mon != _t.mon) return false;
+		if (this->year != _t.year) return false;
+		return true;
+	}
+	
+	bool operator> (str_time & _t)
+	{
+		if (this->fileName != _t.fileName) return false;
+		if (this->year > _t.year) return true;
+		else if (this->year == _t.year)
+		{
+		std::cout << "dojechalo";
+
+			if (this->mon > _t.mon) return true;
+			else if (this->mon == _t.mon)
+			{
+				if (this->day > _t.day) return true;
+				else if (this->day == _t.day)
+				{
+					if (this->hour > _t.hour) return true;
+					else if (this->hour == _t.hour)
+					{
+						if (this->min > _t.min) return true;
+						else if (this->min == _t.min)
+						{
+							if (this->sec > _t.sec) return true;
+						}
+					
+					}
+				} 
+			}
+		}
+		return false;
+	}
+};
 
 char * readFile(const char * _name);
 std::vector<std::string> cutWords(const char *_text);
 int * findElements(const std::vector<std::string> & _array, const char * _elementName);
 
+std::vector<str_time> loadCompileDates()
+{
+	std::vector<str_time> time;
+	std::string check;
+	std::fstream file("compileDate");
+	if (file.is_open())
+	{
+		file >> check;
+		if (check == "FirstCompilation")
+			return time;
+			
+		while (check != "END")
+		{
+			str_time t;
+			t.fileName = check;
+			file >> t.sec >> t.min >> t.hour >> t.day >> t.mon >> t.year;
+			time.push_back(t);
+			
+			file >> check;
+		}
+		
+		file.close();
+	}
+	
+	return time;
+}
+
+
+std::vector<str_time> loadModificationDates(std::vector<std::string> _src, std::vector<std::string> _hdr)
+{
+	std::vector<str_time> time;
+	
+	for (int i = 0; i < _src.size(); i++)
+	{
+		struct stat s;
+		std::string nm(_src[i] + ".cpp");
+		stat(nm.c_str(), &s);
+		struct tm * t = localtime(&s.st_mtime);
+		str_time str_t;
+		str_t.fileName = _src[i] + ".cpp";
+		str_t.sec = t->tm_sec;
+		str_t.min = t->tm_min;
+		str_t.hour = t->tm_hour;
+		str_t.day = t->tm_mday;
+		str_t.mon = t->tm_mon;
+		str_t.year = t->tm_year;
+		time.push_back(str_t);
+	}
+	
+	
+	for (int i = 0; i < _hdr.size(); i++)
+	{
+		struct stat s;
+		stat(_hdr[i].c_str(), &s);
+		struct tm * t = localtime(&s.st_mtime);
+		str_time str_t;
+		str_t.fileName = _hdr[i];
+		str_t.sec = t->tm_sec;
+		str_t.min = t->tm_min;
+		str_t.hour = t->tm_hour;
+		str_t.day = t->tm_mday;
+		str_t.mon = t->tm_mon;
+		str_t.year = t->tm_year;
+		time.push_back(str_t);
+	}
+	
+	return time;
+}
+
+void saveCompilationDates(std::vector<std::string> _src, std::vector<std::string> _hdr)
+{
+	time_t _t = time(NULL);
+	struct tm * t = localtime(&_t);
+	std::fstream file;
+	file.open("compileDate");//, std::ios::trunc);//, std::ios::in);// | std::ios::trunc //std::ios::openmode 
+	if (file.is_open())
+	{
+	std::cout << "src:" << _src.size() << "hdr:"<< _hdr.size() << "\n";
+	std::cout <<"today: "<<t->tm_sec<<" "<<t->tm_min<<" "<<t->tm_hour<<" "<<t->tm_mday<<" "<<t->tm_mon<<" "<<t->tm_year<<"\n"; 
+	//file << "huj";
+		for (int i = 0; i < _src.size(); i++)
+		{
+			std::string name(_src[i] + ".cpp");
+			file << name << " " << t->tm_sec << " " << t->tm_min << " " << t->tm_hour 
+				 << " " << t->tm_mday << " " << t->tm_mon << " " << t->tm_year << (char)10; 
+		}
+		
+		for (int i = 0; i < _hdr.size(); i++)
+		{
+			file << _hdr[i] << " " << t->tm_sec << " " << t->tm_min << " " << t->tm_hour
+				 << " " << t->tm_mday << " " << t->tm_mon << " " << t->tm_year << (char)10; 
+		}
+		
+		file << "END";
+		
+		file.close();
+	}
+}
 
 int main()
 {
+
     char * data = readFile("files");
 	std::vector<std::string> words = cutWords(data);
 
@@ -22,6 +175,13 @@ int main()
 	for (int i = *srcEl; i <= *(srcEl + 1); i++)
 		sources.push_back(words[i]);
 	delete [] srcEl;
+	
+	std::vector<std::string> headers;
+	int *hdrEl = findElements(words, "HEADERS");
+	if (*hdrEl != 69)
+	for (int i = *hdrEl; i <= *(hdrEl + 1); i++)
+		headers.push_back(words[i]);
+	delete [] hdrEl;
     
     std::vector<std::string> includePath;
     int *incPathEl = findElements(words, "INCLUDE PATH");
@@ -51,18 +211,58 @@ int main()
 	delete [] execEl;
 
 	int correct = 0;
+	
+	std::vector<std::string> filesToCompile;
+	std::vector<str_time> compileDates = loadCompileDates();
+	std::vector<str_time> modifyDates = loadModificationDates(sources, headers);
+	
+	for (int i = 0; i < compileDates.size(); i++)
+	{
+		for (int j = 0; j < modifyDates.size(); j++)
+		{
+			if (modifyDates[i] > compileDates[i]) // TYTAJ TYTAJ TYTAJ TYTAJ TYTAJ TYTAJ
+			{
+				filesToCompile.push_back(compileDates[i].fileName);
+				break;
+			}
+		}
+	}
+
+std::cout<<"\nCompile dates:\n";
+for (int i = 0; i < compileDates.size(); i++)
+	std::cout<<compileDates[i].fileName<<" "<<compileDates[i].sec<<" "<<compileDates[i].min<<" "<<compileDates[i].hour<<" "<<compileDates[i].day<<" "<<compileDates[i].mon<<" "<<compileDates[i].year<<"\n";
+
+std::cout<<"\nModify dates:\n";
+for (int i = 0; i < modifyDates.size(); i++)
+	std::cout<<modifyDates[i].fileName<<" "<<modifyDates[i].sec<<" "<<modifyDates[i].min<<" "<<modifyDates[i].hour<<" "<<modifyDates[i].day<<" "<<modifyDates[i].mon<<" "<<modifyDates[i].year<<"\n";
+
+
+std::cout<<"\nCompile dates:"<<compileDates.size()<<"\n";
+std::cout<<"\nModify dates:"<<modifyDates.size()<<"\n";
+std::cout<<"\nFile to compile:"<<filesToCompile.size()<<"\n";
+
+bool doItFirstTime = false;
+if (compileDates.size() < 1)
+	doItFirstTime = true;
 
 	std::string obj("obj/");
 	for (int i = 0; i < sources.size(); i++)
 	{
-		std::string compile1("g++ -c -std=c++11 " + sources[i] + ".cpp");
-        if (includePath.size() > 0)
-            compile1 += " -I " + includePath[0];
-        compile1 += " -o " + obj + sources[i] + ".o";
-        std::cout << "LOG: " << compile1 << std::endl;
-		correct = system(compile1.c_str());
-		if (correct != 0)
-			break;
+		bool doIt = false;
+		for ( int k = 0; k < filesToCompile.size(); k++)
+			if (sources[i] + ".cpp" == filesToCompile[k])
+				doIt = true;
+		if (doIt || doItFirstTime)
+		{
+			std::string compile1("g++ -c -std=c++11 " + sources[i] + ".cpp");
+		    if (includePath.size() > 0)
+		        compile1 += " -I " + includePath[0];
+		    compile1 += " -o " + obj + sources[i] + ".o";
+		    std::cout << "LOG: " << compile1 << std::endl;
+			correct = system(compile1.c_str());
+			if (correct != 0)
+				break;
+		}
 	}
 
 	if (correct == 0)
@@ -83,6 +283,8 @@ int main()
 	   
 		std::cout << "\nLOG: " << compile3 << std::endl;   
 		system(compile3.c_str());
+		
+		saveCompilationDates(sources, headers);
 	}
 	
 	delete [] data;

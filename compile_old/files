@@ -22,21 +22,6 @@ SOURCES
 	body
 }
 
-HEADERS
-{
-	basicAI.h
-	bullet.h
-	floor.h
-	mapObject.h
-	player.h
-	world.h
-	body.h
-	enemy.h
-	log.h
-	math_calc.h
-	wall.h
-	world_loader.h
-}
 
 INCLUDE PATH
 {

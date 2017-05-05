@@ -24,11 +24,15 @@ void Player::m_Update(float _dt, sf::Vector2i _mousePos)
 {
 	m_dt = _dt;
 	
-	sf::Vector2f v(1280.0f /2.0f, 720.0f / 2.0f);
-	float rot = Math_calc::GetAngle(v, _mousePos);
+	sf::Vector2f pos(1280.0f /2.0f, 720.0f / 2.0f);
+	sf::Vector2f mp((float) _mousePos.x, (float) _mousePos.y);
+	
+	m_Rotate(pos, mp);
+	
+	//float rot = Math_calc::GetAngle(v, _mousePos);
 	
 	//float rot = Math_calc::GetAngle(m_position, _mousePos);
-	setRotation(rot);
+	//setRotation(rot);
 	
 	//std::cout << "rotation: " << rot <<std::endl;
 }

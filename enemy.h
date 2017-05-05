@@ -15,7 +15,7 @@ public:
 
 
     bool m_Update(float _dt, sf::Vector2f _direction);
-    
+    void m_SendPlayerPos(sf::Vector2f _pos);
     void m_GetDamage(float _dmg);
     
     void m_SetPosition(sf::Vector2f _pos);

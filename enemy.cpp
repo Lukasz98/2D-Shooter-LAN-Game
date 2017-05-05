@@ -43,6 +43,11 @@ bool Enemy::m_Update(float _dt, sf::Vector2f _direction)
     return false;
 }
 
+void Enemy::m_SendPlayerPos(sf::Vector2f _pos)
+{
+	m_Rotate(_pos);
+}
+
 void Enemy::m_GetDamage(float _dmg)
 {
     m_hp -= _dmg;

@@ -33,6 +33,7 @@ void World::m_Update(Player * _player, std::vector<Bullet*> &_bullets, float _dt
 	for (int i = 0; i < m_enemies.size(); i++)
 	{
 		m_checkBodyCollision(m_enemies[i]);
+		m_enemies[i]->m_SendPlayerPos(_player->getPosition());
 	}
 	
 	for (int i = 0; i < m_enemies.size(); i++)        
