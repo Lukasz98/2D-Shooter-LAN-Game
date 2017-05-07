@@ -36,6 +36,7 @@ HEADERS
 	math_calc.h
 	wall.h
 	world_loader.h
+	info.h
 }
 
 INCLUDE PATH

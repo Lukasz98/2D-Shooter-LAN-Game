@@ -1,17 +1,24 @@
 #include "bullet.h"
 
-Bullet::Bullet()
+Bullet::Bullet(sf::Vector2f _pos, sf::Vector2f _direction, const Body * const _myParent)
+: m_myParent(_myParent)
 {
     m_texture.loadFromFile("img/texture.png");
-    //setPosition(20.0f, 20.0f);
-    setRadius(30.0f);
-    setTexture(&m_texture);
+    m_position = _pos;
+    m_direction = _direction;
+    m_speedRatio = Math_calc::Get_xy_SpeedRatio(m_position, m_direction);
+    m_speed = 1000.0f;
+    m_power = 2.0f;
+    
+    setRadius(15.0f);
+    setPosition(m_position);
+    setTexture(&m_texture);    
 }
 
-Bullet::Bullet(sf::Vector2f _pos, sf::Vector2i _direction)
+Bullet::Bullet(sf::Vector2f _pos, sf::Vector2i _direction, const Body * const _myParent)
+: m_myParent(_myParent)
 {
     m_texture.loadFromFile("img/texture.png");
-    //setPosition(20.0f, 20.0f);
     m_position = _pos;
     m_direction = sf::Vector2f((float) _direction.x, (float) _direction.y);
     m_speedRatio = Math_calc::Get_xy_SpeedRatio(m_position, m_direction);
@@ -49,10 +56,13 @@ void Bullet::m_CollisionReact(float _power)
 	m_power -= _power;
 }
 
-bool Bullet::m_Overlaps(sf::RectangleShape _rectShape)
+bool Bullet::m_Overlaps(const sf::RectangleShape * _rectShape)
 {
-    sf::Vector2f rectPos = _rectShape.getPosition();
-    sf::Vector2f rectSize = _rectShape.getSize();
+	if (m_myParent == _rectShape)
+		return false;
+
+    sf::Vector2f rectPos = _rectShape->getPosition();
+    sf::Vector2f rectSize = _rectShape->getSize();
     rectPos.x -= rectSize.x /2.0f;
     rectPos.y -= rectSize.y /2.0f;
     float myWidth = getRadius() *2;  

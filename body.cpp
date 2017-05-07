@@ -2,7 +2,7 @@
 
 Body::Body()
 {
-
+	m_hp = 100.0f;
 }
 
 Body::~Body()
@@ -30,3 +30,9 @@ void Body::m_ReactOnCollision()
 	setPosition(m_position);
 }
 
+
+void Body::m_Damage(float _damage)
+{
+	m_hp -= _damage;
+}
+	

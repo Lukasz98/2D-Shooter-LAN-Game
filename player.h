@@ -20,7 +20,7 @@ private:
 	//sf::CircleShape m_shape;
 	sf::Texture m_texture;
 	//sf::Vector2f m_position;
-	sf::Vector2f m_size;
+
 	//sf::Vector2i m_dir;
 	//float m_speed;	
 	//float m_dt;

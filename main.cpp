@@ -6,12 +6,13 @@
 #include "enemy.h"
 #include "world.h"
 #include "world_loader.h"
+#include "info.h"
 
 
 void game(World * world);
 
- int SCREEN_WIDTH = 1280;
- int SCREEN_HEIGHT = 720;
+// int SCREEN_WIDTH = 1280;
+// int SCREEN_HEIGHT = 720;
 
 int main()
 {
@@ -40,7 +41,7 @@ void game(World * world)
 
 	Player player = Player();
 	//World world;
-	std::vector<Bullet*> bullets;
+	//std::vector<Bullet*> bullets;
 	
 	float dt = 0.0f, timeForEnemies = 0.0f, timeForFps = 0.0f, fullTime = 0.0f;
 	float fireTime = 0.0f;
@@ -101,35 +102,25 @@ void game(World * world)
             
             //if (mousePos.x > pos.x) pos.x = mousePos.x
             
-            bullets.push_back(new Bullet(pos, mousePos));
+            //bullets.push_back(new Bullet(pos, mousePos));
+            world->m_AddBullet(new Bullet(pos, mousePos, &player));
         }
 
 
 
         window.clear();
 		world->m_Draw(window);
-        window.draw(player);
-        for (int i = 0; i < bullets.size(); i++)
-            window.draw(*bullets[i]);       
+        window.draw(player);       
         window.display();
  		
 
 
-		world->m_Update(&player, bullets, dt);
+		world->m_Update(&player, dt);
  		sf::Vector2i mouseP = sf::Mouse::getPosition(window); 
  		//std::cout << "mouse x: " << mouseP.x << ", y: " << mouseP.y << std::endl;
  		player.m_Update(dt, mouseP);
  		
-		for (int i = 0; i < bullets.size(); i++)
- 		{
-            bool alarm = false;
-        	bool bulletAlive = bullets[i]->m_Update(dt);
-        	if (!bulletAlive)
-        	{
-        		bullets.erase(bullets.begin() + i);
-        		break;
-        	}
-        }
+
 
 
 #if 0

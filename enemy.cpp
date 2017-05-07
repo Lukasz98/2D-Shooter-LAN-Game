@@ -29,30 +29,28 @@ bool Enemy::m_Update(float _dt, sf::Vector2f _direction)
 {
 	m_framesCount ++;
 	
-	if (m_framesCount % 5 == 0)
+	m_updateAI(_dt);
+	
+	if (m_seePlayer)
 	{
-    	m_speedRatio = Math_calc::Get_xy_SpeedRatio(m_position, _direction);
-    }
-    m_dt = _dt;
-	m_position.x += m_speed * m_speedRatio.x * _dt;
-	m_position.y += m_speed * m_speedRatio.y * _dt;
-    setPosition(m_position);
-
+		if (m_framesCount % 5 == 0)
+		{
+			m_speedRatio = Math_calc::Get_xy_SpeedRatio(m_position, _direction);
+			m_framesCount = 0;
+		}
+		
+		m_dt = _dt;
+		m_position.x += m_speed * m_speedRatio.x * _dt;
+		m_position.y += m_speed * m_speedRatio.y * _dt;
+		setPosition(m_position);
+	}
+	
     if (m_hp < 0.0f)
         return true;
     return false;
 }
 
-void Enemy::m_SendPlayerPos(sf::Vector2f _pos)
-{
-	m_Rotate(_pos);
-}
 
-void Enemy::m_GetDamage(float _dmg)
-{
-    m_hp -= _dmg;
-
-}
 
 void Enemy::m_SetPosition(sf::Vector2f _pos)
 {
