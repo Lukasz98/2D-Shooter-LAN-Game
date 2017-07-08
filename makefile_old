@@ -1,0 +1,47 @@
+LIBS=-lsfml-graphics -lsfml-window -lsfml-system -lsfml-network
+INCLUDEPATH=/usr/include
+SRC=sources/
+HEAD=headers/
+O=obj/
+
+sfml-app: $(O)main.o
+	g++ $(O)main.o $(O)player.o $(O)body.o $(O)bullet.o $(O)enemy.o $(O)basicAI.o $(O)math_calc.o $(O)world.o $(O)floor.o $(O)wall.o $(O)mapObject.o $(O)world_loader.o -o sfml-app $(LIBS)
+
+$(O)main.o: $(SRC)main.cpp $(O)player.o $(O)bullet.o $(O)enemy.o $(O)world.o $(O)world_loader.o $(HEAD)info.h
+	g++ -c $(SRC)main.cpp -I $(INCLUDEPATH) -o $(O)main.o
+
+$(O)player.o: $(HEAD)player.h $(SRC)player.cpp $(O)body.o
+	g++ -c $(SRC)player.cpp -I $(INCLUDEPATH) -o $(O)player.o
+
+$(O)body.o: $(HEAD)body.h $(SRC)body.cpp $(O)math_calc.o
+	g++ -c $(SRC)body.cpp -I $(INCLUDEPATH) -o $(O)body.o
+
+$(O)bullet.o: $(HEAD)bullet.h $(SRC)bullet.cpp $(O)body.o $(O)math_calc.o
+	g++ -c $(SRC)bullet.cpp -I $(INCLUDEPATH) -o $(O)bullet.o
+
+$(O)enemy.o: $(HEAD)enemy.h $(SRC)enemy.cpp $(O)basicAI.o
+	g++ -c $(SRC)enemy.cpp -I $(INCLUDEPATH) -o $(O)enemy.o
+
+$(O)basicAI.o: $(HEAD)basicAI.h $(SRC)basicAI.cpp $(O)body.o $(O)math_calc.o $(HEAD)info.h $(O)bullet.o
+	g++ -c $(SRC)basicAI.cpp -I $(INCLUDEPATH) -o $(O)basicAI.o
+
+$(O)math_calc.o: $(HEAD)math_calc.h $(SRC)math_calc.cpp
+	g++ -c $(SRC)math_calc.cpp -I $(INCLUDEPATH) -o $(O)math_calc.o
+
+$(O)world.o: $(HEAD)world.h $(SRC)world.cpp $(O)player.o $(O)bullet.o $(O)floor.o $(O)wall.o $(O)enemy.o $(O)body.o
+	g++ -c $(SRC)world.cpp -I $(INCLUDEPATH) -o $(O)world.o
+
+$(O)floor.o: $(HEAD)floor.h $(SRC)floor.cpp $(O)mapObject.o
+	g++ -c $(SRC)floor.cpp -I $(INCLUDEPATH) -o $(O)floor.o
+
+$(O)wall.o: $(HEAD)wall.h $(SRC)wall.cpp $(O)mapObject.o
+	g++ -c $(SRC)wall.cpp -I $(INCLUDEPATH) -o $(O)wall.o
+
+$(O)mapObject.o: $(HEAD)mapObject.h $(SRC)mapObject.cpp $(O)body.o
+	g++ -c $(SRC)mapObject.cpp -I $(INCLUDEPATH) -o $(O)mapObject.o
+	
+$(O)world_loader.o: $(HEAD)world_loader.h $(SRC)world_loader.cpp $(O)world.o $(O)floor.o $(O)wall.o $(O)enemy.o
+	g++ -c $(SRC)world_loader.cpp -I $(INCLUDEPATH) -o $(O)world_loader.o
+
+clean:
+	rm *.o
