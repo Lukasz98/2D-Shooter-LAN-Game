@@ -129,9 +129,7 @@ sources/main.o sources/main.d: sources/main.cpp \
  /usr/include/c++/7.1.1/bits/shared_ptr_atomic.h \
  /usr/include/c++/7.1.1/bits/atomic_base.h \
  /usr/include/c++/7.1.1/bits/atomic_lockfree_defines.h \
- /usr/include/c++/7.1.1/backward/auto_ptr.h /usr/include/unistd.h \
- /usr/include/bits/posix_opt.h /usr/include/bits/environments.h \
- /usr/include/bits/confname.h /usr/include/getopt.h \
+ /usr/include/c++/7.1.1/backward/auto_ptr.h \
  /usr/include/SFML/Graphics.hpp /usr/include/SFML/Window.hpp \
  /usr/include/SFML/System.hpp /usr/include/SFML/Config.hpp \
  /usr/include/SFML/System/Clock.hpp /usr/include/SFML/System/Export.hpp \
@@ -237,5 +235,8 @@ sources/main.o sources/main.d: sources/main.cpp \
  sources/../headers/world_loader.h /usr/include/c++/7.1.1/fstream \
  /usr/include/c++/7.1.1/x86_64-pc-linux-gnu/bits/basic_file.h \
  /usr/include/c++/7.1.1/x86_64-pc-linux-gnu/bits/c++io.h \
- /usr/include/c++/7.1.1/bits/fstream.tcc /usr/include/termios.h \
- /usr/include/bits/termios.h /usr/include/sys/ttydefaults.h
+ /usr/include/c++/7.1.1/bits/fstream.tcc /usr/include/unistd.h \
+ /usr/include/bits/posix_opt.h /usr/include/bits/environments.h \
+ /usr/include/bits/confname.h /usr/include/getopt.h \
+ /usr/include/termios.h /usr/include/bits/termios.h \
+ /usr/include/sys/ttydefaults.h

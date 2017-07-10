@@ -6,11 +6,12 @@ Player::Player(int _id, std::string _ip, int _port)
 : E_Player(_id, _ip, _port)
 {
 
+	std::cout << "\nTworzenie\n";
 }
 
 Player::~Player()
 {
-
+	std::cout << "\nKasacja\n";
 }
 
 void Player::m_Update(float _dt, sf::Vector2i _mousePos)

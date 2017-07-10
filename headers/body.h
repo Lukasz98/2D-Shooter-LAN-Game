@@ -17,11 +17,13 @@ public:
 
 	void m_Damage(float _damage);
 
+	inline sf::Vector2f m_GetPosition() { return m_position; }
+	inline float m_GetAngle() { return m_angle; }
 
 protected:
 	sf::Vector2f m_position;
 	sf::Vector2f m_size;
-	float m_speed;
+	float m_speed, m_angle;
 	sf::Vector2f m_speedRatio;
 	//sf::Vector2i m_dir;
 	float m_dt;

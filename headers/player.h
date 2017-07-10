@@ -7,7 +7,7 @@
 class Player : public E_Player
 {
 public:
-	Player(int _id = 0, std::string _ip = "192.168.1.1", int _port = 54540);
+	Player(int _id, std::string _ip, int _port);
 	~Player();
 
 	void m_Move(int _x, int _y);

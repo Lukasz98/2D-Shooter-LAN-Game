@@ -3,6 +3,7 @@
 Body::Body()
 {
 	m_hp = 100.0f;
+	m_angle = 0.0f;
 }
 
 Body::~Body()
@@ -12,18 +13,19 @@ Body::~Body()
 
 void Body::m_Rotate(sf::Vector2f _dir)
 {
-	float rot = Math_calc::GetAngle(m_position, _dir);
-	setRotation(rot);
+	m_angle = Math_calc::GetAngle(m_position, _dir);
+	setRotation(m_angle);
 }
 
 void Body::m_Rotate(sf::Vector2f _pos, sf::Vector2f _dir)
 {
-	float rot = Math_calc::GetAngle(_pos, _dir);
-	setRotation(rot);
+	m_angle = Math_calc::GetAngle(_pos, _dir);
+	setRotation(m_angle);
 }
 
 void Body::m_Rotate(float _angle)
 {
+	m_angle = _angle;
 	setRotation(_angle);
 }
 

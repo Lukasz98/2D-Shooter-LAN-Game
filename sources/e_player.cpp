@@ -15,7 +15,7 @@ E_Player::E_Player(int _id, std::string _ip, int _port)
 	setOrigin(m_size.x /2, m_size.y /2);
     setTexture(&m_texture);
 
-    float x = 100.0f * m_id;
+    float x = 200.0f * (m_id + 1);
     m_position = sf::Vector2f(x, 300.0f);
     setPosition(m_position);
 }
