@@ -10,15 +10,15 @@
 class Enemy : public BasicAI
 {
 public:
-    Enemy();
-    ~Enemy();
+	Enemy(sf::Vector2f _pos);
+	~Enemy();
 
 
-    bool m_Update(float _dt, sf::Vector2f _direction);
-    void m_SendPlayerPos(sf::Vector2f _pos);
+	bool m_Update(float _dt, sf::Vector2f _direction);
+	void m_SendPlayerPos(sf::Vector2f _pos);
 
-    
-    void m_SetPosition(sf::Vector2f _pos);
+
+	void m_SetPosition(sf::Vector2f _pos);
 	void m_SetTexture(std::string _texturePath);
 
 
@@ -32,3 +32,4 @@ private:
 	int m_framesCount;
 
 };
+

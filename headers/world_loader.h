@@ -21,3 +21,4 @@ private:
 	static Wall * loadWall(std::fstream * _file);
 	static Enemy * loadEnemy(std::fstream * _file);
 };
+

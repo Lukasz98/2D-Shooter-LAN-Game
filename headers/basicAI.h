@@ -8,23 +8,24 @@
 #include "bullet.h"
 
 
-class BasicAI : public Body
+ class BasicAI : public Body
 {
 public:
-	BasicAI();
+	BasicAI(sf::Vector2f _pos);
 	~BasicAI();
-	
+
 	bool m_IsInViewArea(const Body * _body);
 	Bullet * m_MakeShot(sf::Vector2f _pos);
 
-	
+
 protected:
 	bool m_seePlayer;
-	
+
 	void m_updateAI(float _dt);
 
 private:
 	bool m_didShot;
 	float m_shootDt;
 };
+
 
