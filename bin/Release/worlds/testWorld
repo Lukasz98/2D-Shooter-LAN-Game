@@ -1,0 +1,79 @@
+floor
+{
+	x: 10
+	y: 10
+	width: 400
+	height: 500
+	texture: img/grass.png
+}
+
+floor
+{
+	x: 600
+	y: -200
+	width: 250
+	height: 600
+	texture: img/grass.png
+}
+
+wall
+{
+	x: -20
+	y: -20
+	width: 40
+	height: 900
+	texture: img/wall.png
+}
+
+wall
+{
+	x: 1480
+	y: -20
+	width: 40
+	height: 900
+	texture: img/wall.png
+}
+
+wall
+{
+	x: -20
+	y: -20
+	width: 1600
+	height: 40
+	texture: img/wall.png
+}
+
+wall
+{
+	x: -20
+	y: 880
+	width: 1600
+	height: 40
+	texture: img/wall.png
+}
+
+/wall
+{
+	x: 1200
+	y: 0
+	width: 40
+	height: 500
+	texture: img/wall.png
+}
+
+wall
+{
+	x: 1200
+	y: 400
+	width: 500
+	height: 40
+	texture: img/wall.png
+}
+
+enemy
+{
+	x: 1300
+	y: 250
+	texture: img/enemy.png
+}
+END
