@@ -1,6 +1,6 @@
 # Prerequisites
 *.d
-sources/*.d
+**/*.d
 
 #Compiled Object files
 *.slo
