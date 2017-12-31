@@ -1,5 +1,8 @@
 *.d
 sources/*.d
+**/*.d
+/**/*.d
+
 sources/*.o
 *.obj
 *.exe
