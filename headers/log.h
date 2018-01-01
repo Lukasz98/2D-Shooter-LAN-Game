@@ -5,5 +5,5 @@
 
 inline void LOGG(const char * _text)
 {
-    std::cout << _text << std::endl;
+	std::cout << _text << std::endl;
 }

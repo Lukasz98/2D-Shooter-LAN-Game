@@ -22,14 +22,14 @@ void World::m_Update(Player * _player, float _dt)
 
 	for (int i = 0; i < m_ePlayers.size(); i++)
 		m_ePlayers[i]->m_SetDt(m_dt);
-    
+	
 	m_checkBodyCollision(_player);
 	m_checkBulletsCollision(_player);
 
 	for (int i = 0; i < m_ePlayers.size(); i++)
-    {
-        m_checkBodyCollision(m_ePlayers[i]);
-    }
+	{
+		m_checkBodyCollision(m_ePlayers[i]);
+	}
 
 	for (int i = 0; i < m_enemies.size(); i++)
 	{
@@ -118,27 +118,27 @@ void World::m_checkBulletsCollision(Body * _playerBody )
 		if (alarm)
 			break;
 
-        if (m_bullets[i]->m_Overlaps(_playerBody))
-        {
-            _playerBody->m_Damage(20.0f);
-            m_bullets.erase(m_bullets.begin() + i);
-            alarm = true;
-            break;
-        }
+		if (m_bullets[i]->m_Overlaps(_playerBody))
+		{
+			_playerBody->m_Damage(20.0f);
+			m_bullets.erase(m_bullets.begin() + i);
+			alarm = true;
+			break;
+		}
 
 		if (alarm)
 			break;
 
-        for (int j = 0; j < m_ePlayers.size(); j++)
-        {
-            if (m_bullets[i]->m_Overlaps(m_ePlayers[j]))
-            {
-                m_ePlayers[j]->m_Damage(20.0f);
-                m_bullets.erase(m_bullets.begin() + i);
-                alarm = true;
-                break;
-            }
-        }
+		for (int j = 0; j < m_ePlayers.size(); j++)
+		{
+			if (m_bullets[i]->m_Overlaps(m_ePlayers[j]))
+			{
+				m_ePlayers[j]->m_Damage(20.0f);
+				m_bullets.erase(m_bullets.begin() + i);
+				alarm = true;
+				break;
+			}
+		}
 
 		if (alarm)
 			break;
@@ -188,5 +188,5 @@ void World::m_AddEnemy(Enemy * _enemy)
 
 void World::m_AddEPlayer(E_Player * _ePlayer)
 {
-    m_ePlayers.push_back(_ePlayer);
+	m_ePlayers.push_back(_ePlayer);
 }

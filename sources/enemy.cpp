@@ -1,24 +1,16 @@
 #include "../headers/enemy.h"
-//#include <iostream>
 
 Enemy::Enemy(sf::Vector2f _pos)
 : BasicAI(_pos)
 {
-    //srand(time(NULL));
-    m_speed = 150.0f;
-    m_hp = 100.0f;
-    m_framesCount = 0;
-    m_speedRatio = sf::Vector2f(1.0f, 1.0f);
-    //m_position = sf::Vector2f( rand() % 800, rand() % 600);
-    m_size = sf::Vector2f(80.0f, 80.0f);
-    //m_texture.loadFromFile("img/tusk.jpg");
+	m_speed = 150.0f;
+	m_hp = 100.0f;
+	m_framesCount = 0;
+	m_speedRatio = sf::Vector2f(1.0f, 1.0f);
+	m_size = sf::Vector2f(80.0f, 80.0f);
 
 	setSize(m_size);
 	setOrigin(m_size.x /2.0f, m_size.y /2.0f);
-    //setPosition(m_position);
-    //setTexture(&m_texture);
-
-    //std::cout<<m_position.x<<", "<<m_position.y<<std::endl;
 }
 
 Enemy::~Enemy()
@@ -46,9 +38,9 @@ bool Enemy::m_Update(float _dt, sf::Vector2f _direction)
 		setPosition(m_position);
 	}
 
-    if (m_hp < 0.0f)
-        return true;
-    return false;
+	if (m_hp < 0.0f)
+		return true;
+	return false;
 }
 
 

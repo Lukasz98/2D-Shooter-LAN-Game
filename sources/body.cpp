@@ -2,8 +2,8 @@
 
 Body::Body(sf::Vector2f _pos)
 {
-    m_position = _pos;
-    m_spawnPos = _pos;
+	m_position = _pos;
+	m_spawnPos = _pos;
 	m_hp = 100.0f;
 	m_angle = 0.0f;
 	setPosition(m_position);
@@ -52,8 +52,8 @@ void Body::m_Damage(float _damage)
 	m_hp -= _damage;
 	if (m_hp < 0)
 	{
-        m_SetPosition(m_spawnPos);
-	    m_hp = 100.0f;
+		m_SetPosition(m_spawnPos);
+		m_hp = 100.0f;
 	}
 }
 

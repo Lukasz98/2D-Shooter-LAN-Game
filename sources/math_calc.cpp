@@ -4,12 +4,12 @@
 
 
 /*
-     dest /|beta
-         / |
-        /  |
+	 dest /|beta
+		 / |
+		/  |
    c   /   | a
-      /    |
-	 /     |
+	  /	|
+	 /	 |
 alfa/______|
  pos   b
 */
@@ -34,55 +34,55 @@ float Math_calc::MakePositive(float _num)
 }
 
 /*
-     _______
-     |  b  |
-     |    |
+	 _______
+	 |  b  |
+	 |	|
    a |   |
-     |  | c
-     | |
-     ||
+	 |  | c
+	 | |
+	 ||
 alfa |
 */
 
 
 float Math_calc::GetAngle(sf::Vector2f _pos, sf::Vector2f _dirPos)
 {
-    float b = _dirPos.x - _pos.x;
-    float a = _pos.y - _dirPos.y;
-    float c = sqrt(b * b + a * a);
+	float b = _dirPos.x - _pos.x;
+	float a = _pos.y - _dirPos.y;
+	float c = sqrt(b * b + a * a);
 
-    int part = 0;
-    if (b < 0.0f)
-    {
-        if (a > 0.0f)
-            part = 3;
-        else
-            part = 2;
-    }
-    else
-    {
-        if (a > 0.0f)
-            part = 0;
-        else
-            part = 1;
-    }
+	int part = 0;
+	if (b < 0.0f)
+	{
+		if (a > 0.0f)
+			part = 3;
+		else
+			part = 2;
+	}
+	else
+	{
+		if (a > 0.0f)
+			part = 0;
+		else
+			part = 1;
+	}
 
-    b = Math_calc::MakePositive(b);
+	b = Math_calc::MakePositive(b);
 
-    float sin_alfa = b / c;
-    float asin_rad = asin(sin_alfa);
-    float asin_stopnie = asin_rad * 180 / 3.14159265369f;
+	float sin_alfa = b / c;
+	float asin_rad = asin(sin_alfa);
+	float asin_stopnie = asin_rad * 180 / 3.14159265369f;
 
-    if (part == 0)
-        return asin_stopnie;
-    if (part == 2)
-        return asin_stopnie + 90 * 2;
-    else
-        asin_stopnie = 90 * part + (90 - asin_stopnie);
+	if (part == 0)
+		return asin_stopnie;
+	if (part == 2)
+		return asin_stopnie + 90 * 2;
+	else
+		asin_stopnie = 90 * part + (90 - asin_stopnie);
 
 //std::cout << "!!!!!!!!!!!!!!!!!!!!!! " << asin_stopnie << std::endl;
 
-    return asin_stopnie;
+	return asin_stopnie;
 }
 
 

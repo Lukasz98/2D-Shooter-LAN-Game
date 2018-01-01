@@ -1,7 +1,5 @@
 #include "../headers/e_player.h"
 
-//int main(){}
-
 E_Player::E_Player(int _id, std::string _ip, int _port)
 : Body(sf::Vector2f(200.0f * (_id + 1), 300.0f))
 {
@@ -15,10 +13,6 @@ E_Player::E_Player(int _id, std::string _ip, int _port)
 	setSize(m_size);
 	setOrigin(m_size.x /2, m_size.y /2);
 	setTexture(&m_texture);
-
-	//float x = 200.0f * (m_id + 1);
-	//m_position = sf::Vector2f(x, 300.0f);
-	//setPosition(m_position);
 }
 
 E_Player::~E_Player()
@@ -51,7 +45,6 @@ void E_Player::m_Update(sf::Vector2i _move, sf::Vector2i _dir)
 
 void E_Player::m_Move(int _x, int _y)
 {
-	//std::cout << "eplayer: " << _x * m_speed * m_dt << " " << "\n";
 	m_position.x += _x * m_speed * m_dt;
 	m_position.y += _y * m_speed * m_dt;
 	setPosition(m_position);
