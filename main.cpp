@@ -2,7 +2,7 @@
 #include <thread>
 #include <string>
 #include <SFML/Graphics.hpp>
-#include <SFML/System/Clock.hpp>
+
 //#include <SFML/Network.hpp>
 #include <vector>
 #include "headers/e_player.h"
@@ -12,6 +12,8 @@
 #include "headers/world.h"
 #include "headers/world_loader.h"
 #include "headers/info.h"
+#include "headers/time.h"
+#include "headers/input.h"
 
 #include "headers/server.h"
 #include "headers/client.h"
@@ -24,33 +26,6 @@
 
 // int SCREEN_WIDTH = 1280;
 // int SCREEN_HEIGHT = 720;
-
-namespace Game {
-	struct Time
-	{
-		sf::Clock m_clock;
-		float dt = 0.0f;
-		float timeForEnemies = 0.0f;
-		float timeForFps = 0.0f;
-		float fullTime = 0.0f;
-		float fireTime = 0.0f;
-		int frames = 0;
-
-		Time() { m_clock = sf::Clock(); }
-
-		void Update()
-		{
- 			dt = m_clock.getElapsedTime().asSeconds();
-			timeForEnemies += dt;
-			timeForFps += dt;
-			fullTime += dt;
-			fireTime += dt;
-			frames ++;
- 			m_clock.restart();
-		}
-	};
-};
-
 
 //float dt = 0.0f;
 
@@ -99,8 +74,6 @@ void game(World * world, std::vector<E_Player*> & _ePlayers)
 	window.setFramerateLimit(60);
 	window.setKeyRepeatEnabled(false);
 
-
-
 	Player * player = (Player*)_ePlayers.back();
 	_ePlayers.pop_back(); // ostatni jest gracz na obecnej kopii, czyli * player
 
@@ -110,16 +83,16 @@ void game(World * world, std::vector<E_Player*> & _ePlayers)
 	}
 
 	Networking::ConnectionMenager connectionMenager(player->m_GetPort());
-	
-	std::vector<Bullet*> bulletsToSendOnline;
 	std::thread (Networking::receiveFromOthers, player->m_GetPort(), std::ref(_ePlayers), world).detach();
 
 	Networking::DataToSend dataToSend;
 	dataToSend.playerID = player->m_GetId();
-
+	
+	std::vector<Bullet*> bulletsToSendOnline;
 
 	Game::Time time;
-
+	Game::Input input;
+	
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -129,24 +102,16 @@ void game(World * world, std::vector<E_Player*> & _ePlayers)
 				window.close();
 		}
 
-		int x = 0, y = 0;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-			x = -1; //player.m_Move(-1, 0);
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-			x = 1; //player.m_Move(1, 0);
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-			y = -1; //player.m_Move(0, -1);
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-			y = 1; //player.m_Move(0, 1);
+		sf::Vector2i wsadMov = input.m_GetWSAD();
 
-		if (x != 0 || y != 0)
+		if (wsadMov.x != 0 || wsadMov.y != 0)
 		{
-			player->m_Move(x, y);
+			player->m_Move(wsadMov.x, wsadMov.y);
 			sf::Vector2f z = player->getPosition();
 			view.setCenter(z);
 			window.setView(view);
-			dataToSend.playerMove.x = x;
-			dataToSend.playerMove.y = y;
+			dataToSend.playerMove.x = wsadMov.x;
+			dataToSend.playerMove.y = wsadMov.y;
 		}
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && time.fireTime > 0.5f)

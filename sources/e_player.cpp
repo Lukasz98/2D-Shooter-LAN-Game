@@ -38,6 +38,13 @@ void E_Player::m_Update(sf::Vector2i _move, sf::Vector2i _dir)
 */
 //	m_dt = _dt;
 	m_Move(_move.x, _move.y);
+
+	sf::Vector2f mousePosDiff;
+	mousePosDiff.x = m_position.x - 1280 / 2.0f;
+	mousePosDiff.y = m_position.y - 720 / 2.0;	
+	_dir.x += mousePosDiff.x;
+	_dir.y += mousePosDiff.y;
+
 	float angle = Math_calc::GetAngle(m_position, sf::Vector2f(_dir.x, _dir.y));
 	m_Rotate(angle);
 }
