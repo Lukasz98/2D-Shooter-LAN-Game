@@ -25,10 +25,34 @@
 // int SCREEN_WIDTH = 1280;
 // int SCREEN_HEIGHT = 720;
 
+namespace Game {
+	struct Time
+	{
+		sf::Clock m_clock;
+		float dt = 0.0f;
+		float timeForEnemies = 0.0f;
+		float timeForFps = 0.0f;
+		float fullTime = 0.0f;
+		float fireTime = 0.0f;
+		int frames = 0;
+
+		Time() { m_clock = sf::Clock(); }
+
+		void Update()
+		{
+ 			dt = m_clock.getElapsedTime().asSeconds();
+			timeForEnemies += dt;
+			timeForFps += dt;
+			fullTime += dt;
+			fireTime += dt;
+			frames ++;
+ 			m_clock.restart();
+		}
+	};
+};
 
 
-
-float dt = 0.0f;
+//float dt = 0.0f;
 
 void game(World * world, std::vector<E_Player*> & _ePlayers);
 
@@ -75,7 +99,7 @@ void game(World * world, std::vector<E_Player*> & _ePlayers)
 	window.setFramerateLimit(60);
 	window.setKeyRepeatEnabled(false);
 
-	sf::Clock clock = sf::Clock();
+
 
 	Player * player = (Player*)_ePlayers.back();
 	_ePlayers.pop_back(); // ostatni jest gracz na obecnej kopii, czyli * player
@@ -85,17 +109,16 @@ void game(World * world, std::vector<E_Player*> & _ePlayers)
 		world->m_AddEPlayer(_ePlayers[i]);
 	}
 
-	float timeForEnemies = 0.0f, timeForFps = 0.0f, fullTime = 0.0f;
-	float fireTime = 0.0f;
-	int frames = 0;
-
 	Networking::ConnectionMenager connectionMenager(player->m_GetPort());
 	
 	std::vector<Bullet*> bulletsToSendOnline;
 	std::thread (Networking::receiveFromOthers, player->m_GetPort(), std::ref(_ePlayers), world).detach();
 
 	Networking::DataToSend dataToSend;
-	dataToSend.playerID = player->m_GetID();
+	dataToSend.playerID = player->m_GetId();
+
+
+	Game::Time time;
 
 	while (window.isOpen())
 	{
@@ -126,9 +149,9 @@ void game(World * world, std::vector<E_Player*> & _ePlayers)
 			dataToSend.playerMove.y = y;
 		}
 
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && fireTime > 0.5f)
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && time.fireTime > 0.5f)
 		{
-			fireTime = 0.0f;
+			time.fireTime = 0.0f;
 			sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
 			sf::Vector2f pos;
@@ -154,32 +177,28 @@ void game(World * world, std::vector<E_Player*> & _ePlayers)
 		window.draw(*player);
 		window.display();
 
-		world->m_Update(player, dt);
+		world->m_Update(player, time.dt);
  		sf::Vector2i mouseP = sf::Mouse::getPosition(window);
- 		player->m_Update(dt, mouseP);
+ 		player->m_Update(time.dt, mouseP);
 		dataToSend.playerDir = mouseP;
 #if 0
-		if (timeForEnemies > 1.5f)
+		if (time.timeForEnemies > 1.5f)
 		{
 			enemies.push_back(new Enemy());
-			timeForEnemies = 0.0f;
+			time.timeForEnemies = 0.0f;
 		}
 #endif
 
- 		if (timeForFps > 1.0f)
+ 		if (time.timeForFps > 1.0f)
  		{
  			//std::cout << "!!!!!!!!!!!!!!!!!!!!!! FPS: " << frames << std::endl;
- 			timeForFps = 0.0f;
- 			frames = 0;
+ 			time.timeForFps = 0.0f;
+ 			time.frames = 0;
  		}
 
- 		dt = clock.getElapsedTime().asSeconds();
-		timeForEnemies += dt;
-		timeForFps += dt;
-		fullTime += dt;
-		fireTime += dt;
-		frames ++;
- 		clock.restart();
+
+		// dt update
+		time.Update();
 
 		connectionMenager.m_SendToOthers(&dataToSend, _ePlayers);
 		dataToSend.clear();

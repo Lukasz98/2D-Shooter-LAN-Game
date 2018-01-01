@@ -7,11 +7,8 @@ CC = g++
 COMMANDLINE_OPTIONS = /dev/ttyS0
 
 # Compiler options during compilation
-<<<<<<< HEAD
 COMPILE_OPTIONS = -w -fpermissive -std=c++11 
-=======
-COMPILE_OPTIONS = -std=c++11
->>>>>>> origin/network
+
 #-ansi -pedantic -Wall
 
 #Header include directories
@@ -71,8 +68,4 @@ clean:
 depclean:
 	rm -f $(DEPENDENCIES)
 
-<<<<<<< HEAD
 clean-all: clean depclean
-=======
-clean-all: clean depclean
->>>>>>> origin/network

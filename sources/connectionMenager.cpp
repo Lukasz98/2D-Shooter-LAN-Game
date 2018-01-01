@@ -17,7 +17,7 @@ void ConnectionMenager::m_SendToOthers(DataToSend * dataToSend, std::vector<E_Pl
 	sf::Packet packet;
 	packet << dataToSend->playerMove.x << dataToSend->playerMove.y;
 	packet << dataToSend->playerDir.x << dataToSend->playerDir.y;
-
+LOG(dataToSend->playerMove.x);
 	if (dataToSend->shoot == true)
 	{
 		packet << "b";

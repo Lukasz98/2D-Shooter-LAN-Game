@@ -20,7 +20,7 @@ sf::Vector2f Math_calc::Get_xy_SpeedRatio(sf::Vector2f _pos, sf::Vector2f _dirPo
 	float b =  _dirPos.x - _pos.x;
 	float a = _dirPos.y - _pos.y;
 	float c = sqrt( b * b + a * a );
-	
+
 	float xRatio = b / c;
 	float yRatio = a / c;
 
@@ -33,7 +33,7 @@ float Math_calc::MakePositive(float _num)
 	return _num > 0.0f ? _num : _num * -1.0f;
 }
 
-/*      
+/*
      _______
      |  b  |
      |    |
@@ -41,7 +41,7 @@ float Math_calc::MakePositive(float _num)
      |  | c
      | |
      ||
-alfa | 
+alfa |
 */
 
 
@@ -72,17 +72,18 @@ float Math_calc::GetAngle(sf::Vector2f _pos, sf::Vector2f _dirPos)
     float sin_alfa = b / c;
     float asin_rad = asin(sin_alfa);
     float asin_stopnie = asin_rad * 180 / 3.14159265369f;
-    
+
     if (part == 0)
         return asin_stopnie;
     if (part == 2)
         return asin_stopnie + 90 * 2;
     else
-        asin_stopnie = 90 * part + (90 - asin_stopnie); 
+        asin_stopnie = 90 * part + (90 - asin_stopnie);
 
 //std::cout << "!!!!!!!!!!!!!!!!!!!!!! " << asin_stopnie << std::endl;
 
     return asin_stopnie;
 }
+
 
 

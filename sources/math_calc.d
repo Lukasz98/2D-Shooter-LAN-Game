@@ -1,5 +1,4 @@
 sources/math_calc.o sources/math_calc.d: sources/math_calc.cpp \
-<<<<<<< HEAD
  /usr/include/stdc-predef.h /usr/include/c++/7.2.1/iostream \
  /usr/include/c++/7.2.1/x86_64-pc-linux-gnu/bits/c++config.h \
  /usr/include/c++/7.2.1/x86_64-pc-linux-gnu/bits/os_defines.h \
@@ -127,6 +126,3 @@ sources/math_calc.o sources/math_calc.d: sources/math_calc.cpp \
  /usr/include/bits/mathcalls-helper-functions.h \
  /usr/include/bits/mathcalls.h /usr/include/bits/iscanonical.h \
  sources/../headers/log.h
-=======
- sources/../headers/math_calc.h sources/../headers/log.h
->>>>>>> origin/network

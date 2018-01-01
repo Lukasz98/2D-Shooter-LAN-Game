@@ -9,7 +9,7 @@
 class Bullet : public sf::CircleShape
 {
 public:
-	
+
     Bullet(sf::Vector2f _pos, sf::Vector2f _direction, const Body * const _myParent);
     Bullet(sf::Vector2f _pos, sf::Vector2i _direction, const Body * const _myParent);
     ~Bullet();
@@ -18,8 +18,11 @@ public:
     bool m_Update(float _dt);
     void m_CollisionReact(float _power);
     bool m_Overlaps(const sf::RectangleShape * _rectShape);
-    
-    
+
+    inline sf::Vector2f m_GetPosition() { return m_position; }
+    inline sf::Vector2f m_GetDirection() { return m_direction; }
+    inline int m_GetParentID() { return m_myParent->m_GetID(); }
+
 private:
 	void m_pickDirection();
 	void m_move();
@@ -33,3 +36,4 @@ private:
 	float m_power;
 	const Body * const m_myParent;
 };
+

@@ -9,10 +9,10 @@ Bullet::Bullet(sf::Vector2f _pos, sf::Vector2f _direction, const Body * const _m
     m_speedRatio = Math_calc::Get_xy_SpeedRatio(m_position, m_direction);
     m_speed = 1000.0f;
     m_power = 2.0f;
-    
+
     setRadius(15.0f);
     setPosition(m_position);
-    setTexture(&m_texture);    
+    setTexture(&m_texture);
 }
 
 Bullet::Bullet(sf::Vector2f _pos, sf::Vector2i _direction, const Body * const _myParent)
@@ -24,7 +24,7 @@ Bullet::Bullet(sf::Vector2f _pos, sf::Vector2i _direction, const Body * const _m
     m_speedRatio = Math_calc::Get_xy_SpeedRatio(m_position, m_direction);
     m_speed = 1000.0f;
     m_power = 2.0f;
-    
+
     setRadius(15.0f);
     setPosition(m_position);
     setTexture(&m_texture);
@@ -39,12 +39,12 @@ Bullet::~Bullet()
 bool Bullet::m_Update(float _dt)
 {
 	m_dt = _dt;
-	
+
 	m_position.x += m_speed * m_speedRatio.x * _dt;
 	m_position.y += m_speed * m_speedRatio.y * _dt;
 	//std::cout<<m_position.x<<", "<<m_position.y<<std::endl;
 	setPosition(m_position);
-	
+
 	if (m_power <= 0.0f)
 		return false;
 	return true;
@@ -65,8 +65,8 @@ bool Bullet::m_Overlaps(const sf::RectangleShape * _rectShape)
     sf::Vector2f rectSize = _rectShape->getSize();
     rectPos.x -= rectSize.x /2.0f;
     rectPos.y -= rectSize.y /2.0f;
-    float myWidth = getRadius() *2;  
-    
+    float myWidth = getRadius() *2;
+
     if (m_position.x + myWidth > rectPos.x && m_position.x < rectPos.x + rectSize.x
         && m_position.y < rectPos.y + rectSize.y)
         return true;
@@ -75,8 +75,6 @@ bool Bullet::m_Overlaps(const sf::RectangleShape * _rectShape)
     if (m_position.x + myWidth < rectPos.x) return false;
     if (m_position.y > rectPos.y + rectSize.y) return false;
     if (m_position.y + myWidth < rectPos.y) return false;
-    
-    return true; 
+
+    return true;
 }
-
-
