@@ -1,6 +1,6 @@
 #include "../headers/player.h"
 
-//int main(){}
+
 
 Player::Player(int _id, std::string _ip, int _port)
 : E_Player(_id, _ip, _port)
@@ -22,6 +22,4 @@ void Player::m_Update(float _dt, sf::Vector2i _mousePos)
 	sf::Vector2f mp((float) _mousePos.x, (float) _mousePos.y);
 
 	m_Rotate(pos, mp);
-
-	//std::cout << "x:" << m_position.x << " y: " << m_position.y << "\n";
 }

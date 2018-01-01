@@ -43,10 +43,6 @@ bool Enemy::m_Update(float _dt, sf::Vector2f _direction)
 	return false;
 }
 
-
-
-
-
 void Enemy::m_SetTexture(std::string _texturePath)
 {
 	m_texture.loadFromFile(_texturePath);

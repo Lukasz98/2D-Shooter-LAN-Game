@@ -1,10 +1,9 @@
 #include <iostream>
-#include <thread>
 #include <string>
+#include <vector>
+
 #include <SFML/Graphics.hpp>
 
-//#include <SFML/Network.hpp>
-#include <vector>
 #include "headers/e_player.h"
 #include "headers/player.h"
 #include "headers/bullet.h"
@@ -26,8 +25,6 @@
 
 // int SCREEN_WIDTH = 1280;
 // int SCREEN_HEIGHT = 720;
-
-//float dt = 0.0f;
 
 void game(World * world, std::vector<E_Player*> & _ePlayers);
 

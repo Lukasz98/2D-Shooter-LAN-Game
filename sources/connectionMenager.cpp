@@ -61,5 +61,4 @@ void receiveFromOthers(int myPort, std::vector<E_Player*> & ePlayers, World * wo
 }
 
 
-
 }

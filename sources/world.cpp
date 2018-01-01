@@ -22,7 +22,7 @@ void World::m_Update(Player * _player, float _dt)
 
 	for (int i = 0; i < m_ePlayers.size(); i++)
 		m_ePlayers[i]->m_SetDt(m_dt);
-	
+		
 	m_checkBodyCollision(_player);
 	m_checkBulletsCollision(_player);
 

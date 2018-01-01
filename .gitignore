@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 *.cpp
 *.d
 sources/*.d
@@ -7,6 +8,14 @@ sources/*.d
 /**/*.d
 
 *.o
+=======
+*.d
+sources/*.d
+**/*.d
+/**/*.d
+
+sources/*.o
+>>>>>>> origin/master
 *.obj
 *.exe
 *.out
