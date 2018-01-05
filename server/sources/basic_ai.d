@@ -214,4 +214,5 @@ sources/basic_ai.o sources/basic_ai.d: sources/basic_ai.cpp \
  /usr/include/bits/fp-fast.h \
  /usr/include/bits/mathcalls-helper-functions.h \
  /usr/include/bits/mathcalls.h /usr/include/bits/iscanonical.h \
- sources/../headers/info.h sources/../headers/bullet.h
+ sources/../headers/info.h sources/../headers/bullet.h \
+ sources/../headers/log.h

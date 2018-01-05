@@ -213,4 +213,5 @@ sources/enemy.o sources/enemy.d: sources/enemy.cpp \
  /usr/include/bits/fp-fast.h \
  /usr/include/bits/mathcalls-helper-functions.h \
  /usr/include/bits/mathcalls.h /usr/include/bits/iscanonical.h \
- sources/../headers/info.h sources/../headers/bullet.h
+ sources/../headers/info.h sources/../headers/bullet.h \
+ sources/../headers/log.h

@@ -42,7 +42,7 @@ Bullet * BasicAI::m_MakeShot(sf::Vector2f _pos)
 	if (!m_didShot)
 	{
 		m_didShot = true;
-		return new Bullet(m_position, _pos, this);
+		//return new Bullet(m_position, _pos, this);
 	}
 
 	return NULL;

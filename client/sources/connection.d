@@ -235,4 +235,5 @@ sources/connection.o sources/connection.d: sources/connection.cpp \
  /usr/include/bits/fp-logb.h /usr/include/bits/fp-fast.h \
  /usr/include/bits/mathcalls-helper-functions.h \
  /usr/include/bits/mathcalls.h /usr/include/bits/iscanonical.h \
- sources/../headers/log.h
+ sources/../headers/bullet.h sources/../headers/info.h \
+ sources/../headers/log.h sources/../headers/user_input.h

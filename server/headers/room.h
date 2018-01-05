@@ -7,6 +7,7 @@
 #include <SFML/System/Vector2.hpp>
 
 #include "e_player.h"
+#include "bullet.h"
 #include "load_from_files.h"
 #include "log.h"
 #include "getch.h"
@@ -23,9 +24,11 @@ public:
 
 	inline State GetState() { return state; }
 	std::vector<E_Player*> & GetPlayers() { return ePlayers; }
+	std::vector<Bullet*> * GetBullets() { return & bullets; }
 
 private:
 	std::vector<E_Player*> ePlayers;
+	std::vector<Bullet*> bullets;
 	
 	std::string ip;
 	int joinPort, receivingPort, sendingPort;
@@ -36,6 +39,6 @@ private:
 	sf::TcpListener tcpListener;
 
 	void loadServerInfo();
-	static void waitForPlayers(std::vector<E_Player*> & ePlayers, const State & state, sf::TcpListener & tcpListener, int receivingPort, int sendingPort); //thread
-	static void receiveInput(std::vector<E_Player*> & ePlayers, const State & state, sf::UdpSocket & socket); //thread
+	static void waitForPlayers(std::vector<E_Player*> & ePlayers, std::vector<Bullet*> & bullets, const State & state, sf::TcpListener & tcpListener, int receivingPort, int sendingPort); //thread
+	static void receiveInput(std::vector<E_Player*> & ePlayers, std::vector<Bullet*> & bullets, const State & state, sf::UdpSocket & socket); //thread
 };

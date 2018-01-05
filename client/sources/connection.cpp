@@ -19,7 +19,7 @@ Connection::Connection()
 
 	if (connected)
 	{
-		std::thread (receiveData, std::ref(ePlayers), std::ref(receivingSocket), std::ref(connected), myPort).detach();
+		std::thread (receiveData, std::ref(ePlayers), std::ref(bullets), std::ref(receivingSocket), std::ref(connected), myPort).detach();
 		LOG("Connection: receiveData started");
 
 		LOG("Connection: Constructor - binding sendingSocket");
@@ -34,6 +34,10 @@ Connection::Connection()
 Connection::~Connection() 
 {
 	sendingSocket.unbind();
+	for (auto ePlayer : ePlayers)
+		delete ePlayer;
+	for (auto bullet : bullets)
+		delete bullet;
 }
 
 void Connection::joinServer()
@@ -65,6 +69,19 @@ void Connection::joinServer()
 			ePlayers.push_back(new E_Player(id, pos));
 		}
 
+		int bulletsCount = 0;
+		serverPacket >> bulletsCount;
+
+		for (int i = 0; i < bulletsCount; i++)
+		{
+			int ownerId, bulletId;
+			sf::Vector2f pos, speedRatio;
+			serverPacket >> ownerId >> bulletId >> pos.x >> pos.y >> speedRatio.x >> speedRatio.y;
+			LOG("Connection:joinServer ownerId=" << ownerId << ", bulletId="<<bulletId);
+			bullets.push_back(new Bullet(pos, speedRatio, ownerId, bulletId));
+		}
+		
+
 		tcpSocket.disconnect();
 
 		LOG("Welcome");
@@ -73,12 +90,9 @@ void Connection::joinServer()
 	
 }
 
-void Connection::receiveData(std::vector<E_Player*> & ePlayers, sf::UdpSocket & socket, const bool & connected, int myPort) //thread
+void Connection::receiveData(std::vector<E_Player*> & ePlayers, std::vector<Bullet*> & bullets, sf::UdpSocket & socket, const bool & connected, int myPort) //thread
 {
-	//LOG("locPort: " << myPort);
 	LOG("Connection: receiveData start");
-	//sf::UdpSocket s;
-	//s.bind(myPort);
 
 	while (connected)
 	{
@@ -86,16 +100,10 @@ void Connection::receiveData(std::vector<E_Player*> & ePlayers, sf::UdpSocket & 
 		unsigned short servPort;
 		sf::Packet packet;
 
-//		LOG("Connection: receiveData 1");
-
 		socket.receive(packet, servIp, servPort);
-
-		//LOG("Connection: receiveData 2 servip:" << servIp << ", servPort:" << servPort );
 
 		int playersCount = 0;
 		packet >> playersCount;
-
-//		LOG("Connection: receiveData 3, playersCount=" << playersCount);
 
 		for (int j = 0; j < playersCount; j++)
 		{
@@ -103,21 +111,12 @@ void Connection::receiveData(std::vector<E_Player*> & ePlayers, sf::UdpSocket & 
 			float angle;
 			sf::Vector2f pos;
 			packet >> id >> pos.x >> pos.y >> angle;
-			
-			//LOG("Connection: receiveData 4, id=" << id << ", x=" << pos.x);
 
 			bool do_i_know_this_guy = false;
-
 			for (int i = 0; i < ePlayers.size(); i++)
 			{
-
-//				LOG("Connection: receiveData 5");
-
 				if (ePlayers[i]->m_GetId() == id)
 				{
-
-//					LOG("Connection: receiveData 6");
-
 					ePlayers[i]->m_Update(pos, angle);
 					do_i_know_this_guy = true;
 				}
@@ -128,14 +127,47 @@ void Connection::receiveData(std::vector<E_Player*> & ePlayers, sf::UdpSocket & 
 				ePlayers.push_back(new E_Player(id, pos));
 			}
 		}
+
+		int bulletCount = 0;
+		packet >> bulletCount;
+		for (int j = 0; j < bulletCount; j++)
+		{
+			int ownerId, bulletId;
+			sf::Vector2f pos, speedRatio;
+			packet >> ownerId >> bulletId >> pos.x >> pos.y >> speedRatio.x >> speedRatio.y;
+
+
+			// here is a bug, if i delete bullet on server, 
+			// client will add it anyway down below, like it was new
+			bool do_i_know_this_bullet = false;
+			for (auto bullet : bullets)
+			{
+				//if (bullet.GetOwnerId() != myId && bullet.GetOwnerId() == ownerId && bullet.GetBulletId() == bulletId)
+				if (bullet->GetOwnerId() == ownerId && bullet->GetBulletId() == bulletId)
+				{
+					bullet->SetPosition(pos);
+					do_i_know_this_bullet = true;
+					//LOG("connection:receive x=" << bullet->GetPosition().x);
+				}
+			}
+
+			if (do_i_know_this_bullet == false)
+			{
+				LOG("Connection:receive - Adding new Bullet");
+				bullets.push_back(new Bullet(pos, speedRatio, ownerId, bulletId));
+			}
+		}
 	}	
 	socket.unbind();
 	LOG("Connection: receiveData end");
 }
 
-void Connection::SendInput(UserInput & input)
+void Connection::SendInput(Game::InputData & input)
 {
 	sf::Packet packet;
-	packet << myId << input.x << input.y << input.angle;
+	packet << myId << input.x << input.y << input.angle << input.mouseClick;
+	if (input.mouseClick)
+		packet << input.speedRatio.x << input.speedRatio.y << input.bulletId;
+
 	sendingSocket.send(packet, serverIp, serverReceivingPort);
 }

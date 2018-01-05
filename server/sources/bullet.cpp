@@ -1,33 +1,18 @@
 #include "../headers/bullet.h"
 
-Bullet::Bullet(sf::Vector2f _pos, sf::Vector2f _direction, const Body * const _myParent)
-: m_myParent(_myParent)
+
+Bullet::Bullet(sf::Vector2f _pos, sf::Vector2f speedRatio, int ownerId, int bulletId)
 {
-	m_texture.loadFromFile("img/texture.png");
 	m_position = _pos;
-	m_direction = _direction;
-	m_speedRatio = Math_calc::Get_xy_SpeedRatio(m_position, m_direction);
+	this->ownerId = ownerId;
+	this->bulletId = bulletId;
 	m_speed = 1000.0f;
 	m_power = 2.0f;
 
-	setRadius(15.0f);
-	setPosition(m_position);
-	setTexture(&m_texture);
-}
-
-Bullet::Bullet(sf::Vector2f _pos, sf::Vector2i _direction, const Body * const _myParent)
-: m_myParent(_myParent)
-{
-	m_texture.loadFromFile("img/texture.png");
-	m_position = _pos;
-	m_direction = sf::Vector2f((float) _direction.x, (float) _direction.y);
-	m_speedRatio = Math_calc::Get_xy_SpeedRatio(m_position, m_direction);
-	m_speed = 1000.0f;
-	m_power = 2.0f;
+	m_speedRatio = speedRatio;
 
 	setRadius(15.0f);
 	setPosition(m_position);
-	setTexture(&m_texture);
 }
 
 Bullet::~Bullet()
@@ -43,6 +28,8 @@ bool Bullet::m_Update(float _dt)
 	m_position.x += m_speed * m_speedRatio.x * _dt;
 	m_position.y += m_speed * m_speedRatio.y * _dt;
 
+	//LOG("pos=" << m_position.x << ", ratio=" << m_speedRatio.x << ", dt=" << _dt);
+
 	setPosition(m_position);
 
 	if (m_power <= 0.0f)
@@ -56,6 +43,7 @@ void Bullet::m_CollisionReact(float _power)
 	m_power -= _power;
 }
 
+/*
 bool Bullet::m_Overlaps(const sf::RectangleShape * _rectShape)
 {
 	if (m_myParent == _rectShape)
@@ -78,3 +66,4 @@ bool Bullet::m_Overlaps(const sf::RectangleShape * _rectShape)
 
 	return true;
 }
+*/

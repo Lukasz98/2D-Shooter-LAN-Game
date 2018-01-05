@@ -237,11 +237,11 @@ main.o main.d: main.cpp /usr/include/stdc-predef.h \
  /usr/include/c++/7.2.1/bits/shared_ptr_atomic.h \
  /usr/include/c++/7.2.1/bits/atomic_base.h \
  /usr/include/c++/7.2.1/bits/atomic_lockfree_defines.h \
- /usr/include/c++/7.2.1/backward/auto_ptr.h headers/load_from_files.h \
- /usr/include/c++/7.2.1/fstream \
+ /usr/include/c++/7.2.1/backward/auto_ptr.h headers/bullet.h \
+ headers/log.h headers/load_from_files.h /usr/include/c++/7.2.1/fstream \
  /usr/include/c++/7.2.1/x86_64-pc-linux-gnu/bits/basic_file.h \
  /usr/include/c++/7.2.1/x86_64-pc-linux-gnu/bits/c++io.h \
- /usr/include/c++/7.2.1/bits/fstream.tcc headers/log.h headers/getch.h \
+ /usr/include/c++/7.2.1/bits/fstream.tcc headers/getch.h \
  /usr/include/unistd.h /usr/include/bits/posix_opt.h \
  /usr/include/bits/environments.h /usr/include/bits/confname.h \
  /usr/include/bits/getopt_posix.h /usr/include/bits/getopt_core.h \

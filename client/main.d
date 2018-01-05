@@ -237,4 +237,5 @@ main.o main.d: main.cpp /usr/include/stdc-predef.h \
  /usr/include/bits/fp-fast.h \
  /usr/include/bits/mathcalls-helper-functions.h \
  /usr/include/bits/mathcalls.h /usr/include/bits/iscanonical.h \
- headers/log.h headers/info.h headers/user_input.h
+ headers/bullet.h headers/info.h headers/log.h headers/user_input.h \
+ headers/world.h headers/time.h

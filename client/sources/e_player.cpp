@@ -14,22 +14,12 @@ E_Player::E_Player(int _id, sf::Vector2f pos)
 
 E_Player::~E_Player()
 {
-
+	std::cerr << "EPlayer destructor\n";
 }
 
-//void E_Player::m_Update(sf::Packet _packet)
 void E_Player::m_Update(sf::Vector2f position, float angle)
 {
-/*	float angle;
-
-	_packet >> m_position.x >> m_position.y;
-	_packet >> angle;
-
-	setPosition(m_position);
-*/
-
 	m_SetPosition(position);
-
 	m_Rotate(angle);
 }
 

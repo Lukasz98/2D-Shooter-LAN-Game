@@ -25,8 +25,8 @@ Room::Room()
 		joinPort = tcpListener.getLocalPort();
 		LOG("SERVER JOIN TCP PORT: " << joinPort);
 
-		std::thread (waitForPlayers, std::ref(ePlayers), std::ref(state), std::ref(tcpListener), receivingPort, sendingPort).detach();
-		std::thread (receiveInput, std::ref(ePlayers), std::ref(state), std::ref(receiveSocket)).detach();
+		std::thread (waitForPlayers, std::ref(ePlayers), std::ref(bullets), std::ref(state), std::ref(tcpListener), receivingPort, sendingPort).detach();
+		std::thread (receiveInput, std::ref(ePlayers), std::ref(bullets), std::ref(state), std::ref(receiveSocket)).detach();
 	}
 }
 
@@ -50,7 +50,7 @@ void Room::loadServerInfo()
 	}
 }
 
-void Room::waitForPlayers(std::vector<E_Player*> & ePlayers, const State & state, sf::TcpListener & tcpListener, int receivingPort, int sendingPort) //thread
+void Room::waitForPlayers(std::vector<E_Player*> & ePlayers, std::vector<Bullet*> & bullets, const State & state, sf::TcpListener & tcpListener, int receivingPort, int sendingPort) //thread
 {
 	int id = 1;
 
@@ -82,6 +82,14 @@ void Room::waitForPlayers(std::vector<E_Player*> & ePlayers, const State & state
 				packetToSend << ePlayers[i]->m_GetId() << pos.x << pos.y;
 			}
 
+			packetToSend << (int)bullets.size();
+			for (auto bullet : bullets)
+			{
+				sf::Vector2f pos = bullet->GetPosition();
+				sf::Vector2f speedRatio = bullet->GetSpeedRatio();
+				packetToSend << bullet->GetOwnerId() << bullet->GetBulletId() << pos.x << pos.y << speedRatio.x << speedRatio.y;
+			}
+
 			socket.send(packetToSend);
 
 			LOG("Player joined id=" << id << " ip=" << clientIp << " port=" << clientPort);
@@ -93,7 +101,8 @@ void Room::waitForPlayers(std::vector<E_Player*> & ePlayers, const State & state
 	tcpListener.close();
 }
 
-static void Room::receiveInput(std::vector<E_Player*> & ePlayers, const State & state, sf::UdpSocket & socket) //thread
+//static void Room::receiveInput(std::vector<E_Player*> & ePlayers, const State & state, sf::UdpSocket & socket) //thread
+static void Room::receiveInput(std::vector<E_Player*> & ePlayers, std::vector<Bullet*> & bullets, const State & state, sf::UdpSocket & socket) //thread
 {
 	while (state == RUNNING)
 	{
@@ -107,13 +116,27 @@ static void Room::receiveInput(std::vector<E_Player*> & ePlayers, const State & 
 		float angle;
 		packet >> id >> dir.x >> dir.y >> angle;
 
+		bool isCliced;
+		packet >> isCliced;
+
 		for (int i = 0; i < ePlayers.size(); i++)
 		{
 			if (ePlayers[i]->m_GetId() == id)
 			{
 				ePlayers[i]->m_Update(dir, angle);
+
+				if (isCliced)
+				{
+					int bulletId;
+					sf::Vector2f speedRatio;
+					packet >> speedRatio.x >> speedRatio.y >> bulletId;
+					bullets.push_back(new Bullet(ePlayers[i]->m_GetPosition(), speedRatio, id, bulletId));
+					LOG("Room:receiveInput id="<<id<<", bulletid="<<bulletId);
+				}
+				// break;
 			}
 		}
+
 	}
 	socket.unbind();
 }
@@ -126,6 +149,16 @@ void Room::SendData()
 	for (auto player : ePlayers)
 	{
 		packet << player->m_GetId() << player->m_GetPosition().x << player->m_GetPosition().y << player->m_GetAngle();
+	}
+
+	packet << (int)bullets.size();
+	for (auto bullet : bullets)
+	{
+		sf::Vector2f pos = bullet->GetPosition();
+		sf::Vector2f speedRatio = bullet->GetSpeedRatio();
+		packet << bullet->GetOwnerId() << bullet->GetBulletId() << pos.x << pos.y << speedRatio.x << speedRatio.y;
+		//LOG("Room:SendData id="<<bullet->GetOwnerId()<<", bulletid="<<bullet->GetBulletId());
+		//LOG("x=" << pos.x  << ", y=" << pos.y << ", x=" << speedRatio.x << ", y=" << speedRatio.y);
 	}
 
 	for (auto player : ePlayers)

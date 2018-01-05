@@ -213,4 +213,5 @@ sources/bullet.o sources/bullet.d: sources/bullet.cpp \
  /usr/include/bits/fp-logb.h /usr/include/bits/fp-fast.h \
  /usr/include/bits/mathcalls-helper-functions.h \
  /usr/include/bits/mathcalls.h /usr/include/bits/iscanonical.h \
- sources/../headers/body.h /usr/include/c++/7.2.1/iostream
+ sources/../headers/body.h /usr/include/c++/7.2.1/iostream \
+ sources/../headers/log.h

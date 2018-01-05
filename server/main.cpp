@@ -34,6 +34,7 @@ void game(Room & room)
 	std::cout << "Pressing any key to shutdown server" << std::endl;
 
 	std::vector<E_Player*> & ePlayers = room.GetPlayers();
+	std::vector<Bullet*> * bullets = room.GetBullets();
 
 	Game::Time time;
 
@@ -46,6 +47,11 @@ void game(Room & room)
 		{
 		//LOG("X:" << ePlayers[i]->m_GetPosition().x);
 			ePlayers[i]->m_SetDt(time.GetDt());
+		}
+
+		for (auto bullet : *bullets)
+		{
+			bullet->m_Update(time.GetDt());
 		}
 		
 
