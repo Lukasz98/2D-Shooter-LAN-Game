@@ -17,9 +17,11 @@ void Time::Update()
 {
 	dt = m_clock.getElapsedTime().asSeconds();
 	
-	if (dt < 1.0f / 60.0f)
+	float frameGoal = 60.0f;
+
+	if (dt < 1.0f / frameGoal)
 	{
-		float timeForSleep = (1.0f / 60.0f - dt) * 1000.0f; 
+		float timeForSleep = (1.0f / frameGoal - dt) * 1000.0f; 
 		std::this_thread::sleep_for(std::chrono::milliseconds((int)timeForSleep));
 		dt = m_clock.getElapsedTime().asSeconds();
 	}
@@ -37,6 +39,13 @@ void Time::setValues()
 	fullTime += dt;
 	fireTime += dt;
 	frames ++;
+
+	if (timeForFps > 1.0f)
+	{
+		//LOG(frames);
+		timeForFps = 0.0f;
+		frames = 0;
+	}
 }
 
 }

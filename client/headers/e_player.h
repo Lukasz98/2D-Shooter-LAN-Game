@@ -3,10 +3,12 @@
 #include <SFML/Network.hpp>
 #include <SFML/System/Vector2.hpp>
 #include "body.h"
+#include "log.h"
 
 class E_Player : public Body
 {
 public:
+	E_Player(const E_Player &) = delete;
 	E_Player(int _id, sf::Vector2f pos);
 	~E_Player();
 

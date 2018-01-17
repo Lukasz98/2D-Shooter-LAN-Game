@@ -40,12 +40,8 @@ void game(Room & room)
 
 	while (!kbhit() || room.GetState() != RUNNING)
 	{
-//std::vector<E_Player*> ePlayers = room.GetPlayers();
-
-		//if (ePlayers.size() > 0)LOG("X:" << ePlayers.size());
 		for (int i = 0; i < ePlayers.size(); i++)
 		{
-		//LOG("X:" << ePlayers[i]->m_GetPosition().x);
 			ePlayers[i]->m_SetDt(time.GetDt());
 		}
 
@@ -57,9 +53,8 @@ void game(Room & room)
 
 		room.SendData();
 		time.Update();
-		//LOG("dt="<<time.GetDt());
-	}
 
+	}
 
 
 	//TO DO

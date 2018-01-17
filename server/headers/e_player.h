@@ -2,6 +2,7 @@
 #include <string>
 #include <SFML/Network.hpp>
 #include "body.h"
+#include "log.h"
 
 class E_Player : public Body
 {

@@ -38,6 +38,9 @@ private:
 
 	sf::TcpListener tcpListener;
 
+int sendingUpdatesCounter = 0;
+
+
 	void loadServerInfo();
 	static void waitForPlayers(std::vector<E_Player*> & ePlayers, std::vector<Bullet*> & bullets, const State & state, sf::TcpListener & tcpListener, int receivingPort, int sendingPort); //thread
 	static void receiveInput(std::vector<E_Player*> & ePlayers, std::vector<Bullet*> & bullets, const State & state, sf::UdpSocket & socket); //thread

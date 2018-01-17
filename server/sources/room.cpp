@@ -32,6 +32,7 @@ Room::Room()
 
 Room::~Room() 
 {
+	LOG("SENDED InPUT UPDATES="<<sendingUpdatesCounter);
 	sendSocket.unbind();
 }
 
@@ -72,24 +73,11 @@ void Room::waitForPlayers(std::vector<E_Player*> & ePlayers, std::vector<Bullet*
 			packet >> clientIp >> clientPort;
 
 			ePlayers.push_back(new E_Player(id, clientIp, clientPort));
+			sf::Vector2f pos = ePlayers.back()->m_GetPosition();
 
 			sf::Packet packetToSend;
-			packetToSend << receivingPort << sendingPort << id << (int)ePlayers.size();
-
-			for (int i = 0; i < ePlayers.size(); i++)
-			{
-				sf::Vector2f pos = ePlayers[i]->m_GetPosition();
-				packetToSend << ePlayers[i]->m_GetId() << pos.x << pos.y;
-			}
-
-			packetToSend << (int)bullets.size();
-			for (auto bullet : bullets)
-			{
-				sf::Vector2f pos = bullet->GetPosition();
-				sf::Vector2f speedRatio = bullet->GetSpeedRatio();
-				packetToSend << bullet->GetOwnerId() << bullet->GetBulletId() << pos.x << pos.y << speedRatio.x << speedRatio.y;
-			}
-
+			packetToSend << receivingPort << id;
+			packetToSend << pos.x << pos.y;
 			socket.send(packetToSend);
 
 			LOG("Player joined id=" << id << " ip=" << clientIp << " port=" << clientPort);
@@ -102,8 +90,9 @@ void Room::waitForPlayers(std::vector<E_Player*> & ePlayers, std::vector<Bullet*
 }
 
 //static void Room::receiveInput(std::vector<E_Player*> & ePlayers, const State & state, sf::UdpSocket & socket) //thread
-static void Room::receiveInput(std::vector<E_Player*> & ePlayers, std::vector<Bullet*> & bullets, const State & state, sf::UdpSocket & socket) //thread
+void Room::receiveInput(std::vector<E_Player*> & ePlayers, std::vector<Bullet*> & bullets, const State & state, sf::UdpSocket & socket) //thread
 {
+	int allPacketsCount = 0;
 	while (state == RUNNING)
 	{
 		sf::IpAddress clientIp;
@@ -115,6 +104,9 @@ static void Room::receiveInput(std::vector<E_Player*> & ePlayers, std::vector<Bu
 		sf::Vector2i dir;
 		float angle;
 		packet >> id >> dir.x >> dir.y >> angle;
+
+
+//		LOG("Room:receiveInput - x="<<dir.x);
 
 		bool isCliced;
 		packet >> isCliced;
@@ -137,8 +129,13 @@ static void Room::receiveInput(std::vector<E_Player*> & ePlayers, std::vector<Bu
 			}
 		}
 
+		allPacketsCount++;
+
+//	LOG("ROOM:RECEIVE - ALL UPDATE PACKET RECEIVED="<<allPacketsCount);
 	}
+//	LOG("ALL UPDATE PACKET REVEIVED=");
 	socket.unbind();
+
 }
 
 void Room::SendData()
@@ -148,6 +145,7 @@ void Room::SendData()
 	
 	for (auto player : ePlayers)
 	{
+	//LOG("Room:SendData - X="<<player->m_GetPosition().x);
 		packet << player->m_GetId() << player->m_GetPosition().x << player->m_GetPosition().y << player->m_GetAngle();
 	}
 
@@ -163,6 +161,7 @@ void Room::SendData()
 
 	for (auto player : ePlayers)
 	{
+		sendingUpdatesCounter++;
 		sendSocket.send(packet, player->m_GetIp(), player->m_GetPort());
 	}
 }

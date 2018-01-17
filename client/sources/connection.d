@@ -1,16 +1,12 @@
 sources/connection.o sources/connection.d: sources/connection.cpp \
  /usr/include/stdc-predef.h sources/../headers/connection.h \
- /usr/include/c++/7.2.1/string \
+ /usr/include/c++/7.2.1/memory /usr/include/c++/7.2.1/bits/stl_algobase.h \
  /usr/include/c++/7.2.1/x86_64-pc-linux-gnu/bits/c++config.h \
  /usr/include/c++/7.2.1/x86_64-pc-linux-gnu/bits/os_defines.h \
  /usr/include/features.h /usr/include/sys/cdefs.h \
  /usr/include/bits/wordsize.h /usr/include/bits/long-double.h \
  /usr/include/gnu/stubs.h /usr/include/gnu/stubs-64.h \
  /usr/include/c++/7.2.1/x86_64-pc-linux-gnu/bits/cpu_defines.h \
- /usr/include/c++/7.2.1/bits/stringfwd.h \
- /usr/include/c++/7.2.1/bits/memoryfwd.h \
- /usr/include/c++/7.2.1/bits/char_traits.h \
- /usr/include/c++/7.2.1/bits/stl_algobase.h \
  /usr/include/c++/7.2.1/bits/functexcept.h \
  /usr/include/c++/7.2.1/bits/exception_defines.h \
  /usr/include/c++/7.2.1/bits/cpp_type_traits.h \
@@ -27,45 +23,39 @@ sources/connection.o sources/connection.d: sources/connection.cpp \
  /usr/include/c++/7.2.1/bits/ptr_traits.h \
  /usr/include/c++/7.2.1/debug/debug.h \
  /usr/include/c++/7.2.1/bits/predefined_ops.h \
- /usr/include/c++/7.2.1/bits/postypes.h /usr/include/c++/7.2.1/cwchar \
- /usr/include/wchar.h /usr/include/bits/libc-header-start.h \
- /usr/include/bits/floatn.h \
- /usr/lib/gcc/x86_64-pc-linux-gnu/7.2.1/include/stddef.h \
- /usr/lib/gcc/x86_64-pc-linux-gnu/7.2.1/include/stdarg.h \
- /usr/include/bits/wchar.h /usr/include/bits/types/wint_t.h \
- /usr/include/bits/types/mbstate_t.h \
- /usr/include/bits/types/__mbstate_t.h /usr/include/bits/types/__FILE.h \
- /usr/include/bits/types/FILE.h /usr/include/bits/types/locale_t.h \
- /usr/include/bits/types/__locale_t.h /usr/include/c++/7.2.1/cstdint \
- /usr/lib/gcc/x86_64-pc-linux-gnu/7.2.1/include/stdint.h \
- /usr/include/stdint.h /usr/include/bits/types.h \
- /usr/include/bits/typesizes.h /usr/include/bits/stdint-intn.h \
- /usr/include/bits/stdint-uintn.h /usr/include/c++/7.2.1/bits/allocator.h \
+ /usr/include/c++/7.2.1/bits/allocator.h \
  /usr/include/c++/7.2.1/x86_64-pc-linux-gnu/bits/c++allocator.h \
  /usr/include/c++/7.2.1/ext/new_allocator.h /usr/include/c++/7.2.1/new \
  /usr/include/c++/7.2.1/exception /usr/include/c++/7.2.1/bits/exception.h \
  /usr/include/c++/7.2.1/bits/exception_ptr.h \
  /usr/include/c++/7.2.1/bits/cxxabi_init_exception.h \
+ /usr/lib/gcc/x86_64-pc-linux-gnu/7.2.1/include/stddef.h \
  /usr/include/c++/7.2.1/typeinfo /usr/include/c++/7.2.1/bits/hash_bytes.h \
  /usr/include/c++/7.2.1/bits/nested_exception.h \
- /usr/include/c++/7.2.1/bits/localefwd.h \
- /usr/include/c++/7.2.1/x86_64-pc-linux-gnu/bits/c++locale.h \
- /usr/include/c++/7.2.1/clocale /usr/include/locale.h \
- /usr/include/bits/locale.h /usr/include/c++/7.2.1/iosfwd \
- /usr/include/c++/7.2.1/cctype /usr/include/ctype.h /usr/include/endian.h \
- /usr/include/bits/endian.h /usr/include/bits/byteswap.h \
- /usr/include/bits/byteswap-16.h /usr/include/bits/uintn-identity.h \
- /usr/include/c++/7.2.1/bits/ostream_insert.h \
- /usr/include/c++/7.2.1/bits/cxxabi_forced.h \
- /usr/include/c++/7.2.1/bits/stl_function.h \
- /usr/include/c++/7.2.1/backward/binders.h \
- /usr/include/c++/7.2.1/bits/range_access.h \
- /usr/include/c++/7.2.1/initializer_list \
- /usr/include/c++/7.2.1/bits/basic_string.h \
+ /usr/include/c++/7.2.1/bits/memoryfwd.h \
+ /usr/include/c++/7.2.1/bits/stl_construct.h \
+ /usr/include/c++/7.2.1/ext/alloc_traits.h \
+ /usr/include/c++/7.2.1/bits/alloc_traits.h \
+ /usr/include/c++/7.2.1/bits/stl_uninitialized.h \
+ /usr/include/c++/7.2.1/bits/stl_tempbuf.h \
+ /usr/include/c++/7.2.1/bits/stl_raw_storage_iter.h \
+ /usr/include/c++/7.2.1/iosfwd /usr/include/c++/7.2.1/bits/stringfwd.h \
+ /usr/include/c++/7.2.1/bits/postypes.h /usr/include/c++/7.2.1/cwchar \
+ /usr/include/wchar.h /usr/include/bits/libc-header-start.h \
+ /usr/include/bits/floatn.h \
+ /usr/lib/gcc/x86_64-pc-linux-gnu/7.2.1/include/stdarg.h \
+ /usr/include/bits/wchar.h /usr/include/bits/types/wint_t.h \
+ /usr/include/bits/types/mbstate_t.h \
+ /usr/include/bits/types/__mbstate_t.h /usr/include/bits/types/__FILE.h \
+ /usr/include/bits/types/FILE.h /usr/include/bits/types/locale_t.h \
+ /usr/include/bits/types/__locale_t.h \
  /usr/include/c++/7.2.1/ext/atomicity.h \
  /usr/include/c++/7.2.1/x86_64-pc-linux-gnu/bits/gthr.h \
  /usr/include/c++/7.2.1/x86_64-pc-linux-gnu/bits/gthr-default.h \
- /usr/include/pthread.h /usr/include/sched.h \
+ /usr/include/pthread.h /usr/include/endian.h /usr/include/bits/endian.h \
+ /usr/include/bits/byteswap.h /usr/include/bits/types.h \
+ /usr/include/bits/typesizes.h /usr/include/bits/byteswap-16.h \
+ /usr/include/bits/uintn-identity.h /usr/include/sched.h \
  /usr/include/bits/types/time_t.h \
  /usr/include/bits/types/struct_timespec.h /usr/include/bits/sched.h \
  /usr/include/bits/cpu-set.h /usr/include/time.h /usr/include/bits/time.h \
@@ -76,8 +66,26 @@ sources/connection.o sources/connection.d: sources/connection.cpp \
  /usr/include/bits/pthreadtypes.h /usr/include/bits/thread-shared-types.h \
  /usr/include/bits/pthreadtypes-arch.h /usr/include/bits/setjmp.h \
  /usr/include/c++/7.2.1/x86_64-pc-linux-gnu/bits/atomic_word.h \
- /usr/include/c++/7.2.1/ext/alloc_traits.h \
- /usr/include/c++/7.2.1/bits/alloc_traits.h \
+ /usr/include/c++/7.2.1/ext/concurrence.h \
+ /usr/include/c++/7.2.1/bits/stl_function.h \
+ /usr/include/c++/7.2.1/backward/binders.h \
+ /usr/include/c++/7.2.1/bits/uses_allocator.h \
+ /usr/include/c++/7.2.1/bits/unique_ptr.h /usr/include/c++/7.2.1/utility \
+ /usr/include/c++/7.2.1/bits/stl_relops.h \
+ /usr/include/c++/7.2.1/initializer_list /usr/include/c++/7.2.1/tuple \
+ /usr/include/c++/7.2.1/array /usr/include/c++/7.2.1/stdexcept \
+ /usr/include/c++/7.2.1/string /usr/include/c++/7.2.1/bits/char_traits.h \
+ /usr/include/c++/7.2.1/cstdint \
+ /usr/lib/gcc/x86_64-pc-linux-gnu/7.2.1/include/stdint.h \
+ /usr/include/stdint.h /usr/include/bits/stdint-intn.h \
+ /usr/include/bits/stdint-uintn.h /usr/include/c++/7.2.1/bits/localefwd.h \
+ /usr/include/c++/7.2.1/x86_64-pc-linux-gnu/bits/c++locale.h \
+ /usr/include/c++/7.2.1/clocale /usr/include/locale.h \
+ /usr/include/bits/locale.h /usr/include/c++/7.2.1/cctype \
+ /usr/include/ctype.h /usr/include/c++/7.2.1/bits/ostream_insert.h \
+ /usr/include/c++/7.2.1/bits/cxxabi_forced.h \
+ /usr/include/c++/7.2.1/bits/range_access.h \
+ /usr/include/c++/7.2.1/bits/basic_string.h \
  /usr/include/c++/7.2.1/ext/string_conversions.h \
  /usr/include/c++/7.2.1/cstdlib /usr/include/stdlib.h \
  /usr/include/bits/waitflags.h /usr/include/bits/waitstatus.h \
@@ -94,19 +102,6 @@ sources/connection.o sources/connection.d: sources/connection.cpp \
  /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
  /usr/include/c++/7.2.1/bits/functional_hash.h \
  /usr/include/c++/7.2.1/bits/basic_string.tcc \
- /usr/include/c++/7.2.1/thread /usr/include/c++/7.2.1/chrono \
- /usr/include/c++/7.2.1/ratio /usr/include/c++/7.2.1/limits \
- /usr/include/c++/7.2.1/ctime /usr/include/c++/7.2.1/bits/parse_numbers.h \
- /usr/include/c++/7.2.1/memory \
- /usr/include/c++/7.2.1/bits/stl_construct.h \
- /usr/include/c++/7.2.1/bits/stl_uninitialized.h \
- /usr/include/c++/7.2.1/bits/stl_tempbuf.h \
- /usr/include/c++/7.2.1/bits/stl_raw_storage_iter.h \
- /usr/include/c++/7.2.1/ext/concurrence.h \
- /usr/include/c++/7.2.1/bits/uses_allocator.h \
- /usr/include/c++/7.2.1/bits/unique_ptr.h /usr/include/c++/7.2.1/utility \
- /usr/include/c++/7.2.1/bits/stl_relops.h /usr/include/c++/7.2.1/tuple \
- /usr/include/c++/7.2.1/array /usr/include/c++/7.2.1/stdexcept \
  /usr/include/c++/7.2.1/bits/invoke.h \
  /usr/include/c++/7.2.1/bits/shared_ptr.h \
  /usr/include/c++/7.2.1/bits/shared_ptr_base.h \
@@ -116,12 +111,15 @@ sources/connection.o sources/connection.d: sources/connection.cpp \
  /usr/include/c++/7.2.1/bits/shared_ptr_atomic.h \
  /usr/include/c++/7.2.1/bits/atomic_base.h \
  /usr/include/c++/7.2.1/bits/atomic_lockfree_defines.h \
- /usr/include/c++/7.2.1/backward/auto_ptr.h /usr/include/SFML/Network.hpp \
- /usr/include/SFML/System.hpp /usr/include/SFML/Config.hpp \
- /usr/include/SFML/System/Clock.hpp /usr/include/SFML/System/Export.hpp \
- /usr/include/SFML/System/Time.hpp /usr/include/SFML/System/Err.hpp \
- /usr/include/c++/7.2.1/ostream /usr/include/c++/7.2.1/ios \
- /usr/include/c++/7.2.1/bits/ios_base.h \
+ /usr/include/c++/7.2.1/backward/auto_ptr.h /usr/include/c++/7.2.1/thread \
+ /usr/include/c++/7.2.1/chrono /usr/include/c++/7.2.1/ratio \
+ /usr/include/c++/7.2.1/limits /usr/include/c++/7.2.1/ctime \
+ /usr/include/c++/7.2.1/bits/parse_numbers.h \
+ /usr/include/SFML/Network.hpp /usr/include/SFML/System.hpp \
+ /usr/include/SFML/Config.hpp /usr/include/SFML/System/Clock.hpp \
+ /usr/include/SFML/System/Export.hpp /usr/include/SFML/System/Time.hpp \
+ /usr/include/SFML/System/Err.hpp /usr/include/c++/7.2.1/ostream \
+ /usr/include/c++/7.2.1/ios /usr/include/c++/7.2.1/bits/ios_base.h \
  /usr/include/c++/7.2.1/bits/locale_classes.h \
  /usr/include/c++/7.2.1/bits/locale_classes.tcc \
  /usr/include/c++/7.2.1/system_error \
@@ -235,5 +233,5 @@ sources/connection.o sources/connection.d: sources/connection.cpp \
  /usr/include/bits/fp-logb.h /usr/include/bits/fp-fast.h \
  /usr/include/bits/mathcalls-helper-functions.h \
  /usr/include/bits/mathcalls.h /usr/include/bits/iscanonical.h \
- sources/../headers/bullet.h sources/../headers/info.h \
- sources/../headers/log.h sources/../headers/user_input.h
+ sources/../headers/log.h sources/../headers/bullet.h \
+ sources/../headers/info.h sources/../headers/input_data.h

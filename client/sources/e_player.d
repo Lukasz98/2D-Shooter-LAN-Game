@@ -221,4 +221,5 @@ sources/e_player.o sources/e_player.d: sources/e_player.cpp \
  /usr/include/bits/nan.h /usr/include/bits/flt-eval-method.h \
  /usr/include/bits/fp-logb.h /usr/include/bits/fp-fast.h \
  /usr/include/bits/mathcalls-helper-functions.h \
- /usr/include/bits/mathcalls.h /usr/include/bits/iscanonical.h
+ /usr/include/bits/mathcalls.h /usr/include/bits/iscanonical.h \
+ sources/../headers/log.h

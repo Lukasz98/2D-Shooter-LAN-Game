@@ -11,15 +11,17 @@ Connection::Connection()
 	{
 		LOG("Connection: Constructor - receivingSocket.bind() error ");
 	}
+	receivingSocket.setBlocking(false);
 
 	myPort = receivingSocket.getLocalPort();
 	LOG("My port=" << myPort);
-	//receivingSocket.unbind();
+
 	joinServer();
 
 	if (connected)
 	{
-		std::thread (receiveData, std::ref(ePlayers), std::ref(bullets), std::ref(receivingSocket), std::ref(connected), myPort).detach();
+//		std::thread (receiveData, std::ref(ePlayers), std::ref(bullets), std::ref(receivingSocket), std::ref(connected)).detach();
+		std::thread (receiveData, std::ref(receivedPackets), std::ref(receivingSocket), std::ref(connected)).detach();
 		LOG("Connection: receiveData started");
 
 		LOG("Connection: Constructor - binding sendingSocket");
@@ -33,9 +35,10 @@ Connection::Connection()
 
 Connection::~Connection() 
 {
+	LOG("Connection::~Connection");
 	sendingSocket.unbind();
-	for (auto ePlayer : ePlayers)
-		delete ePlayer;
+//	for (auto ePlayer : ePlayers)
+//		delete ePlayer;
 	for (auto bullet : bullets)
 		delete bullet;
 }
@@ -59,28 +62,11 @@ void Connection::joinServer()
 		tcpSocket.receive(serverPacket);
 
 		int playersCount = 0;
-		serverPacket >> serverReceivingPort >> serverSendingPort >> myId >> playersCount;
+		serverPacket >> serverReceivingPort >> myId;
 
-		for (int i = 0; i < playersCount; i++)
-		{
-			int id;
-			sf::Vector2f pos;
-			serverPacket >> id >> pos.x >> pos.y;
-			ePlayers.push_back(new E_Player(id, pos));
-		}
-
-		int bulletsCount = 0;
-		serverPacket >> bulletsCount;
-
-		for (int i = 0; i < bulletsCount; i++)
-		{
-			int ownerId, bulletId;
-			sf::Vector2f pos, speedRatio;
-			serverPacket >> ownerId >> bulletId >> pos.x >> pos.y >> speedRatio.x >> speedRatio.y;
-			LOG("Connection:joinServer ownerId=" << ownerId << ", bulletId="<<bulletId);
-			bullets.push_back(new Bullet(pos, speedRatio, ownerId, bulletId));
-		}
-		
+		sf::Vector2f pos;
+		serverPacket >> pos.x >> pos.y;
+		ePlayers.push_back(std::shared_ptr<E_Player>(new E_Player(myId, pos)));
 
 		tcpSocket.disconnect();
 
@@ -90,79 +76,25 @@ void Connection::joinServer()
 	
 }
 
-void Connection::receiveData(std::vector<E_Player*> & ePlayers, std::vector<Bullet*> & bullets, sf::UdpSocket & socket, const bool & connected, int myPort) //thread
+//void Connection::receiveData(std::vector<std::shared_ptr<E_Player>> & ePlayers, std::vector<Bullet*> & bullets, sf::UdpSocket & socket, const bool & connected) //thread
+void Connection::receiveData(std::vector<sf::Packet> & packets, sf::UdpSocket & socket, const bool & connected) //thread
 {
 	LOG("Connection: receiveData start");
-
+//int counter = 0;
 	while (connected)
 	{
 		sf::IpAddress servIp;
 		unsigned short servPort;
 		sf::Packet packet;
 
-		socket.receive(packet, servIp, servPort);
-
-		int playersCount = 0;
-		packet >> playersCount;
-
-		for (int j = 0; j < playersCount; j++)
-		{
-			int id;
-			float angle;
-			sf::Vector2f pos;
-			packet >> id >> pos.x >> pos.y >> angle;
-
-			bool do_i_know_this_guy = false;
-			for (int i = 0; i < ePlayers.size(); i++)
-			{
-				if (ePlayers[i]->m_GetId() == id)
-				{
-					ePlayers[i]->m_Update(pos, angle);
-					do_i_know_this_guy = true;
-				}
-			}
-
-			if (do_i_know_this_guy == false)
-			{
-				ePlayers.push_back(new E_Player(id, pos));
-			}
-		}
-
-		int bulletCount = 0;
-		packet >> bulletCount;
-		for (int j = 0; j < bulletCount; j++)
-		{
-			int ownerId, bulletId;
-			sf::Vector2f pos, speedRatio;
-			packet >> ownerId >> bulletId >> pos.x >> pos.y >> speedRatio.x >> speedRatio.y;
-
-
-			// here is a bug, if i delete bullet on server, 
-			// client will add it anyway down below, like it was new
-			bool do_i_know_this_bullet = false;
-			for (auto bullet : bullets)
-			{
-				//if (bullet.GetOwnerId() != myId && bullet.GetOwnerId() == ownerId && bullet.GetBulletId() == bulletId)
-				if (bullet->GetOwnerId() == ownerId && bullet->GetBulletId() == bulletId)
-				{
-					bullet->SetPosition(pos);
-					do_i_know_this_bullet = true;
-					//LOG("connection:receive x=" << bullet->GetPosition().x);
-				}
-			}
-
-			if (do_i_know_this_bullet == false)
-			{
-				LOG("Connection:receive - Adding new Bullet");
-				bullets.push_back(new Bullet(pos, speedRatio, ownerId, bulletId));
-			}
-		}
-	}	
+		if (socket.receive(packet, servIp, servPort) == sf::Socket::Done)
+			packets.push_back(packet);
+	}
 	socket.unbind();
-	LOG("Connection: receiveData end");
+	
 }
 
-void Connection::SendInput(Game::InputData & input)
+void Connection::SendInput(Utils::InputData & input)
 {
 	sf::Packet packet;
 	packet << myId << input.x << input.y << input.angle << input.mouseClick;
@@ -170,4 +102,78 @@ void Connection::SendInput(Game::InputData & input)
 		packet << input.speedRatio.x << input.speedRatio.y << input.bulletId;
 
 	sendingSocket.send(packet, serverIp, serverReceivingPort);
+}
+
+
+
+void Connection::Update()
+{
+	int packetsCount = receivedPackets.size();
+//LOG("packetsCount="<<packetsCount);
+//LOG("Connection::Update - 1 - packetsCount="<<packetsCount);
+	for (auto & packet : receivedPackets)
+	{
+		updateEPlayers(packet);
+		updateBullets(packet);	
+	}
+
+	receivedPackets.clear();
+}
+
+void Connection::updateEPlayers(sf::Packet & packet)
+{
+	int playersCount = 0;
+	packet >> playersCount;
+//	LOG("Connection::updateEPlayer - playersCount="<<playersCount);
+	for (int j = 0; j < playersCount; j++)
+	{
+		int id;
+		float angle;
+		sf::Vector2f pos;
+		packet >> id >> pos.x >> pos.y >> angle;
+		
+		bool do_i_know_this_guy = false;
+		for (auto ePlayer : ePlayers)
+		{
+			if (ePlayer->m_GetId() == id)
+			{
+				ePlayer->m_Update(pos, angle);
+				do_i_know_this_guy = true;
+			}
+		}
+		
+		if (do_i_know_this_guy == false)
+		{
+			ePlayers.push_back(std::shared_ptr<E_Player>(new E_Player(id, pos)));
+		}
+	}
+}
+
+void Connection::updateBullets(sf::Packet & packet)
+{
+	int bulletCount = 0;
+	packet >> bulletCount;
+	//LOG("Connection::updateBullet - bulletCount="<<bulletCount);
+
+	for (int j = 0; j < bulletCount; j++)
+	{
+		int ownerId, bulletId;
+		sf::Vector2f pos, speedRatio;
+		packet >> ownerId >> bulletId >> pos.x >> pos.y >> speedRatio.x >> speedRatio.y;
+
+		bool do_i_know_this_bullet = false;
+		for (auto bullet : bullets)
+		{
+			if (bullet->GetOwnerId() == ownerId && bullet->GetBulletId() == bulletId)
+			{
+				bullet->SetPosition(pos);
+				do_i_know_this_bullet = true;
+			}
+		}	
+
+		if (do_i_know_this_bullet == false)
+		{
+			bullets.push_back(new Bullet(pos, speedRatio, ownerId, bulletId));
+		}
+	}
 }

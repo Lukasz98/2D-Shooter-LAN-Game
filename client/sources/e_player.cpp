@@ -19,6 +19,8 @@ E_Player::~E_Player()
 
 void E_Player::m_Update(sf::Vector2f position, float angle)
 {
+//	if (position == m_position)
+//	LOG("x="<<position.x);
 	m_SetPosition(position);
 	m_Rotate(angle);
 }

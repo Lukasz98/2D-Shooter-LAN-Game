@@ -223,7 +223,7 @@ main.o main.d: main.cpp /usr/include/stdc-predef.h \
  /usr/include/bits/fp-logb.h /usr/include/bits/fp-fast.h \
  /usr/include/bits/mathcalls-helper-functions.h \
  /usr/include/bits/mathcalls.h /usr/include/bits/iscanonical.h \
- headers/room.h /usr/include/c++/7.2.1/thread \
+ headers/log.h headers/room.h /usr/include/c++/7.2.1/thread \
  /usr/include/c++/7.2.1/chrono /usr/include/c++/7.2.1/ratio \
  /usr/include/c++/7.2.1/bits/parse_numbers.h \
  /usr/include/c++/7.2.1/memory \
@@ -238,7 +238,7 @@ main.o main.d: main.cpp /usr/include/stdc-predef.h \
  /usr/include/c++/7.2.1/bits/atomic_base.h \
  /usr/include/c++/7.2.1/bits/atomic_lockfree_defines.h \
  /usr/include/c++/7.2.1/backward/auto_ptr.h headers/bullet.h \
- headers/log.h headers/load_from_files.h /usr/include/c++/7.2.1/fstream \
+ headers/load_from_files.h /usr/include/c++/7.2.1/fstream \
  /usr/include/c++/7.2.1/x86_64-pc-linux-gnu/bits/basic_file.h \
  /usr/include/c++/7.2.1/x86_64-pc-linux-gnu/bits/c++io.h \
  /usr/include/c++/7.2.1/bits/fstream.tcc headers/getch.h \

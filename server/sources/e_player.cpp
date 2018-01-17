@@ -36,9 +36,11 @@ void E_Player::m_Update(sf::Vector2i dir, float angle)
 
 void E_Player::m_Move(int _x, int _y)
 {
+//LOG("EPLAYER:m_Move - x="<<m_position.x);
 	m_position.x += _x * m_speed * m_dt;
 	m_position.y += _y * m_speed * m_dt;
-
+//LOG("EPLAYER:m_Move - x="<<m_position.x<<", speed="<<m_speed<<", dt="<<m_dt);
+//LOG("X="<<m_position.x<<", x="<<_x<<", speed="<<m_speed<<", dt="<<m_dt);
 	setPosition(m_position);
 	m_speedRatio.x = (float)_x;
 	m_speedRatio.y = (float)_y;
