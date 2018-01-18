@@ -69,4 +69,16 @@ wall
 	height: 40
 	texture: img/wall.png
 }
+
+redResp
+{
+    x: 200
+    y: 300
+}
+
+whiteResp
+{
+    x: 200
+    y: 600
+}
 END

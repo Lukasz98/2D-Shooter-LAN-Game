@@ -8,7 +8,7 @@ Game::Game(Connection * connection)
 	this->connection = connection;
 	myId = connection->GetMyId();
 
-	world = WorldLoader::LoadMap("../worlds/testWorld");
+	world = WorldLoader::LoadMap("../worlds/" + connection->GetMapName());
 	world->SetPlayers(connection->GetEPlayers());
 	world->SetBullets(connection->GetBullets());
 

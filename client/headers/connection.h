@@ -25,6 +25,7 @@ public:
 	std::vector<std::shared_ptr<E_Player>> * GetEPlayers() { return & ePlayers; }
 	std::vector<Bullet*> * GetBullets() { return & bullets; }
 	int GetMyId() { return myId; }
+	inline const std::string & GetMapName() { return mapName; }
 
 private:
 	bool connected = false;
@@ -37,6 +38,8 @@ private:
 
 	std::vector<sf::Packet> receivedPackets;
 	sf::UdpSocket receivingSocket, sendingSocket;
+
+	std::string mapName;
 
 	std::vector<std::shared_ptr<E_Player>> ePlayers;
 	std::vector<Bullet*> bullets;

@@ -61,12 +61,13 @@ void Connection::joinServer()
 		sf::Packet serverPacket;
 		tcpSocket.receive(serverPacket);
 
-		int playersCount = 0;
-		serverPacket >> serverReceivingPort >> myId;
+//		int playersCount = 0;
+		int team = 0;
+		serverPacket >> mapName >> serverReceivingPort >> myId >> team;
 
 		sf::Vector2f pos;
 		serverPacket >> pos.x >> pos.y;
-		ePlayers.push_back(std::shared_ptr<E_Player>(new E_Player(myId, pos)));
+		ePlayers.push_back(std::shared_ptr<E_Player>(new E_Player(myId, pos, team)));
 
 		tcpSocket.disconnect();
 
@@ -127,10 +128,10 @@ void Connection::updateEPlayers(sf::Packet & packet)
 //	LOG("Connection::updateEPlayer - playersCount="<<playersCount);
 	for (int j = 0; j < playersCount; j++)
 	{
-		int id;
+		int id, team;
 		float angle;
 		sf::Vector2f pos;
-		packet >> id >> pos.x >> pos.y >> angle;
+		packet >> id >> team >> pos.x >> pos.y >> angle;
 		
 		bool do_i_know_this_guy = false;
 		for (auto ePlayer : ePlayers)
@@ -144,7 +145,7 @@ void Connection::updateEPlayers(sf::Packet & packet)
 		
 		if (do_i_know_this_guy == false)
 		{
-			ePlayers.push_back(std::shared_ptr<E_Player>(new E_Player(id, pos)));
+			ePlayers.push_back(std::shared_ptr<E_Player>(new E_Player(id, pos, team)));
 		}
 	}
 }

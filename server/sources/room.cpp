@@ -25,7 +25,13 @@ Room::Room()
 		joinPort = tcpListener.getLocalPort();
 		LOG("SERVER JOIN TCP PORT: " << joinPort);
 
-		std::thread (waitForPlayers, std::ref(ePlayers), std::ref(state), std::ref(tcpListener), receivingPort, sendingPort).detach();
+waitForPlayersData.receivingPort = receivingPort;
+waitForPlayersData.mapName = mapName;
+waitForPlayersData.redTeam = & redTeam;
+waitForPlayersData.whiteTeam = & whiteTeam;
+
+		std::thread (waitForPlayers, std::ref(ePlayers), std::ref(state), std::ref(tcpListener), std::ref(waitForPlayersData)).detach();
+//		std::thread (waitForPlayers, std::ref(ePlayers), std::ref(state), std::ref(tcpListener), receivingPort, sendingPort, mapName).detach();
 		std::thread (receiveInput, std::ref(ePlayers), std::ref(bullets), std::ref(state), std::ref(receiveSocket)).detach();
 	}
 }
@@ -51,7 +57,8 @@ void Room::loadServerInfo()
 	}
 }
 
-void Room::waitForPlayers(std::vector<std::shared_ptr<E_Player>> & ePlayers, const State & state, sf::TcpListener & tcpListener, int receivingPort, int sendingPort) //thread
+void Room::waitForPlayers(std::vector<std::shared_ptr<E_Player>> & ePlayers, const State & state, sf::TcpListener & tcpListener, WaitForPlayersData & waitForPlayersData) //thread
+//void Room::waitForPlayers(std::vector<std::shared_ptr<E_Player>> & ePlayers, const State & state, sf::TcpListener & tcpListener, int receivingPort, std::string mapName) //thread
 {
 	int id = 1;
 
@@ -72,11 +79,22 @@ void Room::waitForPlayers(std::vector<std::shared_ptr<E_Player>> & ePlayers, con
 
 			packet >> clientIp >> clientPort;
 
-			ePlayers.push_back(std::make_shared<E_Player>(id, clientIp, clientPort));
+			int team = 0;
+			if (*waitForPlayersData.redTeam > *waitForPlayersData.whiteTeam)
+			{
+				team = 1;
+				(*waitForPlayersData.whiteTeam) ++;
+			}
+			else
+			{
+				(*waitForPlayersData.redTeam) ++;
+			}
+			LOG("Room:waitForPlayers - redTeamCount="<<*waitForPlayersData.redTeam);
+			ePlayers.push_back(std::make_shared<E_Player>(id, clientIp, clientPort, team));
 			sf::Vector2f pos = ePlayers.back()->m_GetPosition();
 
 			sf::Packet packetToSend;
-			packetToSend << receivingPort << id;
+			packetToSend << waitForPlayersData.mapName << waitForPlayersData.receivingPort << id << team;
 			packetToSend << pos.x << pos.y;
 			socket.send(packetToSend);
 
@@ -146,7 +164,7 @@ void Room::SendData()
 	for (auto player : ePlayers)
 	{
 	//LOG("Room:SendData - X="<<player->m_GetPosition().x);
-		packet << player->m_GetId() << player->m_GetPosition().x << player->m_GetPosition().y << player->m_GetAngle();
+		packet << player->m_GetId() << player->GetTeam() << player->m_GetPosition().x << player->m_GetPosition().y << player->m_GetAngle();
 	}
 
 	packet << (int)bullets.size();

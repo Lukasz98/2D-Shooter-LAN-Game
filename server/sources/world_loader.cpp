@@ -1,7 +1,7 @@
 #include "../headers/world_loader.h"
 
 
-World * WorldLoader::LoadMap(const char *_path)
+World * WorldLoader::LoadMap(std::string _path)
 {
 //LOG("WorldLoader::LoadMap");
 	World * world = new World();
@@ -15,18 +15,18 @@ World * WorldLoader::LoadMap(const char *_path)
 		{
 			*file >> check;
 
-//LOG("WorldLoader::LoadMap - file open");
 			if (check == "floor")
-			{
-//LOG("WorldLoader::LoadMap - floor");
 				world->AddFloor(loadFloor(file));
-			}
 
 			if (check == "wall")
-			{
-//LOG("WorldLoader::LoadMap - wall");
 				world->AddWall(loadWall(file));
-			}
+
+			if (check == "redResp")
+				world->SetRedResp(loadResp(file));
+
+			if (check == "whiteResp")
+				world->SetWhiteResp(loadResp(file));
+
 		}
 		file->close();
 	}
@@ -99,4 +99,22 @@ Wall * WorldLoader::loadWall(std::fstream * _file)
 	return wall;
 }
 
+sf::Vector2f WorldLoader::loadResp(std::fstream * _file)
+{
+	sf::Vector2f result;
+	
+	std::string check("");
+	*_file >> check; // going on braces
+	*_file >> check; // going on x
+	while (check != "}")
+	{
+		if (check == "x:")
+			*_file >> result.x;
+		if (check == "y:")
+			*_file >> result.y;
 
+		*_file >> check;
+	}
+	
+	return result;
+}

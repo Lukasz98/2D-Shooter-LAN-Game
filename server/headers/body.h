@@ -7,7 +7,7 @@
 class Body// : public sf::RectangleShape
 {
 public:
-	Body(sf::Vector2f _pos);
+	Body(int team);
 	~Body();
 
 	void m_Rotate(sf::Vector2f _dir);
@@ -24,6 +24,10 @@ public:
 
 	virtual inline const int m_GetID() { return -1; }
 
+
+	static sf::Vector2f RED_RESP;
+	static sf::Vector2f WHITE_RESP;
+
 protected:
 	sf::Vector2f m_position, m_direction, m_spawnPos;
 	sf::Vector2f m_size;
@@ -31,5 +35,6 @@ protected:
 	sf::Vector2f m_speedRatio;
 	float m_dt;
 	float m_hp;
+	int team;
 };
 

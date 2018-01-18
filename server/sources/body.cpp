@@ -1,11 +1,25 @@
 #include "../headers/body.h"
 
-Body::Body(sf::Vector2f _pos)
+
+sf::Vector2f Body::RED_RESP = sf::Vector2f();
+sf::Vector2f Body::WHITE_RESP = sf::Vector2f();
+
+Body::Body(int team)
 {
-	m_position = _pos;
-	m_spawnPos = _pos;
+	this->team = team;
+	if (team == 0)
+	{
+		m_position = RED_RESP;
+		m_spawnPos = RED_RESP;
+	}
+	else
+	{
+		m_position = WHITE_RESP;
+		m_spawnPos = WHITE_RESP;
+	}
 	m_hp = 100.0f;
 	m_angle = 0.0f;
+
 //	setPosition(m_position);
 }
 

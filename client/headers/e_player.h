@@ -9,7 +9,7 @@ class E_Player : public Body
 {
 public:
 	E_Player(const E_Player &) = delete;
-	E_Player(int _id, sf::Vector2f pos);
+	E_Player(int _id, sf::Vector2f pos, int team);
 	~E_Player();
 
 	//void m_Update(sf::Packet _packet);
@@ -27,7 +27,7 @@ public:
 
 private:
 	sf::Texture m_texture;
-	int m_id;//, m_port;
+	int m_id, team;//, m_port;
 	//std::string m_ip;
 
 };

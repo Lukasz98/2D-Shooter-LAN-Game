@@ -1,7 +1,7 @@
 #include "../headers/e_player.h"
 
-E_Player::E_Player(int _id, std::string _ip, int _port)
-: Body(sf::Vector2f(200.0f * (_id + 1), 300.0f))
+E_Player::E_Player(int _id, std::string _ip, int _port, int team)
+: Body(team)
 {
 	m_id = _id;
 	m_ip = _ip;

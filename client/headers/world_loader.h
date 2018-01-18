@@ -15,7 +15,7 @@
 class WorldLoader
 {
 public:
-	static World * LoadMap(const char *_path);
+	static World * LoadMap(std::string _path);
 
 
 private:

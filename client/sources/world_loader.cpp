@@ -1,7 +1,7 @@
 #include "../headers/world_loader.h"
 
 
-World * WorldLoader::LoadMap(const char *_path)
+World * WorldLoader::LoadMap(std::string _path)
 {
 	World * world = new World();
 

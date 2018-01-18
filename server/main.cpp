@@ -39,9 +39,10 @@ void game(Room & room)
 //	std::vector<Bullet*> * bullets = room.GetBullets();
 
 	Game::Time time;
-World * world = WorldLoader::LoadMap("../worlds/testWorld");
-world->SetPlayers(room.GetPlayers());
-world->SetBullets(room.GetBullets());
+
+	World * world = WorldLoader::LoadMap("../worlds/" + room.GetMapName());
+	world->SetPlayers(room.GetPlayers());
+	world->SetBullets(room.GetBullets());
 
 	while (!kbhit() || room.GetState() != RUNNING)
 	{

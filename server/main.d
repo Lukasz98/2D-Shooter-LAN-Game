@@ -212,9 +212,18 @@ main.o main.d: main.cpp /usr/include/stdc-predef.h \
  /usr/include/SFML/Graphics/Shader.hpp \
  /usr/include/SFML/Graphics/Glsl.hpp /usr/include/SFML/Graphics/Glsl.inl \
  /usr/include/SFML/Graphics/Sprite.hpp \
- /usr/include/SFML/Graphics/Text.hpp headers/e_player.h \
- /usr/include/SFML/Network.hpp /usr/include/SFML/Network/Ftp.hpp \
- /usr/include/SFML/Network/Export.hpp \
+ /usr/include/SFML/Graphics/Text.hpp headers/body.h headers/math_calc.h \
+ /usr/include/c++/7.2.1/math.h /usr/include/c++/7.2.1/cmath \
+ /usr/include/math.h /usr/include/bits/math-vector.h \
+ /usr/include/bits/libm-simd-decl-stubs.h /usr/include/bits/huge_val.h \
+ /usr/include/bits/huge_val_flt128.h /usr/include/bits/huge_valf.h \
+ /usr/include/bits/huge_vall.h /usr/include/bits/inf.h \
+ /usr/include/bits/nan.h /usr/include/bits/flt-eval-method.h \
+ /usr/include/bits/fp-logb.h /usr/include/bits/fp-fast.h \
+ /usr/include/bits/mathcalls-helper-functions.h \
+ /usr/include/bits/mathcalls.h /usr/include/bits/iscanonical.h \
+ headers/e_player.h /usr/include/SFML/Network.hpp \
+ /usr/include/SFML/Network/Ftp.hpp /usr/include/SFML/Network/Export.hpp \
  /usr/include/SFML/Network/TcpSocket.hpp \
  /usr/include/SFML/Network/Socket.hpp \
  /usr/include/SFML/Network/SocketHandle.hpp \
@@ -223,19 +232,9 @@ main.o main.d: main.cpp /usr/include/stdc-predef.h \
  /usr/include/SFML/Network/Packet.hpp \
  /usr/include/SFML/Network/SocketSelector.hpp \
  /usr/include/SFML/Network/TcpListener.hpp \
- /usr/include/SFML/Network/UdpSocket.hpp headers/body.h \
- headers/math_calc.h /usr/include/c++/7.2.1/math.h \
- /usr/include/c++/7.2.1/cmath /usr/include/math.h \
- /usr/include/bits/math-vector.h /usr/include/bits/libm-simd-decl-stubs.h \
- /usr/include/bits/huge_val.h /usr/include/bits/huge_val_flt128.h \
- /usr/include/bits/huge_valf.h /usr/include/bits/huge_vall.h \
- /usr/include/bits/inf.h /usr/include/bits/nan.h \
- /usr/include/bits/flt-eval-method.h /usr/include/bits/fp-logb.h \
- /usr/include/bits/fp-fast.h \
- /usr/include/bits/mathcalls-helper-functions.h \
- /usr/include/bits/mathcalls.h /usr/include/bits/iscanonical.h \
- headers/log.h headers/bullet.h headers/map_object.h headers/wall.h \
- headers/floor.h headers/world_loader.h /usr/include/c++/7.2.1/fstream \
+ /usr/include/SFML/Network/UdpSocket.hpp headers/log.h headers/bullet.h \
+ headers/map_object.h headers/wall.h headers/floor.h \
+ headers/world_loader.h /usr/include/c++/7.2.1/fstream \
  /usr/include/c++/7.2.1/x86_64-pc-linux-gnu/bits/basic_file.h \
  /usr/include/c++/7.2.1/x86_64-pc-linux-gnu/bits/c++io.h \
  /usr/include/c++/7.2.1/bits/fstream.tcc headers/room.h \
