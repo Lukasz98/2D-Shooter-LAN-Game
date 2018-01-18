@@ -4,9 +4,11 @@
 
 /client/*.d
 /server/*.d
+/client/sources/*.d
+/server/sources/*.d
 
-/client/*.o
-/server/*.o
+/client/sources/*.o
+/server/sources/*.o
 
 /client/*.so
 /server/*.so
