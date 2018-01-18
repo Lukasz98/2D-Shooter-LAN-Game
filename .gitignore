@@ -1,6 +1,8 @@
 .directory
+/*/.directory
 *.d
 /*/*.d
+/*/*.o
 client/*.d
 /server/*.d
 
