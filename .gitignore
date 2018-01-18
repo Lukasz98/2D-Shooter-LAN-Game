@@ -2,13 +2,11 @@
 /client/.directory
 /server/.directory
 
-*.d
 /client/*.d
 /server/*.d
 
 /client/*.o
 /server/*.o
 
-
-/client/sources/*.d
-server/sources/*.d
+/client/*.so
+/server/*.so
