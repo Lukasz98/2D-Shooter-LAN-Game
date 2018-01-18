@@ -1,3 +1,4 @@
+.directory
 *.d
 /*/*.d
 client/*.d
