@@ -1,10 +1,14 @@
 .directory
-/*/.directory
+/client/.directory
+/server/.directory
+
 *.d
-/*/*.d
-/*/*.o
-client/*.d
+/client/*.d
 /server/*.d
+
+/client/*.o
+/server/*.o
+
 
 /client/sources/*.d
 server/sources/*.d

@@ -1,7 +1,0 @@
-*.d
-/*/*.d
-client/*.d
-/server/*.d
-
-/client/sources/*.d
-server/sources/*.d
