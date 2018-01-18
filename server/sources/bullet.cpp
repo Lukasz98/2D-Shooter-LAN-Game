@@ -10,9 +10,9 @@ Bullet::Bullet(sf::Vector2f _pos, sf::Vector2f speedRatio, int ownerId, int bull
 	m_power = 2.0f;
 
 	m_speedRatio = speedRatio;
-
-	setRadius(15.0f);
-	setPosition(m_position);
+radius = 15.0f;
+//	setRadius(15.0f);
+//	setPosition(m_position);
 }
 
 Bullet::~Bullet()
@@ -30,12 +30,49 @@ bool Bullet::m_Update(float _dt)
 
 	//LOG("pos=" << m_position.x << ", ratio=" << m_speedRatio.x << ", dt=" << _dt);
 
-	setPosition(m_position);
+//	setPosition(m_position);
 
 	if (m_power <= 0.0f)
 		return false;
 	return true;
 }
+
+void Bullet::Overlaps(const MapObject * object)
+{
+	if (isCollision(object->GetPosition(), object->GetSize()))
+	{
+		m_CollisionReact(10.0f);
+	}
+}
+
+void Bullet::Overlaps(std::shared_ptr<E_Player> ePlayer)
+{
+	if (ePlayer->m_GetId() == ownerId)
+		return;
+		
+	if (isCollision(ePlayer->m_GetPosition(), ePlayer->m_GetSize()))
+	{
+		m_CollisionReact(10.0f);
+		ePlayer->m_Damage(51.0f);
+	}
+}
+
+bool Bullet::isCollision(sf::Vector2f objectPos, sf::Vector2f objectSize)
+{
+	bool collision = true;
+	
+	if (m_position.x > objectPos.x + objectSize.x)
+		collision = false;
+	if (m_position.x + radius * 2 < objectPos.x)
+		collision = false;
+	if (m_position.y > objectPos.y + objectSize.y)
+		collision = false;
+	if (m_position.y +  radius * 2 < objectPos.y)
+		collision = false;
+	
+	return collision;
+}
+
 
 
 void Bullet::m_CollisionReact(float _power)

@@ -28,11 +28,11 @@ Game::~Game()
 
 void Game::play()
 {
-	LOG("PLAY");
+//	LOG("PLAY");
 	while (connection->isConnected() && window.isOpen())
 //	while (window.isOpen())
 	{
-	LOG("PLAY");
+//	LOG("PLAY");
 		connection->Update();
 
 		playerInput();

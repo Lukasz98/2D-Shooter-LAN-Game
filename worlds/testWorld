@@ -69,11 +69,4 @@ wall
 	height: 40
 	texture: img/wall.png
 }
-
-enemy
-{
-	x: 1300
-	y: 250
-	texture: img/enemy.png
-}
 END

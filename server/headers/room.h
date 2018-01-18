@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <thread>
+#include <memory>
 
 #include <SFML/Network.hpp>
 #include <SFML/System/Vector2.hpp>
@@ -23,12 +24,12 @@ public:
 	void SendData();
 
 	inline State GetState() { return state; }
-	std::vector<E_Player*> & GetPlayers() { return ePlayers; }
-	std::vector<Bullet*> * GetBullets() { return & bullets; }
+	std::vector<std::shared_ptr<E_Player>> * GetPlayers() { return & ePlayers; }
+	std::vector<std::shared_ptr<Bullet>> * GetBullets() { return & bullets; }
 
 private:
-	std::vector<E_Player*> ePlayers;
-	std::vector<Bullet*> bullets;
+	std::vector<std::shared_ptr<E_Player>> ePlayers;
+	std::vector<std::shared_ptr<Bullet>> bullets;
 	
 	std::string ip;
 	int joinPort, receivingPort, sendingPort;
@@ -42,6 +43,6 @@ int sendingUpdatesCounter = 0;
 
 
 	void loadServerInfo();
-	static void waitForPlayers(std::vector<E_Player*> & ePlayers, std::vector<Bullet*> & bullets, const State & state, sf::TcpListener & tcpListener, int receivingPort, int sendingPort); //thread
-	static void receiveInput(std::vector<E_Player*> & ePlayers, std::vector<Bullet*> & bullets, const State & state, sf::UdpSocket & socket); //thread
+	static void waitForPlayers(std::vector<std::shared_ptr<E_Player>> & ePlayers, const State & state, sf::TcpListener & tcpListener, int receivingPort, int sendingPort); //thread
+	static void receiveInput(std::vector<std::shared_ptr<E_Player>> & ePlayers, std::vector<std::shared_ptr<Bullet>> & bullets, const State & state, sf::UdpSocket & socket); //thread
 };

@@ -1,10 +1,10 @@
 #pragma once
 #include <iostream>
-#include <SFML/Graphics.hpp>
-#include <SFML/System/Vector2.hpp>
+//#include <SFML/Graphics.hpp>
+//#include <SFML/System/Vector2.hpp>
 #include "math_calc.h"
 
-class Body : public sf::RectangleShape
+class Body// : public sf::RectangleShape
 {
 public:
 	Body(sf::Vector2f _pos);
@@ -19,6 +19,7 @@ public:
 	void m_Damage(float _damage);
 
 	inline sf::Vector2f m_GetPosition() { return m_position; }
+	inline sf::Vector2f m_GetSize() { return m_size; }
 	inline float m_GetAngle() { return m_angle; }
 
 	virtual inline const int m_GetID() { return -1; }

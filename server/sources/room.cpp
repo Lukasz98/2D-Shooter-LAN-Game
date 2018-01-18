@@ -25,7 +25,7 @@ Room::Room()
 		joinPort = tcpListener.getLocalPort();
 		LOG("SERVER JOIN TCP PORT: " << joinPort);
 
-		std::thread (waitForPlayers, std::ref(ePlayers), std::ref(bullets), std::ref(state), std::ref(tcpListener), receivingPort, sendingPort).detach();
+		std::thread (waitForPlayers, std::ref(ePlayers), std::ref(state), std::ref(tcpListener), receivingPort, sendingPort).detach();
 		std::thread (receiveInput, std::ref(ePlayers), std::ref(bullets), std::ref(state), std::ref(receiveSocket)).detach();
 	}
 }
@@ -51,7 +51,7 @@ void Room::loadServerInfo()
 	}
 }
 
-void Room::waitForPlayers(std::vector<E_Player*> & ePlayers, std::vector<Bullet*> & bullets, const State & state, sf::TcpListener & tcpListener, int receivingPort, int sendingPort) //thread
+void Room::waitForPlayers(std::vector<std::shared_ptr<E_Player>> & ePlayers, const State & state, sf::TcpListener & tcpListener, int receivingPort, int sendingPort) //thread
 {
 	int id = 1;
 
@@ -72,7 +72,7 @@ void Room::waitForPlayers(std::vector<E_Player*> & ePlayers, std::vector<Bullet*
 
 			packet >> clientIp >> clientPort;
 
-			ePlayers.push_back(new E_Player(id, clientIp, clientPort));
+			ePlayers.push_back(std::make_shared<E_Player>(id, clientIp, clientPort));
 			sf::Vector2f pos = ePlayers.back()->m_GetPosition();
 
 			sf::Packet packetToSend;
@@ -90,7 +90,7 @@ void Room::waitForPlayers(std::vector<E_Player*> & ePlayers, std::vector<Bullet*
 }
 
 //static void Room::receiveInput(std::vector<E_Player*> & ePlayers, const State & state, sf::UdpSocket & socket) //thread
-void Room::receiveInput(std::vector<E_Player*> & ePlayers, std::vector<Bullet*> & bullets, const State & state, sf::UdpSocket & socket) //thread
+void Room::receiveInput(std::vector<std::shared_ptr<E_Player>> & ePlayers, std::vector<std::shared_ptr<Bullet>> & bullets, const State & state, sf::UdpSocket & socket) //thread
 {
 	int allPacketsCount = 0;
 	while (state == RUNNING)
@@ -122,7 +122,7 @@ void Room::receiveInput(std::vector<E_Player*> & ePlayers, std::vector<Bullet*> 
 					int bulletId;
 					sf::Vector2f speedRatio;
 					packet >> speedRatio.x >> speedRatio.y >> bulletId;
-					bullets.push_back(new Bullet(ePlayers[i]->m_GetPosition(), speedRatio, id, bulletId));
+					bullets.push_back(std::make_shared<Bullet>(ePlayers[i]->m_GetPosition(), speedRatio, id, bulletId));
 					LOG("Room:receiveInput id="<<id<<", bulletid="<<bulletId);
 				}
 				// break;

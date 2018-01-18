@@ -3,6 +3,8 @@
 
 #include <SFML/System/Clock.hpp>
 
+#include "headers/world.h"
+#include "headers/world_loader.h"
 #include "headers/e_player.h"
 #include "headers/room.h"
 #include "headers/kbhit.h"
@@ -31,31 +33,28 @@ int main()
 void game(Room & room)
 {
 	std::cout << "Game is running" << std::endl;
-	std::cout << "Pressing any key to shutdown server" << std::endl;
+	std::cout << "Press any key to shutdown server" << std::endl;
 
-	std::vector<E_Player*> & ePlayers = room.GetPlayers();
-	std::vector<Bullet*> * bullets = room.GetBullets();
+//	std::vector<E_Player*> & ePlayers = room.GetPlayers();
+//	std::vector<Bullet*> * bullets = room.GetBullets();
 
 	Game::Time time;
+World * world = WorldLoader::LoadMap("../worlds/testWorld");
+world->SetPlayers(room.GetPlayers());
+world->SetBullets(room.GetBullets());
 
 	while (!kbhit() || room.GetState() != RUNNING)
 	{
-		for (int i = 0; i < ePlayers.size(); i++)
-		{
-			ePlayers[i]->m_SetDt(time.GetDt());
-		}
 
-		for (auto bullet : *bullets)
-		{
-			bullet->m_Update(time.GetDt());
-		}
+		world->Update(time.GetDt());
+	//return;
 		
 
 		room.SendData();
 		time.Update();
 
 	}
-
+delete world;
 
 	//TO DO
 	//state = stop

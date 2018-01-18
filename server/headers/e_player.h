@@ -10,9 +10,7 @@ public:
 	E_Player(int _id, std::string _ip, int _port);
 	~E_Player();
 
-	//void m_Update(sf::Packet _packet);
 	void m_Update(sf::Vector2i dir, float angle);
-	void m_Move(int _x, int _y);
 
 	void m_SetDt(float dt) { m_dt = dt; }
 
@@ -23,8 +21,8 @@ public:
 	inline const int m_GetID() { return m_id; }
 
 private:
-	sf::Texture m_texture;
 	int m_id, m_port;
 	std::string m_ip;
 
+	void m_move(int _x, int _y);
 };

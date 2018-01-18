@@ -121,7 +121,24 @@ main.o main.d: main.cpp /usr/include/stdc-predef.h \
  /usr/include/c++/7.2.1/bits/vector.tcc \
  /usr/include/SFML/System/Clock.hpp /usr/include/SFML/System/Export.hpp \
  /usr/include/SFML/Config.hpp /usr/include/SFML/System/Time.hpp \
- headers/e_player.h /usr/include/SFML/Network.hpp \
+ headers/world.h /usr/include/c++/7.2.1/memory \
+ /usr/include/c++/7.2.1/bits/stl_tempbuf.h \
+ /usr/include/c++/7.2.1/bits/stl_raw_storage_iter.h \
+ /usr/include/c++/7.2.1/ext/concurrence.h \
+ /usr/include/c++/7.2.1/bits/uses_allocator.h \
+ /usr/include/c++/7.2.1/bits/unique_ptr.h /usr/include/c++/7.2.1/utility \
+ /usr/include/c++/7.2.1/bits/stl_relops.h /usr/include/c++/7.2.1/tuple \
+ /usr/include/c++/7.2.1/array /usr/include/c++/7.2.1/bits/invoke.h \
+ /usr/include/c++/7.2.1/bits/shared_ptr.h \
+ /usr/include/c++/7.2.1/bits/shared_ptr_base.h \
+ /usr/include/c++/7.2.1/bits/allocated_ptr.h \
+ /usr/include/c++/7.2.1/bits/refwrap.h \
+ /usr/include/c++/7.2.1/ext/aligned_buffer.h \
+ /usr/include/c++/7.2.1/bits/shared_ptr_atomic.h \
+ /usr/include/c++/7.2.1/bits/atomic_base.h \
+ /usr/include/c++/7.2.1/bits/atomic_lockfree_defines.h \
+ /usr/include/c++/7.2.1/backward/auto_ptr.h \
+ /usr/include/SFML/Graphics.hpp /usr/include/SFML/Window.hpp \
  /usr/include/SFML/System.hpp /usr/include/SFML/System/Err.hpp \
  /usr/include/SFML/System/FileInputStream.hpp \
  /usr/include/SFML/System/InputStream.hpp \
@@ -130,12 +147,9 @@ main.o main.d: main.cpp /usr/include/stdc-predef.h \
  /usr/include/SFML/System/MemoryInputStream.hpp \
  /usr/include/SFML/System/Mutex.hpp /usr/include/SFML/System/Sleep.hpp \
  /usr/include/SFML/System/String.hpp /usr/include/SFML/System/Utf.hpp \
- /usr/include/c++/7.2.1/algorithm /usr/include/c++/7.2.1/utility \
- /usr/include/c++/7.2.1/bits/stl_relops.h \
- /usr/include/c++/7.2.1/bits/stl_algo.h \
+ /usr/include/c++/7.2.1/algorithm /usr/include/c++/7.2.1/bits/stl_algo.h \
  /usr/include/c++/7.2.1/bits/algorithmfwd.h \
  /usr/include/c++/7.2.1/bits/stl_heap.h \
- /usr/include/c++/7.2.1/bits/stl_tempbuf.h \
  /usr/include/c++/7.2.1/bits/uniform_int_dist.h \
  /usr/include/c++/7.2.1/limits /usr/include/c++/7.2.1/locale \
  /usr/include/c++/7.2.1/bits/locale_facets_nonio.h \
@@ -148,11 +162,8 @@ main.o main.d: main.cpp /usr/include/stdc-predef.h \
  /usr/include/c++/7.2.1/bits/stringfwd.h \
  /usr/include/c++/7.2.1/bits/allocator.h \
  /usr/include/c++/7.2.1/bits/codecvt.h \
- /usr/include/c++/7.2.1/bits/unique_ptr.h /usr/include/c++/7.2.1/tuple \
- /usr/include/c++/7.2.1/array \
- /usr/include/c++/7.2.1/bits/uses_allocator.h \
- /usr/include/c++/7.2.1/bits/invoke.h /usr/include/SFML/System/Utf.inl \
- /usr/include/c++/7.2.1/iterator \
+ /usr/include/c++/7.2.1/bits/unique_ptr.h \
+ /usr/include/SFML/System/Utf.inl /usr/include/c++/7.2.1/iterator \
  /usr/include/c++/7.2.1/bits/stream_iterator.h \
  /usr/include/SFML/System/String.inl /usr/include/SFML/System/Thread.hpp \
  /usr/include/SFML/System/Thread.inl \
@@ -162,22 +173,7 @@ main.o main.d: main.cpp /usr/include/stdc-predef.h \
  /usr/include/SFML/System/Vector2.hpp \
  /usr/include/SFML/System/Vector2.inl \
  /usr/include/SFML/System/Vector3.hpp \
- /usr/include/SFML/System/Vector3.inl /usr/include/SFML/Network/Ftp.hpp \
- /usr/include/SFML/Network/Export.hpp \
- /usr/include/SFML/Network/TcpSocket.hpp \
- /usr/include/SFML/Network/Socket.hpp \
- /usr/include/SFML/Network/SocketHandle.hpp \
- /usr/include/SFML/Network/Http.hpp \
- /usr/include/SFML/Network/IpAddress.hpp /usr/include/c++/7.2.1/map \
- /usr/include/c++/7.2.1/bits/stl_tree.h \
- /usr/include/c++/7.2.1/ext/aligned_buffer.h \
- /usr/include/c++/7.2.1/bits/stl_map.h \
- /usr/include/c++/7.2.1/bits/stl_multimap.h \
- /usr/include/SFML/Network/Packet.hpp \
- /usr/include/SFML/Network/SocketSelector.hpp \
- /usr/include/SFML/Network/TcpListener.hpp \
- /usr/include/SFML/Network/UdpSocket.hpp headers/body.h \
- /usr/include/SFML/Graphics.hpp /usr/include/SFML/Window.hpp \
+ /usr/include/SFML/System/Vector3.inl \
  /usr/include/SFML/Window/Context.hpp /usr/include/SFML/Window/Export.hpp \
  /usr/include/SFML/Window/GlResource.hpp \
  /usr/include/SFML/Window/ContextSettings.hpp \
@@ -204,7 +200,10 @@ main.o main.d: main.cpp /usr/include/stdc-predef.h \
  /usr/include/SFML/Graphics/ConvexShape.hpp \
  /usr/include/SFML/Graphics/Font.hpp /usr/include/SFML/Graphics/Glyph.hpp \
  /usr/include/SFML/Graphics/Texture.hpp \
- /usr/include/SFML/Graphics/Image.hpp \
+ /usr/include/SFML/Graphics/Image.hpp /usr/include/c++/7.2.1/map \
+ /usr/include/c++/7.2.1/bits/stl_tree.h \
+ /usr/include/c++/7.2.1/bits/stl_map.h \
+ /usr/include/c++/7.2.1/bits/stl_multimap.h \
  /usr/include/SFML/Graphics/RectangleShape.hpp \
  /usr/include/SFML/Graphics/RenderTarget.hpp \
  /usr/include/SFML/Graphics/View.hpp \
@@ -213,40 +212,40 @@ main.o main.d: main.cpp /usr/include/stdc-predef.h \
  /usr/include/SFML/Graphics/Shader.hpp \
  /usr/include/SFML/Graphics/Glsl.hpp /usr/include/SFML/Graphics/Glsl.inl \
  /usr/include/SFML/Graphics/Sprite.hpp \
- /usr/include/SFML/Graphics/Text.hpp headers/math_calc.h \
- /usr/include/c++/7.2.1/math.h /usr/include/c++/7.2.1/cmath \
- /usr/include/math.h /usr/include/bits/math-vector.h \
- /usr/include/bits/libm-simd-decl-stubs.h /usr/include/bits/huge_val.h \
- /usr/include/bits/huge_val_flt128.h /usr/include/bits/huge_valf.h \
- /usr/include/bits/huge_vall.h /usr/include/bits/inf.h \
- /usr/include/bits/nan.h /usr/include/bits/flt-eval-method.h \
- /usr/include/bits/fp-logb.h /usr/include/bits/fp-fast.h \
+ /usr/include/SFML/Graphics/Text.hpp headers/e_player.h \
+ /usr/include/SFML/Network.hpp /usr/include/SFML/Network/Ftp.hpp \
+ /usr/include/SFML/Network/Export.hpp \
+ /usr/include/SFML/Network/TcpSocket.hpp \
+ /usr/include/SFML/Network/Socket.hpp \
+ /usr/include/SFML/Network/SocketHandle.hpp \
+ /usr/include/SFML/Network/Http.hpp \
+ /usr/include/SFML/Network/IpAddress.hpp \
+ /usr/include/SFML/Network/Packet.hpp \
+ /usr/include/SFML/Network/SocketSelector.hpp \
+ /usr/include/SFML/Network/TcpListener.hpp \
+ /usr/include/SFML/Network/UdpSocket.hpp headers/body.h \
+ headers/math_calc.h /usr/include/c++/7.2.1/math.h \
+ /usr/include/c++/7.2.1/cmath /usr/include/math.h \
+ /usr/include/bits/math-vector.h /usr/include/bits/libm-simd-decl-stubs.h \
+ /usr/include/bits/huge_val.h /usr/include/bits/huge_val_flt128.h \
+ /usr/include/bits/huge_valf.h /usr/include/bits/huge_vall.h \
+ /usr/include/bits/inf.h /usr/include/bits/nan.h \
+ /usr/include/bits/flt-eval-method.h /usr/include/bits/fp-logb.h \
+ /usr/include/bits/fp-fast.h \
  /usr/include/bits/mathcalls-helper-functions.h \
  /usr/include/bits/mathcalls.h /usr/include/bits/iscanonical.h \
- headers/log.h headers/room.h /usr/include/c++/7.2.1/thread \
- /usr/include/c++/7.2.1/chrono /usr/include/c++/7.2.1/ratio \
- /usr/include/c++/7.2.1/bits/parse_numbers.h \
- /usr/include/c++/7.2.1/memory \
- /usr/include/c++/7.2.1/bits/stl_raw_storage_iter.h \
- /usr/include/c++/7.2.1/ext/concurrence.h \
- /usr/include/c++/7.2.1/bits/unique_ptr.h \
- /usr/include/c++/7.2.1/bits/shared_ptr.h \
- /usr/include/c++/7.2.1/bits/shared_ptr_base.h \
- /usr/include/c++/7.2.1/bits/allocated_ptr.h \
- /usr/include/c++/7.2.1/bits/refwrap.h \
- /usr/include/c++/7.2.1/bits/shared_ptr_atomic.h \
- /usr/include/c++/7.2.1/bits/atomic_base.h \
- /usr/include/c++/7.2.1/bits/atomic_lockfree_defines.h \
- /usr/include/c++/7.2.1/backward/auto_ptr.h headers/bullet.h \
- headers/load_from_files.h /usr/include/c++/7.2.1/fstream \
+ headers/log.h headers/bullet.h headers/map_object.h headers/wall.h \
+ headers/floor.h headers/world_loader.h /usr/include/c++/7.2.1/fstream \
  /usr/include/c++/7.2.1/x86_64-pc-linux-gnu/bits/basic_file.h \
  /usr/include/c++/7.2.1/x86_64-pc-linux-gnu/bits/c++io.h \
- /usr/include/c++/7.2.1/bits/fstream.tcc headers/getch.h \
- /usr/include/unistd.h /usr/include/bits/posix_opt.h \
- /usr/include/bits/environments.h /usr/include/bits/confname.h \
- /usr/include/bits/getopt_posix.h /usr/include/bits/getopt_core.h \
- /usr/include/termios.h /usr/include/bits/termios.h \
- /usr/include/sys/ttydefaults.h headers/kbhit.h /usr/include/fcntl.h \
- /usr/include/bits/fcntl.h /usr/include/bits/fcntl-linux.h \
- /usr/include/bits/types/struct_iovec.h /usr/include/linux/falloc.h \
- /usr/include/bits/stat.h headers/time.h
+ /usr/include/c++/7.2.1/bits/fstream.tcc headers/room.h \
+ /usr/include/c++/7.2.1/thread /usr/include/c++/7.2.1/chrono \
+ /usr/include/c++/7.2.1/ratio /usr/include/c++/7.2.1/bits/parse_numbers.h \
+ headers/load_from_files.h headers/getch.h /usr/include/unistd.h \
+ /usr/include/bits/posix_opt.h /usr/include/bits/environments.h \
+ /usr/include/bits/confname.h /usr/include/bits/getopt_posix.h \
+ /usr/include/bits/getopt_core.h /usr/include/termios.h \
+ /usr/include/bits/termios.h /usr/include/sys/ttydefaults.h \
+ headers/kbhit.h /usr/include/fcntl.h /usr/include/bits/fcntl.h \
+ /usr/include/bits/fcntl-linux.h /usr/include/bits/types/struct_iovec.h \
+ /usr/include/linux/falloc.h /usr/include/bits/stat.h headers/time.h
