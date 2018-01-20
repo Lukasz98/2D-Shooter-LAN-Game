@@ -1,6 +1,6 @@
 #include "../headers/time.h"
 
-namespace Game {
+namespace Utils {
 
 Time::Time() 
 {

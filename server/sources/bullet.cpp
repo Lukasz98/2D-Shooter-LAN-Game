@@ -17,7 +17,7 @@ radius = 15.0f;
 
 Bullet::~Bullet()
 {
-
+//LOG("Bullet::destructor");
 }
 
 

@@ -8,15 +8,11 @@ Body::Body(int team)
 {
 	this->team = team;
 	if (team == 0)
-	{
-		m_position = RED_RESP;
 		m_spawnPos = RED_RESP;
-	}
 	else
-	{
-		m_position = WHITE_RESP;
 		m_spawnPos = WHITE_RESP;
-	}
+
+		m_position = m_spawnPos;
 	m_hp = 100.0f;
 	m_angle = 0.0f;
 

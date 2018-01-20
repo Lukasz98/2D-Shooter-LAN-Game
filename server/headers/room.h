@@ -12,6 +12,7 @@
 #include "load_from_files.h"
 #include "log.h"
 #include "getch.h"
+#include "network_event.h"
 
 enum State { RUNNING, STOP, PREPARATION };
 
@@ -31,7 +32,7 @@ public:
 	~Room();
 
 	void SendData();
-	void SendEvent() {}
+	void AddEvent(Event * event) { events.push_back(event); }
 
 	inline State GetState() { return state; }
 	std::vector<std::shared_ptr<E_Player>> * GetPlayers() { return & ePlayers; }
@@ -46,6 +47,8 @@ private:
 	std::vector<std::shared_ptr<E_Player>> ePlayers;
 	std::vector<std::shared_ptr<Bullet>> bullets;
 	
+	std::vector<Event*> events;
+
 	std::string ip;
 	int joinPort, receivingPort, sendingPort;
 	sf::UdpSocket receiveSocket, sendSocket;

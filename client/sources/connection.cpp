@@ -115,7 +115,8 @@ void Connection::Update()
 	for (auto & packet : receivedPackets)
 	{
 		updateEPlayers(packet);
-		updateBullets(packet);	
+		updateBullets(packet);
+		updateEvents(packet);
 	}
 
 	receivedPackets.clear();
@@ -125,7 +126,6 @@ void Connection::updateEPlayers(sf::Packet & packet)
 {
 	int playersCount = 0;
 	packet >> playersCount;
-//	LOG("Connection::updateEPlayer - playersCount="<<playersCount);
 	for (int j = 0; j < playersCount; j++)
 	{
 		int id, team;
@@ -154,7 +154,6 @@ void Connection::updateBullets(sf::Packet & packet)
 {
 	int bulletCount = 0;
 	packet >> bulletCount;
-	//LOG("Connection::updateBullet - bulletCount="<<bulletCount);
 
 	for (int j = 0; j < bulletCount; j++)
 	{
@@ -178,3 +177,47 @@ void Connection::updateBullets(sf::Packet & packet)
 		}
 	}
 }
+
+void Connection::updateEvents(sf::Packet & packet)
+{
+	int eventsCount = 0;
+	packet >> eventsCount;
+
+	for (int i = 0; i < eventsCount; i++)
+	{
+		int t = -1;
+		packet >> t;
+		EventType type = static_cast<EventType> (t);
+		
+		switch (type)
+		{
+			case BULLET_DELETE:
+			{
+				int ownerId = 0, id = 0;
+				packet >> ownerId >> id;
+				for (int b = 0; b < bullets.size(); b++)
+					if (bullets[b]->GetOwnerId() == ownerId && bullets[b]->GetBulletId() == id)
+					{
+						delete bullets[b];
+						bullets.erase(bullets.begin() + b);
+						break;
+					}
+				break;
+			}
+			case PLAYER_DELETE:
+			{	
+				int playerId = 0;
+				packet >> playerId;
+				for (int p = 0; p < ePlayers.size(); p++)
+					if (ePlayers[p]->m_GetId() == playerId)
+					{
+						ePlayers.erase(ePlayers.begin() + p);
+						break;
+					}
+				break;
+			}
+		}
+
+	}
+}
+

@@ -12,7 +12,7 @@ public:
 
 	void m_Update(sf::Vector2i dir, float angle);
 
-	void m_SetDt(float dt) { m_dt = dt; }
+	void m_SetDt(float dt);
 
 	inline int m_GetId() { return m_id; }
 	inline std::string m_GetIp() { return m_ip; }
@@ -20,7 +20,7 @@ public:
 
 	inline const int m_GetID() { return m_id; }
 	inline int GetTeam() { return team; }
-
+	inline bool IsOnline() { return isOnline; }
 
 
 	static sf::Vector2f RED_RESP;
@@ -29,6 +29,9 @@ public:
 private:
 	int m_id, m_port;
 	std::string m_ip;
+
+	float timeFromLastUpdate = 0.0f;
+	bool isOnline = true;
 
 	void m_move(int _x, int _y);
 };

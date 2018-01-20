@@ -141,7 +141,7 @@ void Room::receiveInput(std::vector<std::shared_ptr<E_Player>> & ePlayers, std::
 					sf::Vector2f speedRatio;
 					packet >> speedRatio.x >> speedRatio.y >> bulletId;
 					bullets.push_back(std::make_shared<Bullet>(ePlayers[i]->m_GetPosition(), speedRatio, id, bulletId));
-					LOG("Room:receiveInput id="<<id<<", bulletid="<<bulletId);
+					//LOG("Room:receiveInput id="<<id<<", bulletid="<<bulletId);
 				}
 				// break;
 			}
@@ -177,9 +177,20 @@ void Room::SendData()
 		//LOG("x=" << pos.x  << ", y=" << pos.y << ", x=" << speedRatio.x << ", y=" << speedRatio.y);
 	}
 
+	packet << (int)events.size();
+	for (auto event : events)
+	{
+//		LOG("ROOM:SendData - event proccessing");
+		event->PasteData(packet);
+		delete event;
+	}
+	events.clear();
+
+
 	for (auto player : ePlayers)
 	{
 		sendingUpdatesCounter++;
 		sendSocket.send(packet, player->m_GetIp(), player->m_GetPort());
 	}
+
 }

@@ -16,10 +16,21 @@ E_Player::~E_Player()
 
 }
 
+void E_Player::m_SetDt(float dt)
+{
+	m_dt = dt; 
+	timeFromLastUpdate += m_dt;
+	
+	if (timeFromLastUpdate > 3.0f)
+		isOnline = false;
+}
+
+
 void E_Player::m_Update(sf::Vector2i dir, float angle)
 {
 	m_move(dir.x, dir.y);
 	m_Rotate(angle);
+	timeFromLastUpdate = 0.0f;
 }
 
 void E_Player::m_move(int _x, int _y)

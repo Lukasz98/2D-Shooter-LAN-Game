@@ -34,7 +34,7 @@ Bullet::Bullet(sf::Vector2f _pos, sf::Vector2f speedRatio, int ownerId, int bull
 
 Bullet::~Bullet()
 {
-
+//LOG("Bullet::destructor");
 }
 
 

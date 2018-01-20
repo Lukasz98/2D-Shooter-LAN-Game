@@ -4,7 +4,7 @@
 #include <SFML/System/Clock.hpp>
 #include "log.h"
 
-namespace Game {
+namespace Utils {
 
 class Time
 {
