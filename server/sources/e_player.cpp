@@ -1,14 +1,14 @@
 #include "../headers/e_player.h"
 
-E_Player::E_Player(int _id, std::string _ip, int _port, int team)
+E_Player::E_Player(int id, std::string ip, int port, int team)
 : Body(team)
 {
-	m_id = _id;
-	m_ip = _ip;
-	m_port = _port;
+	this->id = id;
+	this->ip = ip;
+	this->port = port;
 
-	m_speed = 300.0f;
-	m_size = sf::Vector2f(70.0f, 70.0f);
+	speed = 300.0f;
+	size = sf::Vector2f(70.0f, 70.0f);
 }
 
 E_Player::~E_Player()
@@ -16,30 +16,27 @@ E_Player::~E_Player()
 
 }
 
-void E_Player::m_SetDt(float dt)
+void E_Player::SetDt(float dt)
 {
-	m_dt = dt; 
-	timeFromLastUpdate += m_dt;
+	this->dt = dt; 
+	timeFromLastUpdate += dt;
 	
 	if (timeFromLastUpdate > 3.0f)
 		isOnline = false;
 }
 
 
-void E_Player::m_Update(sf::Vector2i dir, float angle)
+void E_Player::Update(sf::Vector2i dir, float angle)
 {
-	m_move(dir.x, dir.y);
-	m_Rotate(angle);
+	move(dir.x, dir.y);
+	Rotate(angle);
 	timeFromLastUpdate = 0.0f;
 }
 
-void E_Player::m_move(int _x, int _y)
+void E_Player::move(int x, int y)
 {
-//LOG("EPLAYER:m_Move - x="<<m_position.x);
-	m_position.x += _x * m_speed * m_dt;
-	m_position.y += _y * m_speed * m_dt;
-//LOG("EPLAYER:m_Move - x="<<m_position.x<<", speed="<<m_speed<<", dt="<<m_dt);
-//LOG("X="<<m_position.x<<", x="<<_x<<", speed="<<m_speed<<", dt="<<m_dt);
-	m_speedRatio.x = (float)_x;
-	m_speedRatio.y = (float)_y;
+	position.x += x * speed * dt;
+	position.y += y * speed * dt;
+	speedRatio.x = static_cast<float> (x);
+	speedRatio.y = static_cast<float> (y);
 }

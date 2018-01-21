@@ -1,6 +1,6 @@
 #pragma once
-#include <iostream>
 #include "map_object.h"
+#include "log.h"
 
 class Floor : public MapObject
 {

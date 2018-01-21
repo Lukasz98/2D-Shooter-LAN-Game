@@ -11,7 +11,6 @@
 #include "bullet.h"
 #include "load_from_files.h"
 #include "log.h"
-#include "getch.h"
 #include "network_event.h"
 
 enum State { RUNNING, STOP, PREPARATION };
@@ -33,8 +32,9 @@ public:
 
 	void SendData();
 	void AddEvent(Event * event) { events.push_back(event); }
+	void DeletePlayer(int i);
 
-	inline State GetState() { return state; }
+	inline const State & GetState() { return state; }
 	std::vector<std::shared_ptr<E_Player>> * GetPlayers() { return & ePlayers; }
 	std::vector<std::shared_ptr<Bullet>> * GetBullets() { return & bullets; }
 
@@ -57,13 +57,10 @@ private:
 
 	sf::TcpListener tcpListener;
 
-int sendingUpdatesCounter = 0;
-
-WaitForPlayersData waitForPlayersData;
+	WaitForPlayersData waitForPlayersData;
 
 	void loadServerInfo();
 
 	static void waitForPlayers(std::vector<std::shared_ptr<E_Player>> & ePlayers, const State & state, sf::TcpListener & tcpListener, WaitForPlayersData & waitForPlayersData); //thread
-//	static void waitForPlayers(std::vector<std::shared_ptr<E_Player>> & ePlayers, const State & state, sf::TcpListener & tcpListener, int receivingPort, std::string mapName); //thread
 	static void receiveInput(std::vector<std::shared_ptr<E_Player>> & ePlayers, std::vector<std::shared_ptr<Bullet>> & bullets, const State & state, sf::UdpSocket & socket); //thread
 };

@@ -8,28 +8,23 @@ MapObject::~MapObject()
 {
 }
 
-bool MapObject::m_Overlaps(const std::shared_ptr<Body> _body)
+bool MapObject::Overlaps(const std::shared_ptr<Body> body)
 {
-	sf::Vector2f bodyPos = _body->m_GetPosition();
-	sf::Vector2f bodySize = _body->m_GetSize();
+	sf::Vector2f bodyPos = body->GetPosition();
+	sf::Vector2f bodySize = body->GetSize();
 	bodyPos.x -= bodySize.x /2;
 	bodyPos.y -= bodySize.y /2;
 	
-//	LOG("MAPOBJECT:OVERLAPS");
-
 	bool collision = true;
 
-	if (bodyPos.x > m_pos.x + m_size.x)
+	if (bodyPos.x > pos.x + size.x)
 		collision = false;
-	if (bodyPos.x + bodySize.x < m_pos.x)
+	if (bodyPos.x + bodySize.x < pos.x)
 		collision = false;
-	if (bodyPos.y > m_pos.y + m_size.y)
+	if (bodyPos.y > pos.y + size.y)
 		collision = false;
-	if (bodyPos.y + bodySize.y < m_pos.y)
+	if (bodyPos.y + bodySize.y < pos.y)
 		collision = false;
-
-//	LOG("MAPOBJECT:OVERLAPS " << collision);
-
 
 	return collision;
 }

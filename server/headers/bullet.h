@@ -1,7 +1,5 @@
 #pragma once
-//#include <iostream>
 #include <memory>
-//#include <SFML/Graphics.hpp>
 #include <SFML/System/Vector2.hpp>
 #include "math_calc.h"
 #include "e_player.h"
@@ -9,39 +7,35 @@
 #include "log.h"
 
 
-class Bullet// : public sf::CircleShape
+class Bullet
 {
 public:
-
-	Bullet(sf::Vector2f _pos, sf::Vector2f speedRatio, int ownerId, int bulletId);
+	Bullet(sf::Vector2f pos, sf::Vector2f speedRatio, int ownerId, int bulletId);
 	~Bullet();
 
-
-	bool m_Update(float _dt);
-	void m_CollisionReact(float _power);
-	//bool m_Overlaps(const sf::RectangleShape * _rectShape);
+	bool Update(float dt);
+	void CollisionReact(float power);
 
 	void Overlaps(const MapObject * object);
 	void Overlaps(std::shared_ptr<E_Player> ePlayer);
 	
-	inline sf::Vector2f GetPosition() { return m_position; }
-	inline sf::Vector2f GetSpeedRatio() { return m_speedRatio; }
-	inline int GetOwnerId() { return ownerId; }
-	inline int GetBulletId() { return bulletId; }
+	inline const sf::Vector2f & GetPosition() { return position; }
+	inline const sf::Vector2f & GetSpeedRatio() { return speedRatio; }
+	inline const int & GetOwnerId() { return ownerId; }
+	inline const int & GetBulletId() { return bulletId; }
 
 
 
 private:
-//	sf::Texture m_texture;
-	sf::Vector2f m_position, m_speedRatio;
-	float m_dt;
-	float m_speed;
-	float m_power;
+	sf::Vector2f position, speedRatio;
+	float dt;
+	float speed;
+	float power;
 	float radius;
 	int ownerId, bulletId;
 
-	void m_pickDirection();
-	void m_move();
+	void pickDirection();
+	void move();
 	bool isCollision(sf::Vector2f objectPos, sf::Vector2f objectSize);
 };
 

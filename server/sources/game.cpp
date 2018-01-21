@@ -32,16 +32,16 @@ void Game::update()
 {
 	for (auto ePlayer : *ePlayers)
 	{
-		ePlayer->m_SetDt(time.GetDt());
+		ePlayer->SetDt(time.GetDt());
 	}
 
 	for (size_t i = 0; i < ePlayers->size(); i++)
 	{
 		if ((*ePlayers)[i]->IsOnline() == false)
 		{
-			PlayerDeleteEv * event = new PlayerDeleteEv((*ePlayers)[i]->m_GetId());
+			PlayerDeleteEv * event = new PlayerDeleteEv((*ePlayers)[i]->GetId());
 			room->AddEvent(event);
-			ePlayers->erase(ePlayers->begin() + i);
+			room->DeletePlayer(i);
 			break;
 		}
 	}
@@ -49,7 +49,7 @@ void Game::update()
 
 	for (size_t i = 0; i < bullets->size(); i++)
 	{
-		if ((*bullets)[i]->m_Update(time.GetDt()) == false)
+		if ((*bullets)[i]->Update(time.GetDt()) == false)
 		{
 			BulletDeleteEv * event = new BulletDeleteEv((*bullets)[i]->GetOwnerId(), (*bullets)[i]->GetBulletId());
 			room->AddEvent(event);
@@ -69,8 +69,8 @@ void Game::collisions()
 	for (auto player : *ePlayers)
 	{
 		for (auto wall : walls)
-			if (wall->m_Overlaps(player))
-				player->m_ReactOnCollision();
+			if (wall->Overlaps(player))
+				player->ReactOnCollision();
 	}
 
 	for (auto bullet : *bullets)

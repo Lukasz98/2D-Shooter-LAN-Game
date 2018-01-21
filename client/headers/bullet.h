@@ -14,30 +14,30 @@ class Bullet : public sf::CircleShape
 {
 public:
 
-	Bullet(sf::Vector2f _pos, sf::Vector2i _mousePos, int ownerId, int bulletId);
-	Bullet(sf::Vector2f _pos, sf::Vector2f speedRatio, int ownerId, int bulletId);
+	Bullet(sf::Vector2f pos, sf::Vector2i mousePos, int ownerId, int bulletId);
+	Bullet(sf::Vector2f pos, sf::Vector2f speedRatio, int ownerId, int bulletId);
 	~Bullet();
 
-	void m_Update(float _dt);
+	void Update(float dt);
 
-	void SetPosition(sf::Vector2f pos) { m_position = pos; setPosition(m_position); }
+	void SetPosition(sf::Vector2f pos) { position = pos; setPosition(position); }
 
-	inline sf::Vector2f GetPosition() { return m_position; }
-	inline sf::Vector2f GetSpeedRatio() { return m_speedRatio; }
+	inline const sf::Vector2f & GetPosition() { return position; }
+	inline const sf::Vector2f & GetSpeedRatio() { return speedRatio; }
 
-	inline int GetOwnerId() { return ownerId; }
-	inline int GetBulletId() { return bulletId; }
-
-private:
-	void m_pickDirection();
-	void m_move();
-
+	inline const int & GetOwnerId() { return ownerId; }
+	inline const int & GetBulletId() { return bulletId; }
 
 private:
-	sf::Texture m_texture;
-	sf::Vector2f m_position, m_speedRatio;
-	float m_dt;
-	float m_speed;
+	void pickDirection();
+	void move();
+
+
+private:
+	sf::Texture texture;
+	sf::Vector2f position, speedRatio;
+	float dt;
+	float speed;
 	int ownerId, bulletId;
 };
 

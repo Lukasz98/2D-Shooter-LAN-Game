@@ -3,6 +3,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include "body.h"
+#include "log.h"
 
 
 class MapObject : public sf::RectangleShape
@@ -11,14 +12,14 @@ public:
 	MapObject();
 	~MapObject();
 
-	void m_SetPosition(sf::Vector2f _pos);
-	void m_SetSize(sf::Vector2f _size);
-	void m_SetTexture(std::string _path);
+	void SetPosition(sf::Vector2f pos);
+	void SetSize(sf::Vector2f size);
+	void SetTexture(std::string path);
 
-	bool m_Overlaps(const Body * _body);
+	bool Overlaps(const Body * body);
 
 protected:
-	sf::Vector2f m_pos, m_size;
-	sf::Texture m_texture;
+	sf::Vector2f pos, size;
+	sf::Texture texture;
 };
 

@@ -3,9 +3,6 @@
 #include <SFML/System/Vector2.hpp>
 #include "log.h"
 
-// when i make a updateEvent, enum should by inside Event class;
-enum EventType { UPDATE = 0, BULLET_DELETE = 1, PLAYER_DELETE = 2 };
-
 class Event
 {
 public:
@@ -14,6 +11,7 @@ public:
 	virtual void PasteData(sf::Packet & packet) = 0;
 
 protected:
+	enum EventType { UPDATE = 0, BULLET_DELETE = 1, PLAYER_DELETE = 2 };
 	Event(EventType type) : type(type) {}
 	EventType type;
 };
@@ -44,14 +42,12 @@ public:
 	PlayerDeleteEv(int id) 
 	: Event(PLAYER_DELETE)
 	{
-		LOG("PlayerDeleteEv:construct");
 		this->id = id;
 	}
 	~PlayerDeleteEv() {}
 
 	void PasteData(sf::Packet & packet) override
 	{
-		LOG("PlayerDeleteEv:PasteData");
 		packet << type << id;
 	}
 

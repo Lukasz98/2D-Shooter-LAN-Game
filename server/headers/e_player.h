@@ -7,31 +7,30 @@
 class E_Player : public Body
 {
 public:
-	E_Player(int _id, std::string _ip, int _port, int team);
+	E_Player(int id, std::string ip, int port, int team);
 	~E_Player();
 
-	void m_Update(sf::Vector2i dir, float angle);
+	void Update(sf::Vector2i dir, float angle);
 
-	void m_SetDt(float dt);
+	void SetDt(float dt);
 
-	inline int m_GetId() { return m_id; }
-	inline std::string m_GetIp() { return m_ip; }
-	inline int m_GetPort() { return m_port; }
+//	inline int m_GetId() { return m_id; }
+	inline std::string GetIp() { return ip; }
+	inline int GetPort() { return port; }
 
-	inline const int m_GetID() { return m_id; }
-	inline int GetTeam() { return team; }
-	inline bool IsOnline() { return isOnline; }
-
+	inline const int & GetId() override { return id; }
+	inline const int & GetTeam() { return team; }
+	inline const bool & IsOnline() { return isOnline; }
 
 	static sf::Vector2f RED_RESP;
 	static sf::Vector2f WHITE_RESP;
 
 private:
-	int m_id, m_port;
-	std::string m_ip;
+	int id, port;
+	std::string ip;
 
 	float timeFromLastUpdate = 0.0f;
 	bool isOnline = true;
 
-	void m_move(int _x, int _y);
+	void move(int x, int y);
 };

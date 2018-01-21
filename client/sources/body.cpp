@@ -1,11 +1,11 @@
 #include "../headers/body.h"
 
-Body::Body(sf::Vector2f _pos)
+Body::Body(sf::Vector2f pos)
 {
-	m_position = _pos;
-	m_spawnPos = _pos;
-	m_angle = 0.0f;
-	setPosition(m_position);
+	this->position = pos;
+	this->spawnPos = pos;
+	this->angle = 0.0f;
+	setPosition(position);
 }
 
 Body::~Body()
@@ -13,16 +13,16 @@ Body::~Body()
 
 }
 
-void Body::m_Rotate(float _angle)
+void Body::Rotate(float angle)
 {
-	m_angle = _angle;
-	setRotation(_angle);
+	this->angle = angle;
+	setRotation(angle);
 }
 
-void Body::m_SetPosition(sf::Vector2f _pos)
+void Body::SetPosition(sf::Vector2f pos)
 {
-	m_position = _pos;
-	setPosition(m_position);
+	position = pos;
+	setPosition(position);
 }
 
 

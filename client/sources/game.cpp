@@ -28,11 +28,8 @@ Game::~Game()
 
 void Game::play()
 {
-//	LOG("PLAY");
 	while (connection->isConnected() && window.isOpen())
-//	while (window.isOpen())
 	{
-//	LOG("PLAY");
 		connection->Update();
 
 		playerInput();
@@ -82,3 +79,4 @@ void Game::playerInput()
 		bulletIds ++;
 	}
 }
+//	LOG("PLAY");

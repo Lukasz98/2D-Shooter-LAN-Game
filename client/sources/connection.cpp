@@ -20,7 +20,6 @@ Connection::Connection()
 
 	if (connected)
 	{
-//		std::thread (receiveData, std::ref(ePlayers), std::ref(bullets), std::ref(receivingSocket), std::ref(connected)).detach();
 		std::thread (receiveData, std::ref(receivedPackets), std::ref(receivingSocket), std::ref(connected)).detach();
 		LOG("Connection: receiveData started");
 
@@ -30,7 +29,6 @@ Connection::Connection()
 			LOG("Connection: Constructor - sendingSocket.bind() error ");
 		};
 	}
-
 }
 
 Connection::~Connection() 
@@ -61,7 +59,6 @@ void Connection::joinServer()
 		sf::Packet serverPacket;
 		tcpSocket.receive(serverPacket);
 
-//		int playersCount = 0;
 		int team = 0;
 		serverPacket >> mapName >> serverReceivingPort >> myId >> team;
 
@@ -77,11 +74,9 @@ void Connection::joinServer()
 	
 }
 
-//void Connection::receiveData(std::vector<std::shared_ptr<E_Player>> & ePlayers, std::vector<Bullet*> & bullets, sf::UdpSocket & socket, const bool & connected) //thread
 void Connection::receiveData(std::vector<sf::Packet> & packets, sf::UdpSocket & socket, const bool & connected) //thread
 {
 	LOG("Connection: receiveData start");
-//int counter = 0;
 	while (connected)
 	{
 		sf::IpAddress servIp;
@@ -91,8 +86,7 @@ void Connection::receiveData(std::vector<sf::Packet> & packets, sf::UdpSocket & 
 		if (socket.receive(packet, servIp, servPort) == sf::Socket::Done)
 			packets.push_back(packet);
 	}
-	socket.unbind();
-	
+	socket.unbind();	
 }
 
 void Connection::SendInput(Utils::InputData & input)
@@ -105,20 +99,15 @@ void Connection::SendInput(Utils::InputData & input)
 	sendingSocket.send(packet, serverIp, serverReceivingPort);
 }
 
-
-
 void Connection::Update()
 {
 	int packetsCount = receivedPackets.size();
-//LOG("packetsCount="<<packetsCount);
-//LOG("Connection::Update - 1 - packetsCount="<<packetsCount);
 	for (auto & packet : receivedPackets)
 	{
 		updateEPlayers(packet);
 		updateBullets(packet);
 		updateEvents(packet);
 	}
-
 	receivedPackets.clear();
 }
 
@@ -136,9 +125,9 @@ void Connection::updateEPlayers(sf::Packet & packet)
 		bool do_i_know_this_guy = false;
 		for (auto ePlayer : ePlayers)
 		{
-			if (ePlayer->m_GetId() == id)
+			if (ePlayer->GetId() == id)
 			{
-				ePlayer->m_Update(pos, angle);
+				ePlayer->Update(pos, angle);
 				do_i_know_this_guy = true;
 			}
 		}
@@ -209,7 +198,7 @@ void Connection::updateEvents(sf::Packet & packet)
 				int playerId = 0;
 				packet >> playerId;
 				for (int p = 0; p < ePlayers.size(); p++)
-					if (ePlayers[p]->m_GetId() == playerId)
+					if (ePlayers[p]->GetId() == playerId)
 					{
 						ePlayers.erase(ePlayers.begin() + p);
 						break;
@@ -217,7 +206,6 @@ void Connection::updateEvents(sf::Packet & packet)
 				break;
 			}
 		}
-
 	}
 }
 

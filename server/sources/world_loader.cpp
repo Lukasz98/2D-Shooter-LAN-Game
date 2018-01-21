@@ -1,12 +1,11 @@
 #include "../headers/world_loader.h"
 
 
-World * WorldLoader::LoadMap(std::string _path)
+World * WorldLoader::LoadMap(std::string path)
 {
-//LOG("WorldLoader::LoadMap");
 	World * world = new World();
 
-	std::fstream * file = new std::fstream(_path);
+	std::fstream * file = new std::fstream(path);
 
 	if (file->is_open())
 	{
@@ -35,85 +34,77 @@ World * WorldLoader::LoadMap(std::string _path)
 	return world;
 }
 
-Floor * WorldLoader::loadFloor(std::fstream * _file)
+Floor * WorldLoader::loadFloor(std::fstream * file)
 {
 	Floor * floor = new Floor();
 
 	std::string check("");
-//	std::string texturePath;
 	float x = 0, y = 0, width = 0, height = 0;
 
-	*_file >> check; // going on braces
-	*_file >> check; // going on x
+	*file >> check; // going on braces
+	*file >> check; // going on x
 	while (check != "}")
 	{
 		if (check == "x:")
-			*_file >> x;
+			*file >> x;
 		if (check == "y:")
-			*_file >> y;
+			*file >> y;
 		if (check == "width:")
-			*_file >> width;
+			*file >> width;
 		if (check == "height:")
-			*_file >> height;
-//		if (check == "texture:")
-//			*_file >> texturePath;
-		*_file >> check;
+			*file >> height;
+		*file >> check;
 	}
 
-	floor->m_SetPosition(sf::Vector2f(x, y));
-	floor->m_SetSize(sf::Vector2f(width, height));
-//	floor->m_SetTexture(texturePath);
+	floor->SetPosition(sf::Vector2f(x, y));
+	floor->SetSize(sf::Vector2f(width, height));
 
 	return floor;
 }
 
-Wall * WorldLoader::loadWall(std::fstream * _file)
+Wall * WorldLoader::loadWall(std::fstream * file)
 {
 	Wall * wall = new Wall();
 
 	std::string check("");
-//	std::string texturePath;
 	float x = 0, y = 0, width = 0, height = 0;
 
-	*_file >> check; // going on braces
-	*_file >> check; // going on x
+	*file >> check; // going on braces
+	*file >> check; // going on x
 	while (check != "}")
 	{
 		if (check == "x:")
-			*_file >> x;
+			*file >> x;
 		if (check == "y:")
-			*_file >> y;
+			*file >> y;
 		if (check == "width:")
-			*_file >> width;
+			*file >> width;
 		if (check == "height:")
-			*_file >> height;
-//		if (check == "texture:")
-//			*_file >> texturePath;
-		*_file >> check;
+			*file >> height;
+		*file >> check;
 	}
 
-	wall->m_SetPosition(sf::Vector2f(x, y));
-	wall->m_SetSize(sf::Vector2f(width, height));
-//	wall->m_SetTexture(texturePath);
+	wall->SetPosition(sf::Vector2f(x, y));
+	wall->SetSize(sf::Vector2f(width, height));
 
 	return wall;
 }
 
-sf::Vector2f WorldLoader::loadResp(std::fstream * _file)
+sf::Vector2f WorldLoader::loadResp(std::fstream * file)
 {
 	sf::Vector2f result;
 	
 	std::string check("");
-	*_file >> check; // going on braces
-	*_file >> check; // going on x
+	*file >> check; // going on braces
+	*file >> check; // going on x
 	while (check != "}")
 	{
 		if (check == "x:")
-			*_file >> result.x;
+			*file >> result.x;
 		if (check == "y:")
-			*_file >> result.y;
+			*file >> result.y;
 
-		*_file >> check;
+		*file >> check;
 	}
 	
 	return result;

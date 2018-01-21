@@ -15,11 +15,11 @@
 class WorldLoader
 {
 public:
-	static World * LoadMap(std::string _path);
+	static World * LoadMap(std::string path);
 
 
 private:
-	static Floor * loadFloor(std::fstream * _file);
-	static Wall * loadWall(std::fstream * _file);
+	static Floor * loadFloor(std::fstream * file);
+	static Wall * loadWall(std::fstream * file);
 };
 

@@ -21,11 +21,11 @@ public:
 	void SendInput(Utils::InputData & input);
 	void Close() { connected = false; }
 
-	inline bool isConnected() { return connected; }
 	std::vector<std::shared_ptr<E_Player>> * GetEPlayers() { return & ePlayers; }
 	std::vector<Bullet*> * GetBullets() { return & bullets; }
-	int GetMyId() { return myId; }
+	inline const int & GetMyId() { return myId; }
 	inline const std::string & GetMapName() { return mapName; }
+	inline const bool & isConnected() { return connected; }
 
 private:
 	bool connected = false;
@@ -45,7 +45,6 @@ private:
 	std::vector<Bullet*> bullets;
 
 	void joinServer();
-//	static void receiveData(std::vector<std::shared_ptr<E_Player>> & ePlayers, std::vector<Bullet*> & bullets, sf::UdpSocket & socket, const bool & connected); //thread
 	static void receiveData(std::vector<sf::Packet> & packets, sf::UdpSocket & socket, const bool & connected); //thread
 	void updateEPlayers(sf::Packet & packet);
 	void updateBullets(sf::Packet & packet);

@@ -8,15 +8,13 @@ Body::Body(int team)
 {
 	this->team = team;
 	if (team == 0)
-		m_spawnPos = RED_RESP;
+		spawnPos = RED_RESP;
 	else
-		m_spawnPos = WHITE_RESP;
+		spawnPos = WHITE_RESP;
 
-		m_position = m_spawnPos;
-	m_hp = 100.0f;
-	m_angle = 0.0f;
-
-//	setPosition(m_position);
+		position = spawnPos;
+	hp = 100.0f;
+	angle = 0.0f;
 }
 
 Body::~Body()
@@ -24,33 +22,29 @@ Body::~Body()
 
 }
 
-void Body::m_Rotate(float _angle)
+void Body::Rotate(float angle)
 {
-	m_angle = _angle;
-//	setRotation(_angle);
+	this->angle = angle;
 }
 
-void Body::m_ReactOnCollision()
+void Body::ReactOnCollision()
 {
-	m_position.x += (m_speedRatio.x * -1) * m_speed * m_dt;
-	m_position.y += (m_speedRatio.y * -1) * m_speed * m_dt;
-//	setPosition(m_position);
+	position.x += (speedRatio.x * -1) * speed * dt;
+	position.y += (speedRatio.y * -1) * speed * dt;
 }
 
-void Body::m_SetPosition(sf::Vector2f _pos)
+void Body::SetPosition(sf::Vector2f pos)
 {
-	m_position = _pos;
-//	setPosition(m_position);
+	position = pos;
 }
 
-void Body::m_Damage(float _damage)
+void Body::Damage(float damage)
 {
-	m_hp -= _damage;
-	if (m_hp < 0)
+	hp -= damage;
+	if (hp < 0)
 	{
-		m_position = m_spawnPos;
-//		m_SetPosition(m_spawnPos);
-		m_hp = 100.0f;
+		position = spawnPos;
+		hp = 100.0f;
 	}
 }
 

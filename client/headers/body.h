@@ -7,23 +7,22 @@
 class Body : public sf::RectangleShape
 {
 public:
-	Body(sf::Vector2f _pos);
+	Body(sf::Vector2f pos);
 	~Body();
 
-	void m_Rotate(float _angle);
+	void Rotate(float angle);
 
-	void m_SetAngle(float angle) { m_angle = angle; }
-	void m_SetPosition(sf::Vector2f _pos);
+	void SetAngle(float angle) { this->angle = angle; }
+	void SetPosition(sf::Vector2f pos);
 
-	inline sf::Vector2f m_GetPosition() { return m_position; }
-	inline const sf::Vector2f & GetPos() { return m_position; }
-	inline float m_GetAngle() { return m_angle; }
-
-	virtual inline const int m_GetID() { return -1; }
+	inline const sf::Vector2f & GetPosition() { return position; }
+	inline const sf::Vector2f & GetPos() { return position; }
+	inline const float & GetAngle() { return angle; }
+	virtual inline const int & GetId() = 0;
 
 protected:
-	sf::Vector2f m_position, m_direction, m_spawnPos;
-	sf::Vector2f m_size;
-	float m_angle;
+	sf::Vector2f position, direction, spawnPos;
+	sf::Vector2f size;
+	float angle;
 };
 

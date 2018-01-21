@@ -1,40 +1,37 @@
 #pragma once
 #include <iostream>
-//#include <SFML/Graphics.hpp>
-//#include <SFML/System/Vector2.hpp>
 #include "math_calc.h"
 
-class Body// : public sf::RectangleShape
+class Body
 {
 public:
 	Body(int team);
 	~Body();
 
-	void m_Rotate(sf::Vector2f _dir);
-	void m_Rotate(sf::Vector2f _pos, sf::Vector2f _dir);
-	void m_Rotate(float _angle);
-	void m_ReactOnCollision();
+	//void m_Rotate(sf::Vector2f _dir);
+	//void m_Rotate(sf::Vector2f _pos, sf::Vector2f _dir);
+	void Rotate(float angle);
+	void ReactOnCollision();
 
-	void m_SetPosition(sf::Vector2f _pos);
-	void m_Damage(float _damage);
+	void SetPosition(sf::Vector2f pos);
+	void Damage(float damage);
 
-	inline sf::Vector2f m_GetPosition() { return m_position; }
-	inline sf::Vector2f m_GetSize() { return m_size; }
-	inline float m_GetAngle() { return m_angle; }
+	inline const sf::Vector2f & GetPosition() { return position; }
+	inline const sf::Vector2f & GetSize() { return size; }
+	inline float GetAngle() { return angle; }
 
-	virtual inline const int m_GetID() { return -1; }
-
+	virtual inline const int & GetId() = 0;
 
 	static sf::Vector2f RED_RESP;
 	static sf::Vector2f WHITE_RESP;
 
 protected:
-	sf::Vector2f m_position, m_direction, m_spawnPos;
-	sf::Vector2f m_size;
-	float m_speed, m_angle;
-	sf::Vector2f m_speedRatio;
-	float m_dt;
-	float m_hp;
+	sf::Vector2f position, direction, spawnPos;
+	sf::Vector2f size;
+	float speed, angle;
+	sf::Vector2f speedRatio;
+	float dt;
+	float hp;
 	int team;
 };
 

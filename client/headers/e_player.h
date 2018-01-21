@@ -9,25 +9,15 @@ class E_Player : public Body
 {
 public:
 	E_Player(const E_Player &) = delete;
-	E_Player(int _id, sf::Vector2f pos, int team);
+	E_Player(int id, sf::Vector2f pos, int team);
 	~E_Player();
 
-	//void m_Update(sf::Packet _packet);
-	void m_Update(sf::Vector2f position, float angle);
+	void Update(sf::Vector2f position, float angle);
 
-
-	// TO DO
-	// getId() -> zdublowane, co poczniesz biedaku
-
-	inline int m_GetId() { return m_id; }
-	inline const int m_GetID() { return m_id; }
-	//inline std::string m_GetIp() { return m_ip; }
-	//inline int m_GetPort() { return m_port; }
-
+	inline const int & GetId() { return id; }
 
 private:
-	sf::Texture m_texture;
-	int m_id, team;//, m_port;
-	//std::string m_ip;
+	sf::Texture texture;
+	int id, team;
 
 };

@@ -37,7 +37,7 @@ const std::shared_ptr<E_Player> World::GetEPlayer(int id)
 {
 	for (auto player : *ePlayers)
 	{
-		if (player->m_GetId() == id)
+		if (player->GetId() == id)
 		{
 			return player;
 		}
