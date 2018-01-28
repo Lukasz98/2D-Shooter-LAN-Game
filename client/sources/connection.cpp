@@ -7,15 +7,16 @@ Connection::Connection()
 	std::cin >> serverJoinPort;
 
 
-	if (receivingSocket.bind(sf::Socket::AnyPort) != sf::Socket::Done)
-	{
-		LOG("Connection: Constructor - receivingSocket.bind() error ");
-	}
+receivingSocket.bind(55558);
+	//if (receivingSocket.bind(sf::Socket::AnyPort) != sf::Socket::Done)
+	//{
+	//	LOG("Connection: Constructor - receivingSocket.bind() error ");
+	//}
 	receivingSocket.setBlocking(false);
 
 	myPort = receivingSocket.getLocalPort();
 	LOG("My port=" << myPort);
-
+//return;
 	joinServer();
 
 	if (connected)
@@ -34,6 +35,7 @@ Connection::Connection()
 Connection::~Connection() 
 {
 	LOG("Connection::~Connection");
+	receivingSocket.unbind();
 	sendingSocket.unbind();
 //	for (auto ePlayer : ePlayers)
 //		delete ePlayer;
@@ -43,8 +45,9 @@ Connection::~Connection()
 
 void Connection::joinServer()
 {
+LOG("Connection::joinServer");
 	sf::TcpSocket tcpSocket;
-	sf::Socket::Status status = tcpSocket.connect(serverIp, serverJoinPort);
+	sf::Socket::Status status = tcpSocket.connect(serverIp, serverJoinPort, sf::seconds(5));
 	if (status != sf::Socket::Done)
 	{
 		// throw exc
@@ -52,8 +55,10 @@ void Connection::joinServer()
 	}
 	else
 	{
+LOG("Connection::joinServer - connected");
 		sf::Packet myPacket;
-		myPacket << myIp << myPort;
+//		myPacket << myIp << myPort;
+myPacket << myIp << 1003;
 		tcpSocket.send(myPacket);
 
 		sf::Packet serverPacket;
@@ -71,7 +76,7 @@ void Connection::joinServer()
 		LOG("Welcome");
 		connected = true;
 	}	
-	
+//	tcpSocket.close();
 }
 
 void Connection::receiveData(std::vector<sf::Packet> & packets, sf::UdpSocket & socket, const bool & connected) //thread
@@ -91,12 +96,19 @@ void Connection::receiveData(std::vector<sf::Packet> & packets, sf::UdpSocket & 
 
 void Connection::SendInput(Utils::InputData & input)
 {
+for(int i = 0; i < 100; i ++)
+{
 	sf::Packet packet;
-	packet << myId << input.x << input.y << input.angle << input.mouseClick;
+//	packet << myId << input.x << input.y << input.angle << input.mouseClick;
+packet << i << input.x << input.y << input.angle << input.mouseClick;
 	if (input.mouseClick)
 		packet << input.speedRatio.x << input.speedRatio.y << input.bulletId;
 
-	sendingSocket.send(packet, serverIp, serverReceivingPort);
+//	sendingSocket.send(packet, serverIp, serverReceivingPort);
+if(sendingSocket.send(packet, serverIp, 1001)!= sf::Socket::Done)
+LOG("Connection:sendinput - SENDING ERROR");
+}
+//else LOG("Connection:sendinput - ok");
 }
 
 void Connection::Update()
@@ -104,6 +116,7 @@ void Connection::Update()
 	int packetsCount = receivedPackets.size();
 	for (auto & packet : receivedPackets)
 	{
+		LOG("CONNECTION:Update - got_a_packet");
 		updateEPlayers(packet);
 		updateBullets(packet);
 		updateEvents(packet);

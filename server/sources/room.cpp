@@ -6,19 +6,23 @@ Room::Room()
 
 	if (state == PREPARATION)
 	{
-		receiveSocket.bind(sf::Socket::AnyPort);
-		receivingPort = receiveSocket.getLocalPort();
+//		receiveSocket.bind(sf::Socket::AnyPort);
+receiveSocket.bind(55556);
+		receivingPort = 55556;//receiveSocket.getLocalPort();
+
+
+
+LOG("ROOM:ROOM tcpListener - "<<(int)tcpListener.listen(55555));
+		//if (tcpListener.listen(sf::Socket::AnyPort) != sf::Socket::Done)
+		//{
+		//	LOG("Room:WaitForPlayers - TcpListener error");
+		//	//do something
+		//	return;
+		//}
+//return;
 
 		sendSocket.bind(sf::Socket::AnyPort);
 		sendingPort = sendSocket.getLocalPort();
-
-
-		if (tcpListener.listen(sf::Socket::AnyPort) != sf::Socket::Done)
-		{
-			LOG("Room:WaitForPlayers - TcpListener error");
-			//do something
-			return;
-		}
 
 		state = RUNNING;
 
@@ -31,13 +35,19 @@ Room::Room()
 		waitForPlayersData.whiteTeam = & whiteTeam;
 
 		std::thread (waitForPlayers, std::ref(ePlayers), std::ref(state), std::ref(tcpListener), std::ref(waitForPlayersData)).detach();
-		std::thread (receiveInput, std::ref(ePlayers), std::ref(bullets), std::ref(state), std::ref(receiveSocket)).detach();
+		
+		receiveSocket.setBlocking(false);
+		std::thread (receiveInput, std::ref(packets), std::ref(state), std::ref(receiveSocket)).detach();
+//		std::thread (receiveInput, std::ref(ePlayers), std::ref(bullets), std::ref(state), std::ref(receiveSocket)).detach();
 	}
 }
 
 Room::~Room() 
 {
+	LOG("ROOM:~ROOM");
 	sendSocket.unbind();
+	receiveSocket.unbind();
+	tcpListener.close();
 }
 
 void Room::loadServerInfo()
@@ -65,6 +75,7 @@ void Room::waitForPlayers(std::vector<std::shared_ptr<E_Player>> & ePlayers, con
 		if (tcpListener.accept(socket) != sf::Socket::Done)
 		{
 			LOG("Room:WaitForPlayers - TcpListener client acceptation error");
+			break;
 		}
 		else
 		{
@@ -91,30 +102,31 @@ void Room::waitForPlayers(std::vector<std::shared_ptr<E_Player>> & ePlayers, con
 			sf::Vector2f pos = ePlayers.back()->GetPosition();
 
 			sf::Packet packetToSend;
-			packetToSend << waitForPlayersData.mapName << waitForPlayersData.receivingPort << id << team;
+//			packetToSend << waitForPlayersData.mapName << waitForPlayersData.receivingPort << id << team;
+packetToSend << waitForPlayersData.mapName << 1001 << id << team;
 			packetToSend << pos.x << pos.y;
 			socket.send(packetToSend);
 
 			LOG("Player joined id=" << id << " ip=" << clientIp << " port=" << clientPort);
 			id ++;
+			socket.disconnect();
 		}
 	}
-
-	tcpListener.close();
+//tcpListener.disc
+//	tcpListener.close();
 }
 
-
-// TO DO:
-// pushing packets on stack, insted of updating everything here
-void Room::receiveInput(std::vector<std::shared_ptr<E_Player>> & ePlayers, std::vector<std::shared_ptr<Bullet>> & bullets, const State & state, sf::UdpSocket & socket) //thread
+void Room::receiveInput(std::vector<sf::Packet> & packets, const State & state, sf::UdpSocket & socket) //thread
+//void Room::receiveInput(std::vector<std::shared_ptr<E_Player>> & ePlayers, std::vector<std::shared_ptr<Bullet>> & bullets, const State & state, sf::UdpSocket & socket) //thread
 {
 	while (state == RUNNING)
 	{
 		sf::IpAddress clientIp;
 		short unsigned int clientPort;
 		sf::Packet packet;
-		socket.receive(packet, clientIp, clientPort);
-
+		if (socket.receive(packet, clientIp, clientPort) == sf::Socket::Done)
+			packets.push_back(packet);
+/*
 		int id;
 		sf::Vector2i dir;
 		float angle;
@@ -138,8 +150,48 @@ void Room::receiveInput(std::vector<std::shared_ptr<E_Player>> & ePlayers, std::
 				}
 			}
 		}
+*/
 	}
-	socket.unbind();
+//	socket.unbind();
+}
+
+
+void Room::Update()
+{
+//LOG("ROOM:Update");
+	for (auto & packet : packets)
+	{
+LOG("ROOM:Update:got_a_packet");
+		int id;
+		sf::Vector2i dir;
+		float angle;
+		packet >> id >> dir.x >> dir.y >> angle;
+
+LOG("ROOM:Update - " << id << ", "<< dir.x << ", "<< dir.y << ", ");
+
+
+		bool isCliced;
+		packet >> isCliced;
+
+		for (int i = 0; i < ePlayers.size(); i++)
+		{
+			if (ePlayers[i]->GetId() == id)
+			{
+//LOG("Room:Update:rightPlayer");
+				ePlayers[i]->Update(dir, angle);
+
+				if (isCliced)
+				{
+					int bulletId;
+					sf::Vector2f speedRatio;
+					packet >> speedRatio.x >> speedRatio.y >> bulletId;
+					bullets.push_back(std::make_shared<Bullet>(ePlayers[i]->GetPosition(), speedRatio, id, bulletId));
+				}
+			}
+		}	
+	}
+
+	packets.clear();
 }
 
 void Room::SendData()

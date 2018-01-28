@@ -23,6 +23,7 @@ void Game::play()
 	{
 		update();
 
+		room->Update();
 		room->SendData();
 		time.Update();
 	}

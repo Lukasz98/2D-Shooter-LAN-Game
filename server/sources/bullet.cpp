@@ -5,7 +5,7 @@ Bullet::Bullet(sf::Vector2f pos, sf::Vector2f speedRatio, int ownerId, int bulle
 	position = pos;
 	this->ownerId = ownerId;
 	this->bulletId = bulletId;
-	speed = 1000.0f;
+	speed = 1500.0f;
 	power = 2.0f;
 
 	this->speedRatio = speedRatio;

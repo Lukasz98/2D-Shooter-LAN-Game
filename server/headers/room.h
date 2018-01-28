@@ -31,6 +31,7 @@ public:
 	~Room();
 
 	void SendData();
+	void Update();
 	void AddEvent(Event * event) { events.push_back(event); }
 	void DeletePlayer(int i);
 
@@ -62,5 +63,7 @@ private:
 	void loadServerInfo();
 
 	static void waitForPlayers(std::vector<std::shared_ptr<E_Player>> & ePlayers, const State & state, sf::TcpListener & tcpListener, WaitForPlayersData & waitForPlayersData); //thread
-	static void receiveInput(std::vector<std::shared_ptr<E_Player>> & ePlayers, std::vector<std::shared_ptr<Bullet>> & bullets, const State & state, sf::UdpSocket & socket); //thread
+	std::vector<sf::Packet> packets;
+	static void receiveInput(std::vector<sf::Packet> & packets, const State & state, sf::UdpSocket & socket); //thread
+//	static void receiveInput(std::vector<std::shared_ptr<E_Player>> & ePlayers, std::vector<std::shared_ptr<Bullet>> & bullets, const State & state, sf::UdpSocket & socket); //thread
 };

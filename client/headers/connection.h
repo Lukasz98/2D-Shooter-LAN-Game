@@ -29,10 +29,10 @@ public:
 
 private:
 	bool connected = false;
-	std::string serverIp = "192.168.1.12";
+	std::string serverIp = "178.42.117.154";//"192.168.1.12";
 	int serverJoinPort, serverReceivingPort;
 
-	std::string myIp = "192.168.1.12";
+	std::string myIp = "178.42.117.154";//"192.168.1.12";
 	int myPort;
 	int myId;
 
