@@ -9,5 +9,7 @@ public:
 	static float MakePositive(float num);
 
 	static float GetAngle(sf::Vector2f pos, sf::Vector2f dirPos);
+
+    static float GetLength(sf::Vector2f p, sf::Vector2f pp);
 };
 

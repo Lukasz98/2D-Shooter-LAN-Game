@@ -33,7 +33,8 @@ void Game::update()
 	for (auto ePlayer : *ePlayers)
 	{
 		ePlayer->SetDt(time.GetDt());
-	}
+	    world->TakeFlag(ePlayer);
+    }
 
 	for (size_t i = 0; i < ePlayers->size(); i++)
 	{
@@ -58,31 +59,40 @@ void Game::update()
 		}
 	}
 
+    updateFlags();
 	collisions();
 }
 
+void Game::updateFlags()
+{
+    //Ev * ev = world->GetFlagsUpdateEv();
+    room->AddEvent(world->GetFlagsUpdateEv());
+}
 
 void Game::collisions()
 {
-	std::vector<Wall*> & walls = world->GetWalls();
+    std::string map = world->GetMap();
+    int mapW = world->GetMapWidth();
+    int mapH = world->GetMapHeight();
+    int tileW = 64.0f;
 
-	for (auto player : *ePlayers)
-	{
-		for (auto wall : walls)
-			if (wall->Overlaps(player))
-				player->ReactOnCollision();
-	}
+    
+    for (auto player : *ePlayers)
+    {
+        if (world->IsBlocked(player))
+            player->ReactOnCollision();
+    }
 
 	for (auto bullet : *bullets)
 	{
-		for (auto wall : walls)
-		{
-			bullet->Overlaps(wall);
-		}
-	
+
+        if (world->IsBlocked(bullet))
+            bullet->CollisionReact(10.0f);
+
 		for (auto player : *ePlayers)
 		{
 			bullet->Overlaps(player);
 		}
 	}
+
 }

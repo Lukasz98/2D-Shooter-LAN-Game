@@ -6,10 +6,10 @@ E_Player::E_Player(int id, sf::Vector2f pos, int team)
 	this->id = id;
 	this->team = team;
 
-	if (team == 0)
-		texture.loadFromFile("img/red_player.png");
+	if (team == 1)
+		texture.loadFromFile("img/nazi_player.png");
 	else
-		texture.loadFromFile("img/white_player.png");
+		texture.loadFromFile("img/pol_player.png");
 	size = sf::Vector2f(70.0f, 70.0f);
 	setSize(size);
 	setOrigin(size.x /2, size.y /2);

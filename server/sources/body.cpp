@@ -12,7 +12,8 @@ Body::Body(int team)
 	else
 		spawnPos = WHITE_RESP;
 
-		position = spawnPos;
+//spawnPos = sf::Vector2f(200, 300);
+    position = spawnPos;
 	hp = 100.0f;
 	angle = 0.0f;
 }

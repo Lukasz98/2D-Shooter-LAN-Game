@@ -217,7 +217,8 @@ void Connection::updateEvents(sf::Packet & packet, World * world)
                     float neutralPoints, lastPoints;
                     packet >> id >> owner >> isTaker >> neutralPoints >> lastPoints;
                     world->UpdateFlag(id, owner, isTaker, neutralPoints, lastPoints);
-                } 
+                }
+		break;
             }
 		}
         

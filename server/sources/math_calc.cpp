@@ -83,3 +83,10 @@ float Math_calc::GetAngle(sf::Vector2f pos, sf::Vector2f dirPos)
 	return asin_stopnie;
 }
 
+
+
+float Math_calc::GetLength(sf::Vector2f p, sf::Vector2f pp)
+{
+    float d = sqrt( (p.x - pp.x)*(p.x - pp.x) + (p.y - pp.y)*(p.y - pp.y) );
+    return d;
+}

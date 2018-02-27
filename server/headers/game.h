@@ -13,7 +13,7 @@
 #include "info.h"
 #include "time.h"
 #include "kbhit.h"
-
+#include "tile.h"
 
 class Game
 {
@@ -32,6 +32,7 @@ private:
 
 	void play();
 	void update();
+    void updateFlags();
 	void collisions();
 
 

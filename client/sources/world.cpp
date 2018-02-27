@@ -9,22 +9,25 @@ World::World()
 
 World::~World() 
 {
-	for (auto floor : floors)
-		delete floor;
 
-	for (auto wall : walls)
-		delete wall;
 }
 
 
 
 void World::Draw(sf::RenderWindow & window)
 {
-	for (auto floor : floors)
-		window.draw(*floor);
 
-	for (auto wall : walls)
-		window.draw(*wall);
+//if (ePlayers->size() > 0)   
+  //  LOG((*ePlayers)[0]->GetPosition().x << ", " << (*ePlayers)[0]->GetPosition().y);
+    
+    for (auto tile : tiles)
+    {
+    //    LOG("tile");
+        window.draw(*tile);
+    }
+
+    for (auto flag : flags)
+        window.draw(*flag);
 
 	for (auto const ePlayer : (*ePlayers))
 		window.draw(*ePlayer);
@@ -43,6 +46,5 @@ const std::shared_ptr<E_Player> World::GetEPlayer(int id)
 		}
 	}
 }
-
 
 

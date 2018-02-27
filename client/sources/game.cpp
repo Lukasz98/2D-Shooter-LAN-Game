@@ -30,7 +30,7 @@ void Game::play()
 {
 	while (connection->isConnected() && window.isOpen())
 	{
-		connection->Update();
+        connection->Update(world);
 
 		playerInput();
 		connection->SendInput(inputData);

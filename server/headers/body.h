@@ -1,8 +1,9 @@
 #pragma once
 #include <iostream>
 #include "math_calc.h"
+#include "entity.h"
 
-class Body
+class Body : public Entity
 {
 public:
 	Body(int team);
@@ -16,8 +17,8 @@ public:
 	void SetPosition(sf::Vector2f pos);
 	void Damage(float damage);
 
-	inline const sf::Vector2f & GetPosition() { return position; }
-	inline const sf::Vector2f & GetSize() { return size; }
+	//inline const sf::Vector2f & GetPosition() { return position; }
+	//inline const sf::Vector2f & GetSize() { return size; }
 	inline float GetAngle() { return angle; }
 
 	virtual inline const int & GetId() = 0;
@@ -26,8 +27,8 @@ public:
 	static sf::Vector2f WHITE_RESP;
 
 protected:
-	sf::Vector2f position, direction, spawnPos;
-	sf::Vector2f size;
+	sf::Vector2f direction, spawnPos;
+	//sf::Vector2f size;
 	float speed, angle;
 	sf::Vector2f speedRatio;
 	float dt;

@@ -13,7 +13,7 @@ Bullet::Bullet(sf::Vector2f pos, sf::Vector2i mousePos, int ownerId, int bulletI
 	sf::Vector2f direction = sf::Vector2f(mousePos.x, mousePos.y);
 	speedRatio = Math_calc::Get_xy_SpeedRatio(position, direction);
 	
-	setRadius(15.0f);
+	setRadius(7.0f);
 	setPosition(position);
 	setTexture(&texture);
 }
@@ -27,7 +27,7 @@ Bullet::Bullet(sf::Vector2f pos, sf::Vector2f speedRatio, int ownerId, int bulle
 	this->ownerId = ownerId;
 	this->bulletId = bulletId;
 	
-	setRadius(15.0f);
+	setRadius(7.0f);
 	setPosition(position);
 	setTexture(&texture);
 }

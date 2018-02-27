@@ -9,7 +9,8 @@ Bullet::Bullet(sf::Vector2f pos, sf::Vector2f speedRatio, int ownerId, int bulle
 	power = 2.0f;
 
 	this->speedRatio = speedRatio;
-	radius = 15.0f;
+    size = sf::Vector2f(7.0f, 7.0f);
+//	radius = 15.0f;
 }
 
 Bullet::~Bullet()
@@ -43,8 +44,12 @@ void Bullet::Overlaps(std::shared_ptr<E_Player> ePlayer)
 	if (ePlayer->GetId() == ownerId)
 		return;
 		
-	if (isCollision(ePlayer->GetPosition(), ePlayer->GetSize()))
-	{
+	//if (isCollision(ePlayer->GetPosition(), ePlayer->GetSize()))
+	
+    sf::Vector2f p = ePlayer->GetPosition();
+    sf::Vector2f s = ePlayer->GetSize();
+    if (Math_calc::GetLength(p, position) < s.x)
+    {
 		CollisionReact(10.0f);
 		ePlayer->Damage(51.0f);
 	}
@@ -56,11 +61,11 @@ bool Bullet::isCollision(sf::Vector2f objectPos, sf::Vector2f objectSize)
 	
 	if (position.x > objectPos.x + objectSize.x)
 		collision = false;
-	if (position.x + radius * 2 < objectPos.x)
+	if (position.x + size.x * 2 < objectPos.x)
 		collision = false;
 	if (position.y > objectPos.y + objectSize.y)
 		collision = false;
-	if (position.y +  radius * 2 < objectPos.y)
+	if (position.y + size.x * 2 < objectPos.y)
 		collision = false;
 	
 	return collision;

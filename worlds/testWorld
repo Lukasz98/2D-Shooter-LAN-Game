@@ -1,84 +1,21 @@
-floor
-{
-	x: 10
-	y: 10
-	width: 400
-	height: 500
-	texture: img/grass.png
-}
-
-floor
-{
-	x: 600
-	y: -200
-	width: 250
-	height: 600
-	texture: img/grass.png
-}
-
-wall
-{
-	x: -20
-	y: -20
-	width: 40
-	height: 900
-	texture: img/wall.png
-}
-
-wall
-{
-	x: 1480
-	y: -20
-	width: 40
-	height: 900
-	texture: img/wall.png
-}
-
-wall
-{
-	x: -20
-	y: -20
-	width: 1600
-	height: 40
-	texture: img/wall.png
-}
-
-wall
-{
-	x: -20
-	y: 880
-	width: 1600
-	height: 40
-	texture: img/wall.png
-}
-
-/wall
-{
-	x: 1200
-	y: 0
-	width: 40
-	height: 500
-	texture: img/wall.png
-}
-
-wall
-{
-	x: 1200
-	y: 400
-	width: 500
-	height: 40
-	texture: img/wall.png
-}
+20 10
+1  wwwwwwwwwwwwwwwwwwww
+2  wwgggggggggggggggggw
+3  wggggggggggggggwgggw
+3  wggggggggggggggggggw
+4  wggggggggggggggggggw
+5  wggggggggggggggggggw
+6  wgggggggggggggggzzzw
+7  wgggggggggggggggzAzw
+8  wgggggggggggggggzzzw
+10 wwwwwwwwwwwwwwwwwwww
 
 redResp
-{
-    x: 200
-    y: 300
-}
+    x: 3
+    y: 4
 
 whiteResp
-{
-    x: 200
-    y: 600
-}
+    x: 3
+    y: 7
+
 END

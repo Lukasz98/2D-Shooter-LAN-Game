@@ -20,7 +20,7 @@ struct WaitForPlayersData
 	WaitForPlayersData() {}
 	~WaitForPlayersData() {}
 	int receivingPort;
-	int * redTeam, * whiteTeam;
+	int * naziTeam, * polTeam;
 	std::string mapName;
 };
 
@@ -43,7 +43,7 @@ public:
 private:
 	std::string mapName = "testWorld";
 
-	int redTeam = 0, whiteTeam = 0; // counting players in teams
+	int naziTeam = 0, polTeam = 0; // counting players in teams
 	std::vector<std::shared_ptr<E_Player>> ePlayers;
 	std::vector<std::shared_ptr<Bullet>> bullets;
 	

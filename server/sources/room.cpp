@@ -27,8 +27,8 @@ Room::Room()
 
 		waitForPlayersData.receivingPort = receivingPort;
 		waitForPlayersData.mapName = mapName;
-		waitForPlayersData.redTeam = & redTeam;
-		waitForPlayersData.whiteTeam = & whiteTeam;
+		waitForPlayersData.naziTeam = & naziTeam;
+		waitForPlayersData.polTeam = & polTeam;
 
 		std::thread (waitForPlayers, std::ref(ePlayers), std::ref(state), std::ref(tcpListener), std::ref(waitForPlayersData)).detach();
 		std::thread (receiveInput, std::ref(ePlayers), std::ref(bullets), std::ref(state), std::ref(receiveSocket)).detach();
@@ -76,15 +76,15 @@ void Room::waitForPlayers(std::vector<std::shared_ptr<E_Player>> & ePlayers, con
 
 			packet >> clientIp >> clientPort;
 
-			int team = 0;
-			if (*waitForPlayersData.redTeam > *waitForPlayersData.whiteTeam)
+			int team = 1;
+			if (*waitForPlayersData.naziTeam > *waitForPlayersData.polTeam)
 			{
-				team = 1;
-				(*waitForPlayersData.whiteTeam) ++;
+				team = 2;
+				(*waitForPlayersData.polTeam) ++;
 			}
 			else
 			{
-				(*waitForPlayersData.redTeam) ++;
+				(*waitForPlayersData.naziTeam) ++;
 			}
 
 			ePlayers.push_back(std::make_shared<E_Player>(id, clientIp, clientPort, team));
@@ -144,13 +144,15 @@ void Room::receiveInput(std::vector<std::shared_ptr<E_Player>> & ePlayers, std::
 
 void Room::SendData()
 {
-	sf::Packet packet;
+//LOG("data send");
+    sf::Packet packet;
 	packet << (int)ePlayers.size();
 	
 	for (auto player : ePlayers)
 	{
 		packet << player->GetId() << player->GetTeam() << player->GetPosition().x << player->GetPosition().y << player->GetAngle();
-	}
+//	LOG(player->GetPosition().x << ", " << player->GetPosition().y);
+    }
 
 	packet << (int)bullets.size();
 	for (auto bullet : bullets)
@@ -179,9 +181,9 @@ void Room::SendData()
 void Room::DeletePlayer(int i)
 {
 	LOG("Room::DeletePlayer ip="<<ePlayers[i]->GetId()<<", ip="<<ePlayers[i]->GetIp()<<", port="<<ePlayers[i]->GetPort());
-	if (ePlayers[i]->GetTeam() == 0)
-		redTeam--;
+	if (ePlayers[i]->GetTeam() == 1)
+		naziTeam--;
 	else
-		whiteTeam--;
+		polTeam--;
 	ePlayers.erase(ePlayers.begin() + i);
 }
