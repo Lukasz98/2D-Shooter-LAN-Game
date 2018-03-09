@@ -14,10 +14,16 @@ public:
 
 	void Update(sf::Vector2f position, float angle);
 
+	
 	inline const int & GetId() { return id; }
+	inline const sf::Text & GetText() { return text; }
 
+	
 private:
 	sf::Texture texture;
 	int id, team;
 
+	std::string name;
+	sf::Font font;
+	sf::Text text;
 };

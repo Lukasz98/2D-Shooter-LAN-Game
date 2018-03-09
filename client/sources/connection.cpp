@@ -33,7 +33,7 @@ Connection::Connection()
 
 Connection::~Connection() 
 {
-	LOG("Connection::~Connection");
+  LOG("Connection::~Connection packet_counter=" << packet_counter);
 	sendingSocket.unbind();
 //	for (auto ePlayer : ePlayers)
 //		delete ePlayer;
@@ -104,7 +104,9 @@ void Connection::Update(World * world)
 	int packetsCount = receivedPackets.size();
 	for (auto & packet : receivedPackets)
 	{
-		updateEPlayers(packet);
+	  packet_counter++;
+	  packet >> naziTickets >> polTickets;
+        updateEPlayers(packet);
 		updateBullets(packet);
 		updateEvents(packet, world);
 	}
@@ -177,7 +179,7 @@ void Connection::updateEvents(sf::Packet & packet, World * world)
 		int t = -1;
 		packet >> t;
 		EventType type = static_cast<EventType> (t);
-		LOG("updateEv " << eventsCount << ", " <<t);
+		//LOG("updateEv " << eventsCount << ", " <<t);
 		switch (type)
 		{
 			case BULLET_DELETE:
@@ -194,8 +196,8 @@ void Connection::updateEvents(sf::Packet & packet, World * world)
 				break;
 			}
 			case PLAYER_DELETE:
-			{	
-				int playerId = 0;
+			{   
+			    int playerId = 0;
 				packet >> playerId;
 				for (int p = 0; p < ePlayers.size(); p++)
 					if (ePlayers[p]->GetId() == playerId)
@@ -207,17 +209,18 @@ void Connection::updateEvents(sf::Packet & packet, World * world)
 			}
             case FLAGS_UPDATE:
             {
-                LOG("FLAGSUPDATE");
+	      //LOG("FLAGSUPDATE");
                 int flagCount = 0;
                 packet >> flagCount;
                 for (int i = 0; i < flagCount; i++)
                 {
-                    LOG("inside");
+		  //                    LOG("inside");
                     int id, owner, isTaker;
                     float neutralPoints, lastPoints;
                     packet >> id >> owner >> isTaker >> neutralPoints >> lastPoints;
                     world->UpdateFlag(id, owner, isTaker, neutralPoints, lastPoints);
-                } 
+                }
+		break;
             }
 		}
         

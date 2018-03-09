@@ -40,10 +40,20 @@ public:
 
 	inline const std::string & GetMapName() { return mapName; }
 
+	void Update();
+	void NaziTicketMinus(int m) { naziTickets -= m; }
+	void PolTicketMinus(int m) { polTickets -= m; }
+	
+	
 private:
+	int packet_counter = 0;
+	std::vector<sf::Packet> packets;
+	
 	std::string mapName = "testWorld";
 
 	int naziTeam = 0, polTeam = 0; // counting players in teams
+	int naziTickets = 100, polTickets = 100;
+   
 	std::vector<std::shared_ptr<E_Player>> ePlayers;
 	std::vector<std::shared_ptr<Bullet>> bullets;
 	
@@ -62,5 +72,7 @@ private:
 	void loadServerInfo();
 
 	static void waitForPlayers(std::vector<std::shared_ptr<E_Player>> & ePlayers, const State & state, sf::TcpListener & tcpListener, WaitForPlayersData & waitForPlayersData); //thread
-	static void receiveInput(std::vector<std::shared_ptr<E_Player>> & ePlayers, std::vector<std::shared_ptr<Bullet>> & bullets, const State & state, sf::UdpSocket & socket); //thread
+	//static void receiveInput(std::vector<std::shared_ptr<E_Player>> & ePlayers, std::vector<std::shared_ptr<Bullet>> & bullets, const State & state, sf::UdpSocket & socket, int & counter); //thread
+
+	static void receiveInput(std::vector<sf::Packet> & packets, const State & state, sf::UdpSocket & socket);
 };

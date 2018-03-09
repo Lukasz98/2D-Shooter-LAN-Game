@@ -21,8 +21,10 @@ void Game::play()
 {
 	while (!kbhit() || room->GetState() != RUNNING)
 	{
-		update();
+	  room->Update();
+	  update();
 
+     
 		room->SendData();
 		time.Update();
 	}
@@ -38,8 +40,18 @@ void Game::update()
 
 	for (size_t i = 0; i < ePlayers->size(); i++)
 	{
+	  if ((*ePlayers)[i]->WasDead() == true)
+	  {
+   	    int team = (*ePlayers)[i]->GetTeam();
+	    int ticketLoss = 1 + 1 * world->GetFlagFactor(team);
+		if (team == NAZI)
+		  room->NaziTicketMinus(ticketLoss);
+		else
+		  room->PolTicketMinus(ticketLoss);
+	  }
+	  
 		if ((*ePlayers)[i]->IsOnline() == false)
-		{
+		{			
 			PlayerDeleteEv * event = new PlayerDeleteEv((*ePlayers)[i]->GetId());
 			room->AddEvent(event);
 			room->DeletePlayer(i);

@@ -27,13 +27,18 @@ public:
 	inline const int & GetMyId() { return myId; }
 	inline const std::string & GetMapName() { return mapName; }
 	inline const bool & isConnected() { return connected; }
-
+	inline int GetNaziTickets() { return naziTickets; };
+	inline int GetPolTickets() { return polTickets; };
+	
+	
 private:
+	int packet_counter = 0;
+	
 	bool connected = false;
-	std::string serverIp = "192.168.1.15";
+	std::string serverIp = "192.168.1.10";
 	int serverJoinPort, serverReceivingPort;
 
-	std::string myIp = "192.168.1.15";
+	std::string myIp = "192.168.1.10";
 	int myPort;
 	int myId;
 
@@ -45,6 +50,8 @@ private:
 	std::vector<std::shared_ptr<E_Player>> ePlayers;
 	std::vector<Bullet*> bullets;
 
+	int naziTickets = 0, polTickets = 0;
+	
 	void joinServer();
 	static void receiveData(std::vector<sf::Packet> & packets, sf::UdpSocket & socket, const bool & connected); //thread
 	void updateEPlayers(sf::Packet & packet);

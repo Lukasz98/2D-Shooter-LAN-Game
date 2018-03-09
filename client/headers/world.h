@@ -43,7 +43,7 @@ public:
                 {
                     case 'w': { texture = "img/wall.png"; break; }
                     case 'g': { texture = "img/grass.png"; break; }
-                    case 'z': { texture = "img/"; }
+				    case 'z': { texture = "img/thing.png"; break; }
                     //case 'A': { texture = "img/flag_a_un.png"; break; }
                 }
 //LOG("X="<<tileW*x<<" Y="<<tileW*(mapH-y));
@@ -54,6 +54,7 @@ public:
                     tiles.push_back(new Tile(texture, 0.0f + (tileW * x), (y) * tileW, tileW));
             }
         }
+	    
     }
 
 	void SetPlayers(std::vector<std::shared_ptr<E_Player>> * ePlayers) { this->ePlayers = ePlayers; }
@@ -74,6 +75,16 @@ public:
             }
         }
     }
+
+	std::vector<const sf::Texture *> GetFlagsT()
+	{
+	  std::vector<const sf::Texture *> t;
+	  for (auto f : flags)
+		t.push_back(f->getTexture());
+
+	  return t;
+	}
+		
 	
     const std::shared_ptr<E_Player> GetEPlayer(int id);
 
@@ -86,4 +97,7 @@ private:
     int mapW, mapH;
     std::vector<Tile*> tiles;
     std::vector<Flag*> flags;
+
+	sf::Font font;
+	sf::Text text;
 };

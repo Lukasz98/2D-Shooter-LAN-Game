@@ -8,7 +8,7 @@ Room::Room()
 	{
 		receiveSocket.bind(sf::Socket::AnyPort);
 		receivingPort = receiveSocket.getLocalPort();
-		receiveSocket.setBlocking(false);
+		receivingPort.setBlocking(false);
 
 		sendSocket.bind(sf::Socket::AnyPort);
 		sendingPort = sendSocket.getLocalPort();
@@ -117,32 +117,6 @@ void Room::receiveInput(std::vector<sf::Packet> & packets, const State & state, 
 		sf::IpAddress clientIp;
 		short unsigned int clientPort;
 		sf::Packet packet;
-
-		if (socket.receive(packet, clientIp, clientPort) == sf::Socket::Done)
-		  //socket.receive(packet, clientIp, clientPort);
-		packets.push_back(packet);
-		/*
-		counter ++;
-		
-		int id;
-		sf::Vector2i dir;
-		float angle;
-		packet >> id >> dir.x >> dir.y >> angle;
-
-		bool isCliced;
-		packet >> isCliced;
-
-		for (int i = 0; i < ePlayers.size(); i++)
-		{
-			if (ePlayers[i]->GetId() == id)
-			{
-				ePlayers[i]->Update(dir, angle);
-
-				if (isCliced)
-				{
-					int bulletId;
-					sf::Vector2f speedRatio;
-					packet >> speedRatio.x >> speedRatio.y >> bulletId;
 					bullets.push_back(std::make_shared<Bullet>(ePlayers[i]->GetPosition(), speedRatio, id, bulletId));
 				}
 			}
@@ -189,7 +163,6 @@ void Room::SendData()
 {
 //LOG("data send");
     sf::Packet packet;
-	packet << naziTickets << polTickets;
 	packet << (int)ePlayers.size();
 	
 	for (auto player : ePlayers)

@@ -14,7 +14,7 @@ class Flag : public Tile
     std::string id_c;
     float neutral, last;
     std::string texturePath_n;
-    sf::Texture naziT, polT;
+    sf::Texture naziT, polT, partlyTaken;
 
 public:
     Flag(float x, float y, float w, int id)
@@ -32,6 +32,7 @@ public:
         naziT.loadFromFile("img/flag_1_" + id_c + ".png");
         polT.loadFromFile("img/flag_2_" + id_c + ".png");
         texture.loadFromFile("img/flag_0_" + id_c + ".png");
+		partlyTaken.loadFromFile("img/flag_3_" + id_c + ".png");
         setTexture(&texture);
     }
     ~Flag() {}
@@ -40,7 +41,7 @@ public:
     
     void SetOwner(int o)
     {
-        LOG("SETOWNER = " << o);
+      //        LOG("SETOWNER = " << o);
         owner = o;
         if (owner == NONE) setTexture(&texture);
         else if (owner == NAZI) setTexture(&naziT);
@@ -48,7 +49,12 @@ public:
        // texturePath = "img/flag_" + std::to_string(owner) + '_' + (char)id;
     }
     
-    void SetIsTaker(int o) { isTaking = o; }
+    void SetIsTaker(int o)
+	{
+	  isTaking = o;
+	  if (owner == NONE && neutral >= 100.0f) setTexture(&partlyTaken);
+	}
+	
     void SetNeutralPoints(int n) { neutral = n; }
     void SetLastPoints(int l) { last = l; }
 };

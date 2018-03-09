@@ -14,6 +14,20 @@ E_Player::E_Player(int id, sf::Vector2f pos, int team)
 	setSize(size);
 	setOrigin(size.x /2, size.y /2);
 	setTexture(&texture);
+
+
+	
+  if (!font.loadFromFile("img/arial.ttf"))
+  {
+	LOG("World:: font load failed!");
+  }
+
+  name = "Lukasz";
+  text.setFont(font);
+  text.setCharacterSize(25);
+  text.setString(name);
+  text.setColor(sf::Color::Red);
+ 
 }
 
 E_Player::~E_Player()
@@ -24,6 +38,7 @@ E_Player::~E_Player()
 void E_Player::Update(sf::Vector2f position, float angle)
 {
 	SetPosition(position);
+	text.setPosition(position.x - text.getCharacterSize() * (name.size()/4.0f), position.y + size.y / 2.0f);
 	Rotate(angle);
 }
 

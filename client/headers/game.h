@@ -12,6 +12,7 @@
 #include "info.h"
 #include "time.h"
 #include "input_data.h"
+#include "bottom_bar.h"
 
 
 class Game

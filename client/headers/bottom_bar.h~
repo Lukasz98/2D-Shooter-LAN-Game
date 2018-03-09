@@ -1,0 +1,17 @@
+#pragma once
+
+#include <SFML/Graphics.hpp>
+
+#include "log.h"
+
+class BottomBar : public sf::RectangleShape
+{
+  sf::Color color;
+  
+public:
+  BottomBar(sf::Vector2f s);
+  ~BottomBar();
+
+
+
+};

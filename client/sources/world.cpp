@@ -1,10 +1,16 @@
 #include "../headers/world.h"
 
-
-
 World::World()
 {
+  if (!font.loadFromFile("img/arial.ttf"))
+  {
+	LOG("World:: font load failed!");
+  }
 
+  text.setFont(font);
+  text.setCharacterSize(50);
+  text.setString("Lukasz lubi placki");
+  text.setColor(sf::Color::Red);
 }
 
 World::~World() 
@@ -30,10 +36,15 @@ void World::Draw(sf::RenderWindow & window)
         window.draw(*flag);
 
 	for (auto const ePlayer : (*ePlayers))
-		window.draw(*ePlayer);
-
+	{
+	  window.draw(*ePlayer);
+	  window.draw(ePlayer->GetText());
+	}
+	
 	for (auto bullet : *bullets)
 		window.draw(*bullet);
+
+	window.draw(text);
 }
 
 const std::shared_ptr<E_Player> World::GetEPlayer(int id)

@@ -28,6 +28,8 @@ Game::~Game()
 
 void Game::play()
 {
+  BottomBar guiBar{sf::Vector2f(1280.0f, 64.0f), world->GetFlagsT()};
+  
 	while (connection->isConnected() && window.isOpen())
 	{
         connection->Update(world);
@@ -36,13 +38,23 @@ void Game::play()
 		connection->SendInput(inputData);
 		inputData.reset();
 
-		view.setCenter(myPlayer->GetPos());
+		sf::Vector2f vec;
+		vec.x = myPlayer->GetPos().x;
+		vec.y = myPlayer->GetPos().y + 32.0f;
+		view.setCenter(vec);
 		window.setView(view);
 
 		window.clear();
 		world->Draw(window);
+		guiBar.SetPosition(vec.x - 1280.0f / 2.0f, vec.y + 297.0f);
+		window.draw(guiBar);
+		guiBar.DrawContent(&window);
 		window.display();
 
+
+		guiBar.SetFlagsT(world->GetFlagsT());
+		guiBar.SetNaziTickets(connection->GetNaziTickets());
+		guiBar.SetPolTickets(connection->GetPolTickets());
 		time.Update();
 	}
 }

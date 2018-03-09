@@ -48,7 +48,7 @@ void Bullet::Overlaps(std::shared_ptr<E_Player> ePlayer)
 	
     sf::Vector2f p = ePlayer->GetPosition();
     sf::Vector2f s = ePlayer->GetSize();
-    if (Math_calc::GetLength(p, position) < s.x)
+    if (Math_calc::GetLength(p, position) < s.x * 0.6f)
     {
 		CollisionReact(10.0f);
 		ePlayer->Damage(51.0f);

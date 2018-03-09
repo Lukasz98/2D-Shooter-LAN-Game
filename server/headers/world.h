@@ -63,8 +63,7 @@ public:
     }
 
     bool IsBlocked(const std::shared_ptr<Entity> body)
-    {
-        
+    {        
         for (auto & tile : tiles) 
             if  (tile.IsBlocking() && tile.Overlaps(body))
                 return true;
@@ -99,6 +98,17 @@ public:
         return ev;
     }
 
+	int GetFlagFactor(int team)
+	{
+	  int factor = 0;
+	  for (auto & f : flags)
+	  {
+		int o = f.GetOwner();
+		if (o != team && o != NONE)
+		  factor++;
+	  }
+	  return factor;
+	}
 
 private:
     std::vector<Tile> tiles;

@@ -23,6 +23,9 @@ public:
 
 	virtual inline const int & GetId() = 0;
 
+	inline bool WasDead() { bool w = wasDead; wasDead = false; return w; }
+	
+	
 	static sf::Vector2f RED_RESP;
 	static sf::Vector2f WHITE_RESP;
 
@@ -34,5 +37,6 @@ protected:
 	float dt;
 	float hp;
 	int team;
+	bool wasDead = false;
 };
 

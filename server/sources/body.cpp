@@ -46,6 +46,7 @@ void Body::Damage(float damage)
 	{
 		position = spawnPos;
 		hp = 100.0f;
+		wasDead = true;
 	}
 }
 
