@@ -18,22 +18,22 @@
 class Game
 {
 public:
-	Game(Room * room);
-	~Game();
+    Game(Room * room);
+    ~Game();
 
 private:
-	Room * room;
-	World * world;
-	
-	std::vector<std::shared_ptr<Bullet>> * bullets;
-	std::vector<std::shared_ptr<E_Player>> * ePlayers;
+    Room * room;
+    World * world;
+    
+    std::vector<std::shared_ptr<Bullet>> * bullets;
+    std::vector<std::shared_ptr<E_Player>> * ePlayers;
 
-	Utils::Time time;
+    Utils::Time time;
 
-	void play();
-	void update();
+    void play();
+    void update();
     void updateFlags();
-	void collisions();
+    void collisions();
 
 
 };

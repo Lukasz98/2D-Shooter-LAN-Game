@@ -8,25 +8,12 @@
 class Tile : public sf::RectangleShape
 {
 public:
-	Tile(std::string path, float x, float y, float s)
-    {
-     	setPosition(sf::Vector2f(x, y));
-        pos.x = x; 
-        pos.y = y;
-        this->size = s;
-        setSize(sf::Vector2f(size, size));
-        
-        if (path != "")
-        {
-            texture.loadFromFile(path);
-            setTexture(&texture);   
-        }
-    }
-	~Tile() {}
+    Tile(std::string path, float x, float y, float s);
+    ~Tile();
 
 public:
-	sf::Vector2f pos;
+    sf::Vector2f pos;
     float size;
-	sf::Texture texture;
+    sf::Texture texture;
 };
 

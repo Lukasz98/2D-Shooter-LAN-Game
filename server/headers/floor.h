@@ -5,8 +5,8 @@
 class Floor : public MapObject
 {
 public:
-	Floor();
-	~Floor();
+    Floor();
+    ~Floor();
 
 };
 

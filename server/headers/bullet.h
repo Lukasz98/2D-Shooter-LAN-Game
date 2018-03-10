@@ -20,11 +20,10 @@ public:
 	void Overlaps(const MapObject * object);
 	void Overlaps(std::shared_ptr<E_Player> ePlayer);
 	
-	//inline const sf::Vector2f & GetPosition() { return position; }
 	inline const sf::Vector2f & GetSpeedRatio() { return speedRatio; }
-	inline const int & GetOwnerId() { return ownerId; }
-	inline const int & GetBulletId() { return bulletId; }
-    inline const int & GetRadius() { return size.x; }
+	inline int GetOwnerId() { return ownerId; }
+	inline int GetBulletId() { return bulletId; }
+    inline int GetRadius() { return size.x; }
 
 
 private:
@@ -32,7 +31,6 @@ private:
 	float dt;
 	float speed;
 	float power;
-	//float radius;
 	int ownerId, bulletId;
 
 	void pickDirection();

@@ -18,24 +18,24 @@
 class Game
 {
 public:
-	Game(Connection * connection);
-	~Game();
+    Game(Connection * connection);
+    ~Game();
 
 private:
-	Connection * connection;
-	World * world;
-	
-	sf::RenderWindow window;
-	sf::View view;
+    Connection * connection;
+    World * world;
+    
+    sf::RenderWindow window;
+    sf::View view;
 
-	std::shared_ptr<E_Player> myPlayer;
-	int myId, bulletIds = 0;
+    std::shared_ptr<E_Player> myPlayer;
+    int myId, bulletIds = 0;
 
-	Utils::Time time;
-	Utils::InputData inputData;
+    Utils::Time time;
+    Utils::InputData inputData;
 
-	void play();
-	void playerInput();
+    void play();
+    void playerInput();
 
 
 

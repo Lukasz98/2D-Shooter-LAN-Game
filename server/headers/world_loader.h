@@ -12,9 +12,9 @@
 class WorldLoader
 {
 public:
-	static World * LoadMap(std::string path);
+    static World * LoadMap(std::string path);
 
 private:
-	static sf::Vector2i loadResp(std::fstream * file);
+    static sf::Vector2i loadResp(std::fstream * file);
 };
 

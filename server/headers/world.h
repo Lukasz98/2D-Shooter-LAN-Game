@@ -21,94 +21,25 @@
 class World
 {
 public:
-	World();
-	~World();
+    World();
+    ~World();
 
-	void Update(float dt);
-    inline const int & GetMapWidth() { return mapW; }
-    inline const int & GetMapHeight() { return mapH; }
+    void Update(float dt);
+    inline int GetMapWidth() { return mapW; }
+    inline int GetMapHeight() { return mapH; }
     inline const std::string & GetMap() { return map; }
-    //const std::vector<Tile*> * GetTiles() { return & tiles; }
 
-    void SetMap(std::string map, int mapW, int mapH) {
-        this->map = map;
-        this->mapW = mapW;
-        this->mapH = mapH;
-        
-        for (int y = 0; y < mapH; y++)
-        {
-            for (int x = 0; x < mapW; x++)
-            {
-                int id = x + y + (mapW - 1) * y;
-                if (map[id] == 'A' || map[id] == 'B' || map[id] == 'C')
-                    flags.push_back(Flag(map[id], x, y));
-                else
-                    tiles.push_back(Tile(map[id], x, y));
-            }
-        }
-    }
+    void SetMap(std::string map, int mapW, int mapH);
 
+    void SetRedResp(sf::Vector2i pos);
+    void SetWhiteResp(sf::Vector2i pos);
+    
+    bool IsBlocked(const std::shared_ptr<Entity> body);
 
-    void SetRedResp(sf::Vector2i pos) 
-    { 
-        redResp.x = pos.x * tileW - tileW / 2.0f; 
-        redResp.y = pos.y * tileW - tileW / 2.0f; 
-        Body::RED_RESP = redResp; 
-    }
-	void SetWhiteResp(sf::Vector2i pos) 
-    { 
-        whiteResp.x = pos.x * tileW; 
-        whiteResp.y = pos.y * tileW; 
-        Body::WHITE_RESP = whiteResp; 
-    }
+    void TakeFlag(const std::shared_ptr<E_Player> body);
 
-    bool IsBlocked(const std::shared_ptr<Entity> body)
-    {        
-        for (auto & tile : tiles) 
-            if  (tile.IsBlocking() && tile.Overlaps(body))
-                return true;
-
-        return false;
-    }
-
-    void TakeFlag(const std::shared_ptr<E_Player> body)
-    {
-        sf::Vector2f pos = body->GetPosition();
-
-        for (auto & flag : flags)
-        {
-            sf::Vector2f fpos = flag.GetPosition();
-            //LOG(pos.x << ", " << fpos.x << ", " << fpos.y);
-            if (Math_calc::GetLength(pos, fpos) < 500.0f)
-            {
-                flag.Take(body->GetTeam());
-                //LOG("World::takeFlag");
-            }
-        }
-    }
-
-    FlagsUpdateEv * GetFlagsUpdateEv()
-    {
-        FlagsUpdateEv * ev = new FlagsUpdateEv();
-        for (auto & f : flags)
-        {
-            ev->AddData(f.GetId(), f.GetOwner(), f.GetIsTaker(), f.GetNeutralPoints(), f.GetLastPoints());
-            //break;
-        }
-        return ev;
-    }
-
-	int GetFlagFactor(int team)
-	{
-	  int factor = 0;
-	  for (auto & f : flags)
-	  {
-		int o = f.GetOwner();
-		if (o != team && o != NONE)
-		  factor++;
-	  }
-	  return factor;
-	}
+    FlagsUpdateEv * GetFlagsUpdateEv();
+    int GetFlagFactor(int team);
 
 private:
     std::vector<Tile> tiles;
@@ -117,6 +48,6 @@ private:
     int mapW, mapH;
     int tileW = 64.0f;
 
-	sf::Vector2f redResp, whiteResp;
+    sf::Vector2f redResp, whiteResp;
 
 }; 

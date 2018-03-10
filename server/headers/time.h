@@ -9,23 +9,23 @@ namespace Utils {
 class Time
 {
 public:
-	Time();
-	void Update();
+    Time();
+    void Update();
 
-	inline float GetDt() { return dt; }
+    inline float GetDt() { return dt; }
 
 private:
-	float dt;
-	float timeForEnemies;
-	float timeForFps;
-	float fullTime;
-	float fireTime;
-	int frames;
+    float dt;
+    float timeForEnemies;
+    float timeForFps;
+    float fullTime;
+    float fireTime;
+    int frames;
 
-	sf::Clock m_clock;
+    sf::Clock m_clock;
 
-	void setValues();
-	
+    void setValues();
+    
 };
 
 }

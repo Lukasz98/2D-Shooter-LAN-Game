@@ -9,17 +9,17 @@
 class MapObject : public sf::RectangleShape
 {
 public:
-	MapObject();
-	~MapObject();
+    MapObject();
+    ~MapObject();
 
-	void SetPosition(sf::Vector2f pos);
-	void SetSize(sf::Vector2f size);
-	void SetTexture(std::string path);
+    void SetPosition(sf::Vector2f pos);
+    void SetSize(sf::Vector2f size);
+    void SetTexture(std::string path);
 
-	bool Overlaps(const Body * body);
+    bool Overlaps(const Body * body);
 
 protected:
-	sf::Vector2f pos, size;
-	sf::Texture texture;
+    sf::Vector2f pos, size;
+    sf::Texture texture;
 };
 

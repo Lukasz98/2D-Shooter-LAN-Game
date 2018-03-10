@@ -8,5 +8,5 @@
 class LoadFromFiles
 {
 public:
-	static void loadServerInfo(std::string & ip, int & port);
+    static void loadServerInfo(std::string & ip, int & port);
 };

@@ -7,11 +7,13 @@
 /client/sources/*.d
 /server/sources/*.d
 
-
 /client/*.o
 /server/*.o
 /client/sources/*.o
 /server/sources/*.o
+
+/client/#*
+/server/#*
 
 /client/*.so
 /server/*.so

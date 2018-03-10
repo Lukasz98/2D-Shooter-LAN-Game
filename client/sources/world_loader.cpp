@@ -3,14 +3,14 @@
 
 World * WorldLoader::LoadMap(std::string path)
 {
-	World * world = new World();
+    World * world = new World();
 
-	std::fstream * file = new std::fstream(path);
+    std::fstream * file = new std::fstream(path);
 
-	if (file->is_open())
-	{
-		std::string check;
-		int mapW = 0, mapH = 0;
+    if (file->is_open())
+    {
+        std::string check;
+        int mapW = 0, mapH = 0;
         std::string map;
 
         *file >> mapW >> mapH;
@@ -25,15 +25,16 @@ World * WorldLoader::LoadMap(std::string path)
 
         while (!file->eof())
         {
-			*file >> check;
-    	}
-		file->close();
+            *file >> check;
+        }
+
+        file->close();
 
         world->SetMap(map, mapW, mapH);
     }
 
-	delete file;
-	return world;
+    delete file;
+    return world;
 }
 
 

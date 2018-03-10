@@ -4,8 +4,8 @@
 class Wall : public MapObject
 {
 public:
-	Wall();
-	~Wall();
+    Wall();
+    ~Wall();
 
 };
 
