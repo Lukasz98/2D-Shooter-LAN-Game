@@ -12,7 +12,8 @@ Game::Game(Connection * connection)
     world->SetPlayers(connection->GetEPlayers());
     world->SetBullets(connection->GetBullets());
 
-    myPlayer = world->GetEPlayer(myId);
+    world->SetMyPlayerId(myId);
+    myPlayer = world->GetMyPlayer();
 
     window.setView(view);
     window.setFramerateLimit(60);

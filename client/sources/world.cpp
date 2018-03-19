@@ -1,6 +1,7 @@
 #include "../headers/world.h"
 
 World::World()
+:clientPlayer(nullptr)
 {
     if (!font.loadFromFile("img/arial.ttf"))
     {
@@ -27,8 +28,18 @@ void World::Draw(sf::RenderWindow & window)
     }
 
     for (auto flag : flags)
+    {
         window.draw(*flag);
-
+        if (flag->IsInArea(clientPlayer.get()))
+        {
+            sf::Vector2f pPos = clientPlayer->GetPos();
+            sf::Vector2f pSize = clientPlayer->GetSize();
+            text.setString(flag->GetProgress());
+            text.setPosition(pPos.x - pSize.x * 2, pPos.y - pSize.y * 2);
+            window.draw(text);
+        }
+    }
+    
     for (auto const ePlayer : (*ePlayers))
     {
         window.draw(*ePlayer);
@@ -37,19 +48,24 @@ void World::Draw(sf::RenderWindow & window)
     
     for (auto bullet : *bullets)
         window.draw(*bullet);
-
-    window.draw(text);
+    
 }
 
-const std::shared_ptr<E_Player> World::GetEPlayer(int id)
+void World::SetMyPlayerId(int id)
 {
     for (auto player : *ePlayers)
     {
         if (player->GetId() == id)
         {
-            return player;
+            clientPlayer = player;
+            break;
         }
-    }
+    }    
+}
+
+const std::shared_ptr<E_Player> World::GetMyPlayer()
+{
+    return clientPlayer;
 }
 
 void World::SetMap(std::string map, int mapW, int mapH)

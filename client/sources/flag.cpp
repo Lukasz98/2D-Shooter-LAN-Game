@@ -38,3 +38,24 @@ void Flag::SetIsTaker(int o)
     if (owner == NONE && neutral >= 100.0f)
         setTexture(&partlyTaken);
 }
+
+bool Flag::IsInArea(const Body * body)
+{
+    sf::Vector2f bPos = body->GetPos();
+
+    if (Math_calc::GetLength(bPos, pos) < 500.0f)
+        return true;
+
+    return false;
+}
+
+std::string Flag::GetProgress()
+{
+    std::string result;
+    if (last > 0)
+        result = "Ocuppied: " + std::to_string(last);
+    else
+        result = "Neutral: " + std::to_string(neutral);
+
+    return result;
+}

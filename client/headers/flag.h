@@ -2,6 +2,8 @@
 
 #include <string>
 #include "tile.h"
+#include "body.h"
+#include "math_calc.h"
 #include "log.h"
 
 #define NONE 0
@@ -26,4 +28,7 @@ public:
     void SetIsTaker(int o);    
     void SetNeutralPoints(int n) { neutral = n; }
     void SetLastPoints(int l) { last = l; }
+
+    bool IsInArea(const Body * body);
+    std::string GetProgress();
 };

@@ -29,8 +29,10 @@ public:
     void AddBullet(Bullet * bullet) { bullets->push_back(bullet); }
     void UpdateFlag(int id, int owner, int isTaker, float neutralPoints, float lastPoints);
 
+    void SetMyPlayerId(int id);
+    
     std::vector<const sf::Texture *> GetFlagsT();        
-    const std::shared_ptr<E_Player> GetEPlayer(int id);
+    const std::shared_ptr<E_Player> GetMyPlayer();
 
 
 private:
@@ -42,6 +44,8 @@ private:
     std::vector<Tile*> tiles;
     std::vector<Flag*> flags;
 
+    std::shared_ptr<E_Player> clientPlayer;
+    
     sf::Font font;
     sf::Text text;
 };

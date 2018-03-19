@@ -17,6 +17,7 @@ public:
 
     inline const sf::Vector2f & GetPosition() { return position; }
     inline const sf::Vector2f & GetPos() { return position; }
+    inline const sf::Vector2f & GetSize() { return size; }
     inline float GetAngle() { return angle; }
     virtual inline int GetId() = 0;
 
