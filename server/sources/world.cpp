@@ -39,15 +39,17 @@ void World::SetMap(std::string map, int mapW, int mapH)
 void World::SetRedResp(sf::Vector2i pos) 
 { 
     redResp.x = pos.x * tileW - tileW / 2.0f; 
-    redResp.y = pos.y * tileW - tileW / 2.0f; 
-    Body::RED_RESP = redResp; 
+    redResp.y = pos.y * tileW;// - tileW / 2.0f; 
+    Body::RED_RESP = redResp;
+    LOG("RED_RESP " << Body::RED_RESP.x << ", " << Body::RED_RESP.y);
 }
 
 void World::SetWhiteResp(sf::Vector2i pos) 
 { 
     whiteResp.x = pos.x * tileW; 
-    whiteResp.y = pos.y * tileW; 
+    whiteResp.y = pos.y * tileW;
     Body::WHITE_RESP = whiteResp; 
+    LOG("whiteResp_RESP " << Body::WHITE_RESP.x << ", " << Body::WHITE_RESP.y);
 }
 
 bool World::IsBlocked(const std::shared_ptr<Entity> body)
@@ -95,4 +97,11 @@ int World::GetFlagFactor(int team)
     return factor;
 }
 
+void World::ResetFlags()
+{
+    for (auto & f : flags)
+    {
+        f.Reset();
+    }
+}
 

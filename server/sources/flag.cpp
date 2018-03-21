@@ -60,5 +60,12 @@ void Flag::Take(int side)
     if (last == 100.0f) owner = isTaking;
     if (owner != NONE && last == 0.0f) owner = NONE;
     if (neutral == 0.0f) isTaking = NONE;
+}
 
+void Flag::Reset()
+{
+    owner = NONE;
+    isTaking = NONE;
+    neutral = 0.0f;
+    last = 0.0f;
 }

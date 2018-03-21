@@ -35,10 +35,10 @@ private:
     int packet_counter = 0;
     
     bool connected = false;
-    std::string serverIp = "192.168.1.11";
+    std::string serverIp = "192.168.1.14";
     int serverJoinPort, serverReceivingPort;
 
-    std::string myIp = "192.168.1.11";
+    std::string myIp = "192.168.1.14";
     int myPort;
     int myId;
 

@@ -30,7 +30,14 @@ Game::~Game()
 void Game::play()
 {
     BottomBar guiBar{sf::Vector2f(1280.0f, 64.0f), world->GetFlagsT()};
-  
+
+    sf::Font font;
+    font.loadFromFile("img/arial.ttf");
+    sf::Text won_txt;
+    won_txt.setFont(font);
+    won_txt.setCharacterSize(90);
+    won_txt.setColor(sf::Color::Blue);
+    
     while (connection->isConnected() && window.isOpen())
     {
         connection->Update(world);
@@ -45,17 +52,36 @@ void Game::play()
         view.setCenter(vec);
         window.setView(view);
 
+        int naziT = connection->GetNaziTickets();
+        int polT = connection->GetPolTickets();
+        guiBar.SetFlagsT(world->GetFlagsT());
+        guiBar.SetNaziTickets(naziT);
+        guiBar.SetPolTickets(polT);
+
+        if (naziT <= 0)
+        {
+            won = POL;
+            won_txt.setString("Poland won!");
+            won_txt.setPosition(vec.x - 1280.0f * 0.4f, vec.y);
+        }
+        else if (polT <= 0)
+        {
+            won = NAZI;
+            won_txt.setString("German nazists won!");
+            won_txt.setPosition(vec.x - 1280.0f * 0.4f, vec.y);
+        }
+        else
+            won = 0;
+        
         window.clear();
         world->Draw(window);
         guiBar.SetPosition(vec.x - 1280.0f / 2.0f, vec.y + 297.0f);
         window.draw(guiBar);
         guiBar.DrawContent(&window);
+        if (won != 0)
+            window.draw(won_txt);
         window.display();
 
-
-        guiBar.SetFlagsT(world->GetFlagsT());
-        guiBar.SetNaziTickets(connection->GetNaziTickets());
-        guiBar.SetPolTickets(connection->GetPolTickets());
         time.Update();
     }
 }
@@ -70,7 +96,10 @@ void Game::playerInput()
     }
     
     inputData.updateMousePos(sf::Mouse::getPosition(window));
-    
+
+    if (won == 0)
+    {
+        
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         inputData.x = -1;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
@@ -90,5 +119,7 @@ void Game::playerInput()
         inputData.mouseClick = true;
         inputData.bulletId = bulletIds;
         bulletIds ++;
+    }
+    
     }
 }

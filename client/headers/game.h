@@ -34,9 +34,11 @@ private:
     Utils::Time time;
     Utils::InputData inputData;
 
+    int won = 0;
+
     void play();
     void playerInput();
 
-
+    //    enum class TEAM { NAZI = 1, POL = 2 };
 
 };

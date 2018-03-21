@@ -26,5 +26,5 @@ public:
     inline const int GetIsTaker() { return isTaking; }
     inline const int GetNeutralPoints() { return neutral; }
     inline const int GetLastPoints() { return last; }
-    
+    void Reset();
 };

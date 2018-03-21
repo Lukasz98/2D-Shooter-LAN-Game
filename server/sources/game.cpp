@@ -31,6 +31,21 @@ void Game::play()
 
 void Game::update()
 {
+    if (room->ZeroTickets() == true)
+    {
+        time.UpdateGameOverTime();
+        if (time.GetGameOverTime() > 10.0f)
+        {
+            for (auto p : *ePlayers)
+                p->Damage(1000.0f); // kill them, so they respawn 
+
+            room->ResetTickets();
+            world->ResetFlags();
+                
+            time.ResetGameOverTime();
+        }
+    }
+    
     for (auto ePlayer : *ePlayers)
     {
         ePlayer->SetDt(time.GetDt());

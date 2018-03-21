@@ -7,11 +7,12 @@ sf::Vector2f Body::WHITE_RESP = sf::Vector2f();
 Body::Body(int team)
 {
     this->team = team;
-    if (team == 0)
+    if (team == 1) // 1- nazi
         spawnPos = RED_RESP;
     else
         spawnPos = WHITE_RESP;
 
+    LOG("BODY_RESP " << spawnPos.x << ", " << spawnPos.y);
     position = spawnPos;
     hp = 100.0f;
     angle = 0.0f;

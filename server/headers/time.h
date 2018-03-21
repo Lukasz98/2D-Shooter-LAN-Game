@@ -13,13 +13,17 @@ public:
     void Update();
 
     inline float GetDt() { return dt; }
-
+    inline float GetGameOverTime() { return gameOverTime; }
+    inline void UpdateGameOverTime() { gameOverTime += dt; }
+    inline void ResetGameOverTime() { gameOverTime = 0.0f; }
+    
 private:
     float dt;
     float timeForEnemies;
     float timeForFps;
     float fullTime;
     float fireTime;
+    float gameOverTime;
     int frames;
 
     sf::Clock m_clock;

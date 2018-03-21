@@ -11,6 +11,7 @@ Time::Time()
     fullTime = 0.0f;
     fireTime = 0.0f;
     frames = 0;
+    gameOverTime = 0.0f;
 } 
         
 void Time::Update()
@@ -38,8 +39,9 @@ void Time::setValues()
     timeForFps += dt;
     fullTime += dt;
     fireTime += dt;
+    
     frames ++;
-
+    
     if (timeForFps > 1.0f)
     {
         //LOG(frames);

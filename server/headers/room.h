@@ -41,9 +41,11 @@ public:
     inline const std::string & GetMapName() { return mapName; }
 
     void Update();
-    void NaziTicketMinus(int m) { naziTickets -= m; }
-    void PolTicketMinus(int m) { polTickets -= m; }
-    
+    inline void NaziTicketMinus(int m) { naziTickets -= m; }
+    inline void PolTicketMinus(int m) { polTickets -= m; }
+    inline bool ZeroTickets() { if (naziTickets <= 0 || polTickets <= 0) return true; return false; }
+    inline void ResetTickets() { naziTickets = 100; polTickets = 100; }
+
     
 private:
     int packet_counter = 0;
@@ -52,7 +54,7 @@ private:
     std::string mapName = "testWorld";
 
     int naziTeam = 0, polTeam = 0; // counting players in teams
-    int naziTickets = 100, polTickets = 100;
+    int naziTickets = 10, polTickets = 100;
    
     std::vector<std::shared_ptr<E_Player>> ePlayers;
     std::vector<std::shared_ptr<Bullet>> bullets;

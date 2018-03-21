@@ -40,7 +40,8 @@ public:
 
     FlagsUpdateEv * GetFlagsUpdateEv();
     int GetFlagFactor(int team);
-
+    void ResetFlags();
+    
 private:
     std::vector<Tile> tiles;
     std::vector<Flag> flags;
