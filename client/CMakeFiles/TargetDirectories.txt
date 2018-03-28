@@ -1,3 +1,0 @@
-/home/lukasz/git/s/client/CMakeFiles/rebuild_cache.dir
-/home/lukasz/git/s/client/CMakeFiles/sfml-app.dir
-/home/lukasz/git/s/client/CMakeFiles/edit_cache.dir
