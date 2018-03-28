@@ -5,11 +5,24 @@
 
 int main()
 {
-    Connection connection;
-    
-    if (connection.isConnected())
+    bool lanGame = true;
+    Connection * connection;
+
+    try
     {
-        Game game{ &connection };
-        connection.Close();
-    }   
+        connection = new Connection(lanGame);
+    }
+    catch (const char * e)
+    {
+        LOG(e);
+        return 1;
+    }
+    
+    if (connection->isConnected())
+    {
+        Game game{ connection };
+        connection->Close();
+    }
+
+    delete connection;
 }

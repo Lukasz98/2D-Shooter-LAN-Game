@@ -1,0 +1,18 @@
+#pragma once
+#include <string>
+
+struct ServerInfo
+{
+    ServerInfo()
+    {
+        ip = "";
+        joinPort = 0;
+        receivingPort = 0;
+        sendingPort = 0;
+    }
+    ~ServerInfo() {}
+    
+    std::string ip;
+    int joinPort;
+    int receivingPort, sendingPort;
+};

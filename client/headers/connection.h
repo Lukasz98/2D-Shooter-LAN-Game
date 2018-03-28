@@ -10,19 +10,21 @@
 #include "e_player.h"
 #include "bullet.h"
 #include "input_data.h"
+#include "network_info.h"
+#include "load_from_files.h"
 #include "log.h"
 
 class Connection
 {
 public:
-    Connection();
+    Connection(bool lanGame = true);
     ~Connection();
 
     void Update(World * world);
     void SendInput(Utils::InputData & input);
     void Close() { connected = false; }
 
-    std::vector<std::shared_ptr<E_Player>> * GetEPlayers() { return & ePlayers; }
+    std::vector<E_Player*> * GetEPlayers() { return & ePlayers; }
     std::vector<Bullet*> * GetBullets() { return & bullets; }
     inline int GetMyId() { return myId; }
     inline const std::string & GetMapName() { return mapName; }
@@ -35,11 +37,15 @@ private:
     int packet_counter = 0;
     
     bool connected = false;
-    std::string serverIp = "192.168.1.14";
-    int serverJoinPort, serverReceivingPort;
 
-    std::string myIp = "192.168.1.14";
-    int myPort;
+    NetworkInfo info;
+    
+    //std::string serverIp = "192.168.1.14";
+    int serverJoinPort, serverReceivingPort;
+    //int serverReceivingPort;
+
+    //std::string myIp = "192.168.1.14";
+    //int myPort;
     int myId;
 
     std::vector<sf::Packet> receivedPackets;
@@ -47,7 +53,7 @@ private:
 
     std::string mapName;
 
-    std::vector<std::shared_ptr<E_Player>> ePlayers;
+    std::vector<E_Player*> ePlayers;
     std::vector<Bullet*> bullets;
 
     int naziTickets = 0, polTickets = 0;

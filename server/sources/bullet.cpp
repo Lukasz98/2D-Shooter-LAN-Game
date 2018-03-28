@@ -38,7 +38,7 @@ void Bullet::Overlaps(const MapObject * object)
     }
 }
 
-void Bullet::Overlaps(std::shared_ptr<E_Player> ePlayer)
+void Bullet::Overlaps(E_Player * ePlayer)
 {
     if (ePlayer->GetId() == ownerId)
         return;

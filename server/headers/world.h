@@ -34,9 +34,9 @@ public:
     void SetRedResp(sf::Vector2i pos);
     void SetWhiteResp(sf::Vector2i pos);
     
-    bool IsBlocked(const std::shared_ptr<Entity> body);
+    bool IsBlocked(const Entity * body);
 
-    void TakeFlag(const std::shared_ptr<E_Player> body);
+    void TakeFlag(const E_Player* body);
 
     FlagsUpdateEv * GetFlagsUpdateEv();
     int GetFlagFactor(int team);

@@ -8,7 +8,7 @@ MapObject::~MapObject()
 {
 }
 
-bool MapObject::Overlaps(const std::shared_ptr<Entity> body)
+bool MapObject::Overlaps(const Entity * body)
 {
     sf::Vector2f bodyPos = body->GetPosition();
     sf::Vector2f bodySize = body->GetSize();

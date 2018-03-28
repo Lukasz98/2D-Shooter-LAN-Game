@@ -25,8 +25,8 @@ private:
     Room * room;
     World * world;
     
-    std::vector<std::shared_ptr<Bullet>> * bullets;
-    std::vector<std::shared_ptr<E_Player>> * ePlayers;
+    std::vector<Bullet*> * bullets;
+    std::vector<E_Player*> * ePlayers;
 
     Utils::Time time;
 

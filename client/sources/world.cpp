@@ -1,7 +1,6 @@
 #include "../headers/world.h"
 
 World::World()
-:clientPlayer(nullptr)
 {
     if (!font.loadFromFile("img/arial.ttf"))
     {
@@ -20,7 +19,7 @@ World::~World()
 
 
 
-void World::Draw(sf::RenderWindow & window)
+void World::Draw(sf::RenderWindow & window, const E_Player * myPlayer)
 {   
     for (auto tile : tiles)
     {
@@ -30,16 +29,16 @@ void World::Draw(sf::RenderWindow & window)
     for (auto flag : flags)
     {
         window.draw(*flag);
-        if (flag->IsInArea(clientPlayer.get()))
+        if (flag->IsInArea(myPlayer))
         {
-            sf::Vector2f pPos = clientPlayer->GetPos();
-            sf::Vector2f pSize = clientPlayer->GetSize();
+            sf::Vector2f pPos = myPlayer->GetPos();
+            sf::Vector2f pSize = myPlayer->GetSize();
             text.setString(flag->GetProgress());
             text.setPosition(pPos.x - pSize.x * 2, pPos.y - pSize.y * 2);
             window.draw(text);
         }
     }
-    
+    /*    
     for (auto const ePlayer : (*ePlayers))
     {
         window.draw(*ePlayer);
@@ -48,9 +47,9 @@ void World::Draw(sf::RenderWindow & window)
     
     for (auto bullet : *bullets)
         window.draw(*bullet);
-    
+    */
 }
-
+/*
 void World::SetMyPlayerId(int id)
 {
     for (auto player : *ePlayers)
@@ -62,12 +61,13 @@ void World::SetMyPlayerId(int id)
         }
     }    
 }
-
+*/
+ /*
 const std::shared_ptr<E_Player> World::GetMyPlayer()
 {
     return clientPlayer;
 }
-
+ */
 void World::SetMap(std::string map, int mapW, int mapH)
 {
     this->map = map;

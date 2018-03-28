@@ -1,19 +1,31 @@
 #include "../headers/connection.h"
 
 
-Connection::Connection()
+Connection::Connection(bool lanGame)
 {
     LOG("Podaj port servera: ");
     std::cin >> serverJoinPort;
 
-    if (receivingSocket.bind(sf::Socket::AnyPort) != sf::Socket::Done)
+    try
     {
-        LOG("Connection: Constructor - receivingSocket.bind() error ");
+        info = LoadFromFiles::LoadNetworkInfo();
     }
+    catch (const char * e)
+    {
+        throw e;
+    }
+    
+    if (lanGame == true)
+    {
+        if (receivingSocket.bind(sf::Socket::AnyPort) != sf::Socket::Done)
+            throw "Receive socket bind error";
+    }
+    else if (receivingSocket.bind(info.myPort) != sf::Socket::Done)
+        throw "Receive socket bind error";
+    
     receivingSocket.setBlocking(false);
-
-    myPort = receivingSocket.getLocalPort();
-    LOG("My port=" << myPort);
+    info.myPort = receivingSocket.getLocalPort();
+    LOG("My port=" << info.myPort);
 
     joinServer();
 
@@ -23,10 +35,13 @@ Connection::Connection()
         LOG("Connection: receiveData started");
 
         LOG("Connection: Constructor - binding sendingSocket");
-        if (sendingSocket.bind(sf::Socket::AnyPort) != sf::Socket::Done)
+        if (lanGame == true)
         {
-            LOG("Connection: Constructor - sendingSocket.bind() error ");
+            if (sendingSocket.bind(sf::Socket::AnyPort) != sf::Socket::Done)
+                throw "Send socket bind error";
         }
+        else if (sendingSocket.bind(info.sendPort) != sf::Socket::Done)
+            throw "Send socket bind error";
     }
 }
 
@@ -34,8 +49,8 @@ Connection::~Connection()
 {
     LOG("Connection::~Connection packet_counter=" << packet_counter);
     sendingSocket.unbind();
-//  for (auto ePlayer : ePlayers)
-//      delete ePlayer;
+    for (auto ePlayer : ePlayers)
+        delete ePlayer;
     for (auto bullet : bullets)
         delete bullet;
 }
@@ -43,8 +58,7 @@ Connection::~Connection()
 void Connection::joinServer()
 {
     sf::TcpSocket tcpSocket;
-    sf::Socket::Status status = tcpSocket.connect(serverIp, serverJoinPort);
-    if (status != sf::Socket::Done)
+    if (tcpSocket.connect(info.serverIp, serverJoinPort) != sf::Socket::Done)
     {
         // throw exc
         LOG("Connection:joinServer - cannot connect to server");
@@ -52,7 +66,7 @@ void Connection::joinServer()
     else
     {
         sf::Packet myPacket;
-        myPacket << myIp << myPort;
+        myPacket << info.myIp << info.myPort;
         tcpSocket.send(myPacket);
 
         sf::Packet serverPacket;
@@ -63,13 +77,13 @@ void Connection::joinServer()
 
         sf::Vector2f pos;
         serverPacket >> pos.x >> pos.y;
-        ePlayers.push_back(std::shared_ptr<E_Player>(new E_Player(myId, pos, team)));
+        ePlayers.push_back(new E_Player(myId, pos, team));
 
         tcpSocket.disconnect();
 
         LOG("Welcome");
         connected = true;
-    }   
+    }
 
 }
 
@@ -95,7 +109,7 @@ void Connection::SendInput(Utils::InputData & input)
     if (input.mouseClick)
         packet << input.speedRatio.x << input.speedRatio.y << input.bulletId;
 
-    sendingSocket.send(packet, serverIp, serverReceivingPort);
+    sendingSocket.send(packet, info.serverIp, serverReceivingPort);
 }
 
 void Connection::Update(World * world)
@@ -137,7 +151,7 @@ void Connection::updateEPlayers(sf::Packet & packet)
         
         if (do_i_know_this_guy == false)
         {
-            ePlayers.push_back(std::shared_ptr<E_Player>(new E_Player(id, pos, team)));
+            ePlayers.push_back(new E_Player(id, pos, team));
         }
     }
 }
@@ -203,6 +217,7 @@ void Connection::updateEvents(sf::Packet & packet, World * world)
                 for (int p = 0; p < ePlayers.size(); p++)
                     if (ePlayers[p]->GetId() == playerId)
                     {
+                        delete ePlayers[p];
                         ePlayers.erase(ePlayers.begin() + p);
                         break;
                     }

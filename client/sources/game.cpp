@@ -9,11 +9,23 @@ Game::Game(Connection * connection)
     myId = connection->GetMyId();
 
     world = WorldLoader::LoadMap("../worlds/" + connection->GetMapName());
-    world->SetPlayers(connection->GetEPlayers());
-    world->SetBullets(connection->GetBullets());
+    //world->SetPlayers(connection->GetEPlayers());
+    //world->SetBullets(connection->GetBullets());
+    ePlayers = connection->GetEPlayers();
+    bullets = connection->GetBullets();
+    
 
-    world->SetMyPlayerId(myId);
-    myPlayer = world->GetMyPlayer();
+    for (const auto player : *ePlayers)
+    {
+        if (player->GetId() == myId)
+        {
+            myPlayer = player;
+            break;
+        }
+    }    
+
+    //world->SetMyPlayerId(myId);
+    //myPlayer = world->GetMyPlayer();
 
     window.setView(view);
     window.setFramerateLimit(60);
@@ -74,7 +86,17 @@ void Game::play()
             won = 0;
         
         window.clear();
-        world->Draw(window);
+        world->Draw(window, myPlayer);
+
+        for (auto const ePlayer : (*ePlayers))
+        {   
+            window.draw(*ePlayer);
+            window.draw(ePlayer->GetText());
+        }
+    
+        for (auto bullet : *bullets)
+            window.draw(*bullet);
+
         guiBar.SetPosition(vec.x - 1280.0f / 2.0f, vec.y + 297.0f);
         window.draw(guiBar);
         guiBar.DrawContent(&window);
@@ -100,26 +122,26 @@ void Game::playerInput()
     if (won == 0)
     {
         
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        inputData.x = -1;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        inputData.x = 1;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        inputData.y = -1;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        inputData.y = 1;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+            inputData.x = -1;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+            inputData.x = 1;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+            inputData.y = -1;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+            inputData.y = 1;
 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && time.fireTime > 0.5f)
-    {
-        time.fireTime = 0.0f;
-        sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-        Bullet * b = new Bullet(myPlayer->getPosition(), mousePos, myId, bulletIds);
-        world->AddBullet(b);
-        inputData.speedRatio = b->GetSpeedRatio();
-        inputData.mouseClick = true;
-        inputData.bulletId = bulletIds;
-        bulletIds ++;
-    }
-    
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && time.fireTime > 0.5f)
+        {
+            time.fireTime = 0.0f;
+            sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+            Bullet * b = new Bullet(myPlayer->getPosition(), mousePos, myId, bulletIds);
+            bullets->push_back(b);
+            //world->AddBullet(b);
+            inputData.speedRatio = b->GetSpeedRatio();
+            inputData.mouseClick = true;
+            inputData.bulletId = bulletIds;
+            bulletIds ++;
+        }
     }
 }

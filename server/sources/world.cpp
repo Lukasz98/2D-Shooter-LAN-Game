@@ -41,7 +41,7 @@ void World::SetRedResp(sf::Vector2i pos)
     redResp.x = pos.x * tileW - tileW / 2.0f; 
     redResp.y = pos.y * tileW;// - tileW / 2.0f; 
     Body::RED_RESP = redResp;
-    LOG("RED_RESP " << Body::RED_RESP.x << ", " << Body::RED_RESP.y);
+    //LOG("RED_RESP " << Body::RED_RESP.x << ", " << Body::RED_RESP.y);
 }
 
 void World::SetWhiteResp(sf::Vector2i pos) 
@@ -49,10 +49,10 @@ void World::SetWhiteResp(sf::Vector2i pos)
     whiteResp.x = pos.x * tileW; 
     whiteResp.y = pos.y * tileW;
     Body::WHITE_RESP = whiteResp; 
-    LOG("whiteResp_RESP " << Body::WHITE_RESP.x << ", " << Body::WHITE_RESP.y);
+    //LOG("whiteResp_RESP " << Body::WHITE_RESP.x << ", " << Body::WHITE_RESP.y);
 }
 
-bool World::IsBlocked(const std::shared_ptr<Entity> body)
+bool World::IsBlocked(const Entity * body)
 {    
     for (auto & tile : tiles) 
         if  (tile.IsBlocking() && tile.Overlaps(body))
@@ -61,7 +61,7 @@ bool World::IsBlocked(const std::shared_ptr<Entity> body)
     return false;
 }
 
-void World::TakeFlag(const std::shared_ptr<E_Player> body)
+void World::TakeFlag(const E_Player * body)
 {
     sf::Vector2f pos = body->GetPosition();
 

@@ -18,7 +18,7 @@ public:
 	void CollisionReact(float power);
 
 	void Overlaps(const MapObject * object);
-	void Overlaps(std::shared_ptr<E_Player> ePlayer);
+	void Overlaps(E_Player * ePlayer);
 	
 	inline const sf::Vector2f & GetSpeedRatio() { return speedRatio; }
 	inline int GetOwnerId() { return ownerId; }

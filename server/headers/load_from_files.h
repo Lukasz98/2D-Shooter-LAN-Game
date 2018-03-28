@@ -2,11 +2,12 @@
 #include <string>
 #include <fstream>
 
+#include "server_info.h"
 #include "log.h"
 
 
 class LoadFromFiles
 {
 public:
-    static void loadServerInfo(std::string & ip, int & port);
+    static ServerInfo loadServerInfo();
 };
