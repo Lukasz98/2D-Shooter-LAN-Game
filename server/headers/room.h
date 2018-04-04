@@ -2,7 +2,8 @@
 #include <string>
 #include <vector>
 #include <thread>
-#include <memory>
+//#include <memory>
+#include <mutex>
 
 #include <SFML/Network.hpp>
 #include <SFML/System/Vector2.hpp>
@@ -15,7 +16,6 @@
 #include "log.h"
 
 enum State { RUNNING, STOP, PREPARATION };
-
 
 class Room
 {
@@ -34,50 +34,45 @@ public:
     inline const std::string & GetMapName() { return mapName; }
 
     void Update();
-    inline void NaziTicketMinus(int m) { naziTickets -= m; }
-    inline void PolTicketMinus(int m) { polTickets -= m; }
-    inline bool ZeroTickets() { if (naziTickets <= 0 || polTickets <= 0) return true; return false; }
-    inline void ResetTickets() { naziTickets = 100; polTickets = 100; }
-
+    inline void A_TicketMinus(int m) { a_tickets -= m; }
+    inline void B_TicketMinus(int m) { b_tickets -= m; }
+    inline bool ZeroTickets() { if (a_tickets <= 0 || b_tickets <= 0) return true; return false; }
+    inline void ResetTickets() { a_tickets = 100; b_tickets = 100; }
     
 private:
     struct WaitForPlayersData
     {
         WaitForPlayersData() {}
         ~WaitForPlayersData() {}
-        int receivingPort;
-        int * naziTeam, * polTeam;
+        int receivePort;
+        int * teamA, * teamB;
         std::string mapName;
     };
+    WaitForPlayersData waitForPlayersData;
 
-    int packet_counter = 0;
-    std::vector<sf::Packet> packets;
-    
     std::string mapName = "testWorld";
+    int teamA = 0, teamB = 0; // counting players in teams
+    int a_tickets = 100, b_tickets = 100;
 
-    int naziTeam = 0, polTeam = 0; // counting players in teams
-    int naziTickets = 10, polTickets = 100;
-   
+    std::vector<sf::Packet> packets;
+    std::mutex packetsMutex;
+X    int sendedPackets = 0;
+    int packet_counter = 0; //received
+    
     std::vector<E_Player*> ePlayers;
     std::vector<Bullet*> bullets;
     
     std::vector<Event*> events;
 
-    //std::string ip;
-    //int joinPort, receivingPort, sendingPort;
+    State state = PREPARATION;
     ServerInfo info;
     sf::UdpSocket receiveSocket, sendSocket;
-
-    State state = PREPARATION;
-
     sf::TcpListener tcpListener;
-
-    WaitForPlayersData waitForPlayersData;
-
+    
     void loadServerInfo();
 
     static void waitForPlayers(std::vector<E_Player*> & ePlayers, const State & state, sf::TcpListener & tcpListener, WaitForPlayersData & data); //thread
-    static void receiveInput(std::vector<sf::Packet> & packets, const State & state, sf::UdpSocket & socket);
+    static void receiveInput(std::vector<sf::Packet> & packets, const State & state, sf::UdpSocket & socket, std::mutex & packetsMutex);
 
 
 

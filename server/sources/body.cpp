@@ -12,7 +12,7 @@ Body::Body(int team)
     else
         spawnPos = WHITE_RESP;
 
-    LOG("BODY_RESP " << spawnPos.x << ", " << spawnPos.y);
+    //LOG("BODY_RESP " << spawnPos.x << ", " << spawnPos.y);
     position = spawnPos;
     hp = 100.0f;
     angle = 0.0f;

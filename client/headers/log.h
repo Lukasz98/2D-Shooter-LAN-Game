@@ -1,4 +1,6 @@
 #pragma once
 #include <iostream>
 
-#define LOG(x) std::cout << x << std::endl
+#define LOG(x) std::cout << x << " [" << __FILE__ << " line: " << __LINE__ << "]" << std::endl;
+
+//#define LOG(x) std::cout << x << std::endl

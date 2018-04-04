@@ -11,10 +11,10 @@ Room::Room(bool lanGame)
             if (lanGame == true && receiveSocket.bind(sf::Socket::AnyPort) != sf::Socket::Done)
                 throw "Error binding receive socket";
         }
-        else if (receiveSocket.bind(info.receivingPort) != sf::Socket::Done)
+        else if (receiveSocket.bind(info.receivePort) != sf::Socket::Done)
             throw "Error binding receive socket";
 
-        info.receivingPort = receiveSocket.getLocalPort();
+        info.receivePort = receiveSocket.getLocalPort();
         receiveSocket.setBlocking(false);
 
         if (lanGame == true)
@@ -22,10 +22,10 @@ Room::Room(bool lanGame)
             if (lanGame == true && sendSocket.bind(sf::Socket::AnyPort) != sf::Socket::Done)
                 throw "Error binding send socket";
         }
-        else if (sendSocket.bind(info.sendingPort) != sf::Socket::Done)
+        else if (sendSocket.bind(info.sendPort) != sf::Socket::Done)
             throw "Error binding send socket";
         
-        info.sendingPort = sendSocket.getLocalPort();
+        info.sendPort = sendSocket.getLocalPort();
 
         
         if (lanGame == true)
@@ -43,13 +43,13 @@ Room::Room(bool lanGame)
         LOG("SERVER LAN IP: " << info.ip);
         LOG("SERVER JOIN TCP PORT: " << info.joinPort);
         
-        waitForPlayersData.receivingPort = info.receivingPort;
+        waitForPlayersData.receivePort = info.receivePort;
         waitForPlayersData.mapName = mapName;
-        waitForPlayersData.naziTeam = & naziTeam;
-        waitForPlayersData.polTeam = & polTeam;
+        waitForPlayersData.teamA = & teamA;
+        waitForPlayersData.teamB = & teamB;
 
         std::thread (waitForPlayers, std::ref(ePlayers), std::ref(state), std::ref(tcpListener), std::ref(waitForPlayersData)).detach();
-        std::thread (receiveInput, std::ref(packets), std::ref(state), std::ref(receiveSocket)).detach();
+        std::thread (receiveInput, std::ref(packets), std::ref(state), std::ref(receiveSocket), std::ref(packetsMutex)).detach();
     }
     else
         throw "Room::Room - State stop";
@@ -57,7 +57,8 @@ Room::Room(bool lanGame)
 
 Room::~Room() 
 {
-    LOG("Room::~Room packetsReceived="<<packet_counter);
+    LOG("packetsSended=" << sendedPackets);
+    LOG("packetsReceived="<<packet_counter);
     sendSocket.unbind();
 }
 
@@ -65,14 +66,10 @@ void Room::loadServerInfo()
 {
     try {
         info = LoadFromFiles::loadServerInfo();
-        //LOG("LAN Server ip: " << ip);
-        //LOG("Ethernet Server join port: " << joinPort);
     }
     catch (const char * err) {
         LOG(err);
         state = STOP;
-        // TO DO
-        // shutdown...
     }
 }
 
@@ -98,21 +95,21 @@ void Room::waitForPlayers(std::vector<E_Player*> & ePlayers, const State & state
             packet >> clientIp >> clientPort;
 
             int team = 1;
-            if (*data.naziTeam > *data.polTeam)
+            if (*data.teamA > *data.teamB)
             {
                 team = 2;
-                (*data.polTeam) ++;
+                (*data.teamB) ++;
             }
             else
             {
-                (*data.naziTeam) ++;
+                (*data.teamA) ++;
             }
 
             ePlayers.push_back(new E_Player(id, clientIp, clientPort, team));
             sf::Vector2f pos = ePlayers.back()->GetPosition();
 
             sf::Packet packetToSend;
-            packetToSend << data.mapName << data.receivingPort << id << team;
+            packetToSend << data.mapName << data.receivePort << id << team;
             packetToSend << pos.x << pos.y;
             socket.send(packetToSend);
 
@@ -124,7 +121,7 @@ void Room::waitForPlayers(std::vector<E_Player*> & ePlayers, const State & state
     tcpListener.close();
 }
 
-void Room::receiveInput(std::vector<sf::Packet> & packets, const State & state, sf::UdpSocket & socket)
+void Room::receiveInput(std::vector<sf::Packet> & packets, const State & state, sf::UdpSocket & socket, std::mutex & packetsMutex)
 {
     while (state == RUNNING)
     {
@@ -133,15 +130,26 @@ void Room::receiveInput(std::vector<sf::Packet> & packets, const State & state, 
         sf::Packet packet;
 
         if (socket.receive(packet, clientIp, clientPort) == sf::Socket::Done)
+        {
+            packetsMutex.lock();
             packets.push_back(packet);
+            packetsMutex.unlock();
+        }
     }
     socket.unbind();
 }
 
 void Room::Update()
 {
-    for (auto & packet : packets)
+    int localCount = 0;
+
+    packetsMutex.lock();
+    std::vector<sf::Packet> p = packets;
+    packetsMutex.unlock();
+
+    for (auto & packet : p)
     {
+        localCount ++;
         packet_counter ++;
         
         int id;
@@ -167,13 +175,27 @@ void Room::Update()
             }
         }
     }
-    packets.clear();
+
+    packetsMutex.lock();
+    for (int i = 0; i < localCount; i++)
+    {
+        packets.erase(packets.begin());
+    }
+    packetsMutex.unlock();
+
+#if 0
+    if (ePlayers.size())
+        //if (localCount != ePlayers.size())
+        LOG("Received packets: " << localCount << ", I have " << ePlayers.size() << " players");
+#endif
 }
 
 void Room::SendData()
 {
+
     sf::Packet packet;
-    packet << naziTickets << polTickets;
+    packet << sendedPackets;
+    packet << a_tickets << b_tickets;
     packet << (int)ePlayers.size();
     
     for (const auto player : ePlayers)
@@ -197,21 +219,26 @@ void Room::SendData()
     }
     events.clear();
 
-
     for (const auto player : ePlayers)
     {
         sendSocket.send(packet, player->GetIp(), player->GetPort());
     }
 
+    if (ePlayers.size())
+        sendedPackets ++;
+ 
 }
 
 void Room::DeletePlayer(int i)
 {
     LOG("Room::DeletePlayer ip="<<ePlayers[i]->GetId()<<", ip="<<ePlayers[i]->GetIp()<<", port="<<ePlayers[i]->GetPort());
     if (ePlayers[i]->GetTeam() == 1)
-        naziTeam--;
+        teamA--;
     else
-        polTeam--;
+        teamB--;
+
     delete ePlayers[i];
+    
+    // potencjalny blad przy usuwaniu gracza, z vectora moze korzystac watek
     ePlayers.erase(ePlayers.begin() + i);
 }

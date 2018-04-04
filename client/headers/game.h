@@ -31,7 +31,7 @@ private:
     std::vector<E_Player*> * ePlayers;
     std::vector<Bullet*> * bullets;
 
-    const E_Player * myPlayer;
+    E_Player * myPlayer;
     int myId, bulletIds = 0;
 
     Utils::Time time;

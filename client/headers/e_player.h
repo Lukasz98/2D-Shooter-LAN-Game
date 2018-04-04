@@ -13,6 +13,9 @@ public:
     ~E_Player();
 
     void Update(sf::Vector2f position, float angle);
+
+    void LocalUpdate(sf::Vector2i inp, float dt);
+    void PredictPos(float dt);
     
     inline int GetId() { return id; }
     inline const sf::Text & GetText() { return text; }
@@ -21,8 +24,10 @@ public:
 private:
     sf::Texture texture;
     int id, team;
-
+    
     std::string name;
     sf::Font font;
     sf::Text text;
+
+    sf::Vector2f oldRecvPos, olderRecvPos;
 };

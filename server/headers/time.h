@@ -16,6 +16,9 @@ public:
     inline float GetGameOverTime() { return gameOverTime; }
     inline void UpdateGameOverTime() { gameOverTime += dt; }
     inline void ResetGameOverTime() { gameOverTime = 0.0f; }
+    inline float GetFpsTime() { return timeForFps; }
+    inline float GetFps() { return fps; }
+
     
 private:
     float dt;
@@ -25,7 +28,8 @@ private:
     float fireTime;
     float gameOverTime;
     int frames;
-
+    int fps = 0;
+    
     sf::Clock m_clock;
 
     void setValues();

@@ -2,6 +2,7 @@
 #include <memory>
 #include <string>
 #include <thread>
+#include <mutex>
 
 #include <SFML/Network.hpp>
 #include <SFML/System/Vector2.hpp>
@@ -34,6 +35,7 @@ public:
     
     
 private:
+    int recPackets = 0;
     int packet_counter = 0;
     
     bool connected = false;
@@ -48,7 +50,9 @@ private:
     //int myPort;
     int myId;
 
+    std::mutex packetsMutex;
     std::vector<sf::Packet> receivedPackets;
+
     sf::UdpSocket receivingSocket, sendingSocket;
 
     std::string mapName;
@@ -59,7 +63,7 @@ private:
     int naziTickets = 0, polTickets = 0;
     
     void joinServer();
-    static void receiveData(std::vector<sf::Packet> & packets, sf::UdpSocket & socket, const bool & connected); //thread
+    static void receiveData(std::vector<sf::Packet> & packets, sf::UdpSocket & socket, const bool & connected, std::mutex & packetsMutex); //thread
     void updateEPlayers(sf::Packet & packet);
     void updateBullets(sf::Packet & packet);
     void updateEvents(sf::Packet & packet, World * world);

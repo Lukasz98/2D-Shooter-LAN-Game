@@ -7,7 +7,7 @@
 int main()
 {
     std::cout << "Welcome in server" << std::endl;
-
+    
     bool lanGame = true;
     
     Room * room;

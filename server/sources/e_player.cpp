@@ -7,6 +7,7 @@ E_Player::E_Player(int id, std::string ip, int port, int team)
     this->ip = ip;
     this->port = port;
 
+    //speed = 100.0f;
     speed = 300.0f;
     size = sf::Vector2f(70.0f, 70.0f);
 }
@@ -35,8 +36,14 @@ void E_Player::Update(sf::Vector2i dir, float angle)
 
 void E_Player::move(int x, int y)
 {
-    position.x += x * speed * dt;
-    position.y += y * speed * dt;
+    float ex = x * speed * dt;
+    float why = y * speed * dt;
+
+    //    if (ex == 0)
+    //  LOG("ex = " << ex << " x = " << x << " test " << dt * speed);
+    
+    position.x += ex;
+    position.y += why;
     speedRatio.x = static_cast<float> (x);
     speedRatio.y = static_cast<float> (y);
 }

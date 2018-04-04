@@ -1,4 +1,4 @@
-ip: 192.168.1.14
+ip: 192.168.1.13
 port: 55555
 receivingPort: 55556
 sendingPort: 55557

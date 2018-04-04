@@ -13,6 +13,13 @@ struct Time
         dt = m_clock.getElapsedTime().asSeconds();
         m_clock.restart();
         setValues();
+
+        if (timeForFps > 1.0f)
+        {
+            timeForFps = 0.0f;
+            fps = frames;
+            frames = 0;
+        }
     }
 
     float dt = 0.0f;
@@ -21,7 +28,8 @@ struct Time
     float fullTime = 0.0f;
     float fireTime = 0.0f;
     int frames = 0;
-
+    int fps = 0;
+    
 private:
     sf::Clock m_clock;
 
@@ -29,6 +37,7 @@ private:
     {
         fullTime += dt;
         fireTime += dt;
+        timeForFps += dt;
         frames ++;
     }
     

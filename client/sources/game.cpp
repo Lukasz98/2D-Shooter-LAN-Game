@@ -15,7 +15,7 @@ Game::Game(Connection * connection)
     bullets = connection->GetBullets();
     
 
-    for (const auto player : *ePlayers)
+    for (auto player : *ePlayers)
     {
         if (player->GetId() == myId)
         {
@@ -105,6 +105,8 @@ void Game::play()
         window.display();
 
         time.Update();
+        //if (time.timeForFps == 0.0f)
+        //    LOG("FPS: " << time.fps);
     }
 }
 
@@ -131,6 +133,15 @@ void Game::playerInput()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
             inputData.y = 1;
 
+        myPlayer->LocalUpdate(sf::Vector2i(inputData.x, inputData.y), time.dt);
+
+        // not the best place for this
+        for (auto p : (*ePlayers))
+        {
+            if (p->GetId() != myId)
+                p->PredictPos(time.dt);
+        }
+        
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && time.fireTime > 0.5f)
         {
             time.fireTime = 0.0f;

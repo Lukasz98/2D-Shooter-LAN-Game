@@ -1,4 +1,4 @@
-ServerIp: 192.168.1.14
-myIp: 192.168.1.14
+ServerIp: 192.168.1.13
+myIp: 192.168.1.13
 myPort: 19988
 sendPort: 19989

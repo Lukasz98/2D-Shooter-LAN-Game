@@ -26,6 +26,8 @@ void Game::play()
      
         room->SendData();
         time.Update();
+        //if (time.GetFpsTime() == 0.0f)
+        //    LOG("FPS: " << time.GetFps());
     }
 }
 
@@ -45,9 +47,9 @@ void Game::update()
             int ticketLoss = 1 + 1 * world->GetFlagFactor(team);
 
             if (team == NAZI)
-                room->NaziTicketMinus(ticketLoss);
+                room->A_TicketMinus(ticketLoss);
             else
-                room->PolTicketMinus(ticketLoss);
+                room->B_TicketMinus(ticketLoss);
         }
       
         if ((*ePlayers)[i]->IsOnline() == false)

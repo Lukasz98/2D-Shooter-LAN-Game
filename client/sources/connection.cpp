@@ -31,7 +31,7 @@ Connection::Connection(bool lanGame)
 
     if (connected)
     {
-        std::thread (receiveData, std::ref(receivedPackets), std::ref(receivingSocket), std::ref(connected)).detach();
+        std::thread (receiveData, std::ref(receivedPackets), std::ref(receivingSocket), std::ref(connected), std::ref(packetsMutex)).detach();
         LOG("Connection: receiveData started");
 
         LOG("Connection: Constructor - binding sendingSocket");
@@ -47,7 +47,8 @@ Connection::Connection(bool lanGame)
 
 Connection::~Connection() 
 {
-    LOG("Connection::~Connection packet_counter=" << packet_counter);
+    LOG("Connection::~Connection sendedPackets=" << packet_counter);
+    LOG("Connection::~Connection receivedPackets=" << recPackets);
     sendingSocket.unbind();
     for (auto ePlayer : ePlayers)
         delete ePlayer;
@@ -87,7 +88,7 @@ void Connection::joinServer()
 
 }
 
-void Connection::receiveData(std::vector<sf::Packet> & packets, sf::UdpSocket & socket, const bool & connected) //thread
+void Connection::receiveData(std::vector<sf::Packet> & packets, sf::UdpSocket & socket, const bool & connected, std::mutex & packetsMutex) //thread
 {
     LOG("Connection: receiveData start");
     while (connected)
@@ -97,41 +98,73 @@ void Connection::receiveData(std::vector<sf::Packet> & packets, sf::UdpSocket & 
         sf::Packet packet;
 
         if (socket.receive(packet, servIp, servPort) == sf::Socket::Done)
+        {
+            packetsMutex.lock();
             packets.push_back(packet);
+            packetsMutex.unlock();
+        }
     }
     socket.unbind();    
 }
 
 void Connection::SendInput(Utils::InputData & input)
 {
+    //if (input.x == 0)
+    //    LOG(input.x << " " << input.angle);
     sf::Packet packet;
     packet << myId << input.x << input.y << input.angle << input.mouseClick;
     if (input.mouseClick)
         packet << input.speedRatio.x << input.speedRatio.y << input.bulletId;
 
     sendingSocket.send(packet, info.serverIp, serverReceivingPort);
+    packet_counter ++;
 }
 
 void Connection::Update(World * world)
-{
+{    
+    int localCounter = 0;
+    packetsMutex.lock();
     int packetsCount = receivedPackets.size();
+    //LOG("size: "<<receivedPackets.size());
     for (auto & packet : receivedPackets)
     {
-        packet_counter++;
+        sf::Packet p = packet;
+        packetsMutex.unlock();
 
-        packet >> naziTickets >> polTickets;
+        int nr;
+        p >> nr;
+        //LOG("Packet nr: " << nr);
+        
+        localCounter++;
+        recPackets ++;
+        //packet_counter++;
 
-        updateEPlayers(packet);
-        updateBullets(packet);
-        updateEvents(packet, world);
+        //packet >> naziTickets >> polTickets;
+        p >> naziTickets >> polTickets;
+
+        //updateEPlayers(packet);
+        //updateBullets(packet);
+        //updateEvents(packet, world);
+        updateEPlayers(p);
+        updateBullets(p);
+        updateEvents(p, world);
+
+        packetsMutex.lock();
     }
-    receivedPackets.clear();
+    for (int i = 0; i < localCounter; i++)
+        receivedPackets.erase(receivedPackets.begin());
+    //receivedPackets.clear();
+    packetsMutex.unlock();
+    
+    //if (localCounter != 1)
+    //LOG("Packets received in this frame: " << localCounter);
 }
 
 void Connection::updateEPlayers(sf::Packet & packet)
 {
     int playersCount = 0;
     packet >> playersCount;
+    
     for (int j = 0; j < playersCount; j++)
     {
         int id, team;
@@ -235,6 +268,10 @@ void Connection::updateEvents(sf::Packet & packet, World * world)
                     world->UpdateFlag(id, owner, isTaker, neutralPoints, lastPoints);
                 }
                 break;
+            }
+            default:
+            {
+                LOG("Error: Packet type = " << (int)type);
             }
         }
     }

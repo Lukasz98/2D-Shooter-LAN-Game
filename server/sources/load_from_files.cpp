@@ -13,8 +13,8 @@ ServerInfo LoadFromFiles::loadServerInfo()
 
 		fs >> input >> si.ip;
 		fs >> input >> si.joinPort;		
-		fs >> input >> si.receivingPort;		
-		fs >> input >> si.sendingPort;		
+		fs >> input >> si.receivePort;		
+		fs >> input >> si.sendPort;		
 	}
 	else
 		throw "Server info file cannot be opened!";

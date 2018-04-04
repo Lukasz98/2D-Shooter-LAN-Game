@@ -46,6 +46,7 @@ void Time::setValues()
     {
         //LOG(frames);
         timeForFps = 0.0f;
+        fps = frames;
         frames = 0;
     }
 }
