@@ -56,7 +56,7 @@ private:
 
     std::vector<sf::Packet> packets;
     std::mutex packetsMutex;
-X    int sendedPackets = 0;
+    int sendedPackets = 0;
     int packet_counter = 0; //received
     
     std::vector<E_Player*> ePlayers;
