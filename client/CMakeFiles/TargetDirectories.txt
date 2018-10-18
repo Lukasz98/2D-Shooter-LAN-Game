@@ -1,3 +1,0 @@
-/home/lukasz/Projekty/2D-Shooter-LAN-Game/client/CMakeFiles/rebuild_cache.dir
-/home/lukasz/Projekty/2D-Shooter-LAN-Game/client/CMakeFiles/sfml-app.dir
-/home/lukasz/Projekty/2D-Shooter-LAN-Game/client/CMakeFiles/edit_cache.dir
