@@ -39,9 +39,6 @@ void E_Player::move(int x, int y)
     float ex = x * speed * dt;
     float why = y * speed * dt;
 
-    //    if (ex == 0)
-    //  LOG("ex = " << ex << " x = " << x << " test " << dt * speed);
-    
     position.x += ex;
     position.y += why;
     speedRatio.x = static_cast<float> (x);

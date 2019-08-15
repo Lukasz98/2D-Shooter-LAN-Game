@@ -109,8 +109,6 @@ void Connection::receiveData(std::vector<sf::Packet> & packets, sf::UdpSocket & 
 
 void Connection::SendInput(Utils::InputData & input)
 {
-    //if (input.x == 0)
-    //    LOG(input.x << " " << input.angle);
     sf::Packet packet;
     packet << myId << input.x << input.y << input.angle << input.mouseClick;
     if (input.mouseClick)
